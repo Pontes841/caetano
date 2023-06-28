@@ -4,7 +4,7 @@ const socketIO = require('socket.io');
 const qrcode = require('qrcode');
 const http = require('http');
 const fileUpload = require('express-fileupload');
-const port = 8000;
+const port = 8005;
 const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
@@ -15,9 +15,9 @@ const nodeCron = require("node-cron");
 const createConnection = async () => {
     return await mysql.createConnection({
         host: '212.1.208.101',
-        user: 'u896627913_teste',
-        password: 'Fe91118825',
-        database: 'u896627913_teste'
+        user: 'u896627913_loja02',
+        password: 'Felipe@91118825',
+        database: 'u896627913_Penedo'
     });
 }
 
@@ -222,6 +222,8 @@ const client = new Client({
 client.initialize();
 
 // Configuração do Socket.IO para comunicação em tempo real
+let authenticated = false;
+
 io.on('connection', function (socket) {
     socket.emit('message', 'Conectando...');
 
@@ -238,6 +240,7 @@ io.on('connection', function (socket) {
     client.on('ready', async () => {
         socket.emit('ready', 'BOT-ZDG Dispositivo pronto!');
         socket.emit('message', 'BOT-ZDG Dispositivo pronto!');
+
 
         // Tarefa agendada para executar a lógica de envio de mensagens periodicamente
         nodeCron.schedule('*/60 * * * * *', async function () {
@@ -421,12 +424,14 @@ io.on('connection', function (socket) {
         });
 
     });
-
     // Evento disparado quando o cliente é autenticado com sucesso
     client.on('authenticated', () => {
-        socket.emit('authenticated', 'BOT-ZDG Autenticado!');
-        socket.emit('message', 'BOT-ZDG Autenticado!');
-        console.log('BOT-ZDG Autenticado');
+        if (!authenticated) {
+            authenticated = true;
+            socket.emit('authenticated', 'BOT-ZDG Autenticado!');
+            socket.emit('message', 'BOT-ZDG Autenticado!');
+            console.log('BOT-ZDG Autenticado');
+        }
     });
 
     // Evento disparado quando a autenticação falha
