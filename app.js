@@ -4,7 +4,7 @@ const socketIO = require('socket.io');
 const qrcode = require('qrcode');
 const http = require('http');
 const fileUpload = require('express-fileupload');
-const port = 8005;
+const port = 8000;
 const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
@@ -15,11 +15,24 @@ const nodeCron = require("node-cron");
 const createConnection = async () => {
     return await mysql.createConnection({
         host: '212.1.208.101',
-        user: 'u896627913_loja02',
+        user: 'u896627913_loja04',
         password: 'Felipe@91118825',
-        database: 'u896627913_Penedo'
+        database: 'u896627913_propriar'
     });
 }
+
+// Função para atualizar o statusco no banco de dados
+const updateStatuscob = async (id) => {
+    try {
+        const connection = await createConnection();
+        const query = 'UPDATE cobranca SET statusco = "enviado" WHERE id = ?';
+        const [result] = await connection.execute(query, [id]);
+        return result.affectedRows > 0;
+    } catch (error) {
+        console.error('Erro ao atualizar o statusco:', error);
+        return false;
+    }
+};
 
 // Função para atualizar o statusvd no banco de dados
 const updateStatusvd = async (id) => {
@@ -105,6 +118,66 @@ const updateStatusan = async (id) => {
         return false;
     }
 };
+// Função para atualizar o statusan no banco de dados GARANTIA
+const updateStatusga = async (id) => {
+    try {
+        const connection = await createConnection();
+        const query = 'UPDATE controle_garantia SET statuss = "enviado" WHERE id = ?';
+        const [result] = await connection.execute(query, [id]);
+        return result.affectedRows > 0;
+    } catch (error) {
+        console.error('Erro ao atualizar o statuss:', error);
+        return false;
+    }
+};
+// Função para atualizar o statusan no banco de dados GARANTIA
+const updateStatusgaf = async (id) => {
+    try {
+        const connection = await createConnection();
+        const query = 'UPDATE controle_garantia SET statusf = "enviado" WHERE id = ?';
+        const [result] = await connection.execute(query, [id]);
+        return result.affectedRows > 0;
+    } catch (error) {
+        console.error('Erro ao atualizar o statusf:', error);
+        return false;
+    }
+};
+// Função para atualizar o statusan no banco de dados pap
+const updateStatusag = async (id) => {
+    try {
+        const connection = await createConnection();
+        const query = 'UPDATE controle_pap SET statusen = "enviado" WHERE id = ?';
+        const [result] = await connection.execute(query, [id]);
+        return result.affectedRows > 0;
+    } catch (error) {
+        console.error('Erro ao atualizar o statusen:', error);
+        return false;
+    }
+};
+// Função para atualizar o statusan no banco de dados pap
+const updateStatusco = async (id) => {
+    try {
+        const connection = await createConnection();
+        const query = 'UPDATE controle_pap SET statusco = "enviado" WHERE id = ?';
+        const [result] = await connection.execute(query, [id]);
+        return result.affectedRows > 0;
+    } catch (error) {
+        console.error('Erro ao atualizar o statusco:', error);
+        return false;
+    }
+};
+
+// Função para obter os registros de agendamento do banco de dados
+const agendamentoZDG0 = async () => {
+    try {
+        const connection = await createConnection();
+        const [rows] = await connection.execute('SELECT * FROM cobranca WHERE statusco IS NULL OR statusco = ""');
+        return rows;
+    } catch (error) {
+        console.error('Erro ao obter os registros de agendamento:', error);
+        return [];
+    }
+};
 
 // Função para obter os registros de agendamento do banco de dados
 const agendamentoZDG = async () => {
@@ -183,6 +256,50 @@ const agendamentoZDG7 = async () => {
         return [];
     }
 };
+// Função para obter os registros de agendamento do banco de dados statuss garantia
+const agendamentoZDG8 = async () => {
+    try {
+        const connection = await createConnection();
+        const [rows] = await connection.execute('SELECT * FROM controle_garantia WHERE statuss IS NULL OR statuss = ""');
+        return rows;
+    } catch (error) {
+        console.error('Erro ao obter os registros de agendamento:', error);
+        return [];
+    }
+};
+// Função para obter os registros de agendamento do banco de dados statusf garantiafi
+const agendamentoZDG9 = async () => {
+    try {
+        const connection = await createConnection();
+        const [rows] = await connection.execute('SELECT * FROM controle_garantia WHERE statusf IS NULL OR statusf = ""');
+        return rows;
+    } catch (error) {
+        console.error('Erro ao obter os registros de agendamento:', error);
+        return [];
+    }
+};
+// Função para obter os registros de agendamento do banco de dados statusen pap
+const agendamentoZDG10 = async () => {
+    try {
+        const connection = await createConnection();
+        const [rows] = await connection.execute('SELECT * FROM controle_pap WHERE statusen IS NULL OR statusen = ""');
+        return rows;
+    } catch (error) {
+        console.error('Erro ao obter os registros de agendamento:', error);
+        return [];
+    }
+};
+// Função para obter os registros de agendamento do banco de dados statusco pap
+const agendamentoZDG11 = async () => {
+    try {
+        const connection = await createConnection();
+        const [rows] = await connection.execute('SELECT * FROM controle_pap WHERE statusco IS NULL OR statusco = ""');
+        return rows;
+    } catch (error) {
+        console.error('Erro ao obter os registros de agendamento:', error);
+        return [];
+    }
+};
 
 // Configuração do servidor Express e Socket.IO
 app.use(express.json());
@@ -232,19 +349,20 @@ io.on('connection', function (socket) {
         console.log('QR RECEIVED', qr);
         qrcode.toDataURL(qr, (err, url) => {
             socket.emit('qr', url);
-            socket.emit('message', 'BOT-ZDG QRCode recebido, aponte a câmera do seu celular!');
+            socket.emit('message', 'QRCode recebido, aponte a câmera do seu celular!');
         });
     });
 
     // Evento disparado quando o cliente está pronto para uso
     client.on('ready', async () => {
-        socket.emit('ready', 'BOT-ZDG Dispositivo pronto!');
-        socket.emit('message', 'BOT-ZDG Dispositivo pronto!');
+        socket.emit('ready', 'Dispositivo pronto!');
+        socket.emit('message', 'Dispositivo pronto!');
 
 
         // Tarefa agendada para executar a lógica de envio de mensagens periodicamente
         nodeCron.schedule('*/60 * * * * *', async function () {
             try {
+                const agendamentoscobranca = await agendamentoZDG0()
                 const agendamentosSolicitacao = await agendamentoZDG();
                 const agendamentosFinalizacao = await agendamentoZDG2();
                 const agendamentosdate1m = await agendamentoZDG3();
@@ -252,9 +370,37 @@ io.on('connection', function (socket) {
                 const agendamentosdate6m = await agendamentoZDG5();
                 const agendamentosdate12m = await agendamentoZDG6();
                 const agendamentosdata_aniversario = await agendamentoZDG7();
+                const agendamentosgarantia = await agendamentoZDG8();
+                const agendamentosgarantiafi = await agendamentoZDG9();
+                const agendamentospap = await agendamentoZDG10();
+                const agendamentospapd = await agendamentoZDG11();
 
                 const hoje = new Date();
 
+                for (const agendamento of agendamentoscobranca) {
+                    if (agendamento.data_cobranca && agendamento.data_cobranca <= hoje && !agendamento.enviado) {
+                        // Marcar o agendamento como enviado
+                        agendamento.enviado = true;
+                        if (agendamento.nome !== '') {
+                            client.sendMessage(agendamento.fone + '@c.us', agendamento.nome);
+                        }
+                        if (agendamento.mensagemco && agendamento.mensagemco !== '') {
+                            console.log('URL da mensagemco:', agendamento.mensagemco);
+                            try {
+                                const media = await MessageMedia.fromUrl(agendamento.mensagemco);
+                                client.sendMessage(agendamento.fone + '@c.us', media, { caption: '©dinizriolargo' });
+                            } catch (error) {
+                                console.error('Erro ao obter a mensagemco:', error);
+                            }
+                        }
+                        const success = await updateStatuscob(agendamento.id);
+                        if (success) {
+                            console.log('BOT-ZDG - Mensagem ID: ' + agendamento.id + ' - statusco atualizado para "enviado"');
+                        } else {
+                            console.log('BOT-ZDG - Falha ao atualizar o statusco da mensagem ID: ' + agendamento.id);
+                        }
+                    }
+                }
                 for (const agendamento of agendamentosSolicitacao) {
                     if (agendamento.data_solicitacao && agendamento.data_solicitacao <= hoje && !agendamento.enviado) {
                         // Marcar o agendamento como enviado
@@ -266,7 +412,7 @@ io.on('connection', function (socket) {
                             console.log('URL da mensagemvd:', agendamento.mensagemvd);
                             try {
                                 const media = await MessageMedia.fromUrl(agendamento.mensagemvd);
-                                client.sendMessage(agendamento.fone + '@c.us', media, { caption: '©oticasdinizpenedo' });
+                                client.sendMessage(agendamento.fone + '@c.us', media, { caption: '©dinizriolargo' });
                             } catch (error) {
                                 console.error('Erro ao obter a mensagemvd:', error);
                             }
@@ -290,7 +436,7 @@ io.on('connection', function (socket) {
                             console.log('URL da mensagemdf:', agendamento.mensagemdf);
                             try {
                                 const media = await MessageMedia.fromUrl(agendamento.mensagemdf);
-                                client.sendMessage(agendamento.fone + '@c.us', media, { caption: '©oticasdinizpenedo' });
+                                client.sendMessage(agendamento.fone + '@c.us', media, { caption: '©dinizriolargo' });
                             } catch (error) {
                                 console.error('Erro ao obter a mensagemdf:', error);
                             }
@@ -313,7 +459,7 @@ io.on('connection', function (socket) {
                             console.log('URL da mensagem1m:', agendamento.mensagem1m);
                             try {
                                 const media = await MessageMedia.fromUrl(agendamento.mensagem1m);
-                                client.sendMessage(agendamento.fone + '@c.us', media, { caption: '©oticasdinizpenedo' });
+                                client.sendMessage(agendamento.fone + '@c.us', media, { caption: '©dinizriolargo' });
                             } catch (error) {
                                 console.error('Erro ao obter a mensagem1m:', error);
                             }
@@ -336,7 +482,7 @@ io.on('connection', function (socket) {
                             console.log('URL da mensagem3m:', agendamento.mensagem3m);
                             try {
                                 const media = await MessageMedia.fromUrl(agendamento.mensagem3m);
-                                client.sendMessage(agendamento.fone + '@c.us', media, { caption: '©oticasdinizpenedo' });
+                                client.sendMessage(agendamento.fone + '@c.us', media, { caption: '©dinizriolargo' });
                             } catch (error) {
                                 console.error('Erro ao obter a mensagem3m:', error);
                             }
@@ -359,7 +505,7 @@ io.on('connection', function (socket) {
                             console.log('URL da mensagem6m:', agendamento.mensagem6m);
                             try {
                                 const media = await MessageMedia.fromUrl(agendamento.mensagem6m);
-                                client.sendMessage(agendamento.fone + '@c.us', media, { caption: '©oticasdinizpenedo' });
+                                client.sendMessage(agendamento.fone + '@c.us', media, { caption: '©dinizriolargo' });
                             } catch (error) {
                                 console.error('Erro ao obter a mensagem6m:', error);
                             }
@@ -382,7 +528,7 @@ io.on('connection', function (socket) {
                             console.log('URL da mensagem12m:', agendamento.mensagem12m);
                             try {
                                 const media = await MessageMedia.fromUrl(agendamento.mensagem12m);
-                                client.sendMessage(agendamento.fone + '@c.us', media, { caption: '©oticasdinizpenedo' });
+                                client.sendMessage(agendamento.fone + '@c.us', media, { caption: '©dinizriolargo' });
                             } catch (error) {
                                 console.error('Erro ao obter a mensagem12m:', error);
                             }
@@ -405,7 +551,7 @@ io.on('connection', function (socket) {
                             console.log('URL da mensageman:', agendamento.mensageman);
                             try {
                                 const media = await MessageMedia.fromUrl(agendamento.mensageman);
-                                client.sendMessage(agendamento.fone + '@c.us', media, { caption: '©oticasdinizpenedo' });
+                                client.sendMessage(agendamento.fone + '@c.us', media, { caption: '©dinizriolargo' });
                             } catch (error) {
                                 console.error('Erro ao obter a mensageman:', error);
                             }
@@ -415,6 +561,98 @@ io.on('connection', function (socket) {
                             console.log('BOT-ZDG - Mensagem ID: ' + agendamento.id + ' - statusan atualizado para "enviado"');
                         } else {
                             console.log('BOT-ZDG - Falha ao atualizar o statusan da mensagem ID: ' + agendamento.id);
+                        }
+                    }
+                }
+                for (const agendamento of agendamentosgarantia) {
+                    if (agendamento.data_solicitacao && agendamento.data_solicitacao <= hoje && !agendamento.enviado) {
+                        // Marcar o agendamento como enviado
+                        if (agendamento.nome !== '') {
+                            client.sendMessage(agendamento.fone + '@c.us', agendamento.nome);
+                        }
+                        if (agendamento.mensagems && agendamento.mensagems !== '') {
+                            console.log('URL da mensagems:', agendamento.mensagems);
+                            try {
+                                const media = await MessageMedia.fromUrl(agendamento.mensagems);
+                                client.sendMessage(agendamento.fone + '@c.us', media, { caption: '©dinizriolargo' });
+                            } catch (error) {
+                                console.error('Erro ao obter a mensagems:', error);
+                            }
+                        }
+                        const success = await updateStatusga(agendamento.id);
+                        if (success) {
+                            console.log('BOT-ZDG - Mensagem ID: ' + agendamento.id + ' - statuss atualizado para "enviado"');
+                        } else {
+                            console.log('BOT-ZDG - Falha ao atualizar o statuss da mensagem ID: ' + agendamento.id);
+                        }
+                    }
+                }
+                for (const agendamento of agendamentosgarantiafi) {
+                    if (agendamento.data_finalizacao && agendamento.data_finalizacao <= hoje && !agendamento.enviado) {
+                        // Marcar o agendamento como enviado
+                        if (agendamento.nome !== '') {
+                            client.sendMessage(agendamento.fone + '@c.us', agendamento.nome);
+                        }
+                        if (agendamento.mensagemf && agendamento.mensagemf !== '') {
+                            console.log('URL da mensagemf:', agendamento.mensagemf);
+                            try {
+                                const media = await MessageMedia.fromUrl(agendamento.mensagemf);
+                                client.sendMessage(agendamento.fone + '@c.us', media, { caption: '©dinizriolargo' });
+                            } catch (error) {
+                                console.error('Erro ao obter a mensagemf:', error);
+                            }
+                        }
+                        const success = await updateStatusgaf(agendamento.id);
+                        if (success) {
+                            console.log('BOT-ZDG - Mensagem ID: ' + agendamento.id + ' - statusf atualizado para "enviado"');
+                        } else {
+                            console.log('BOT-ZDG - Falha ao atualizar o statusf da mensagem ID: ' + agendamento.id);
+                        }
+                    }
+                }
+                for (const agendamento of agendamentospap) {
+                    if (agendamento.data_entrevista && agendamento.data_entrevista <= hoje && !agendamento.enviado) {
+                        // Marcar o agendamento como enviado
+                        if (agendamento.nome !== '') {
+                            client.sendMessage(agendamento.fone + '@c.us', agendamento.nome);
+                        }
+                        if (agendamento.mensagemen && agendamento.mensagemen !== '') {
+                            console.log('URL da mensagemen:', agendamento.mensagemen);
+                            try {
+                                const media = await MessageMedia.fromUrl(agendamento.mensagemen);
+                                client.sendMessage(agendamento.fone + '@c.us', media, { caption: '©dinizriolargo' });
+                            } catch (error) {
+                                console.error('Erro ao obter a mensagemen:', error);
+                            }
+                        }
+                        const success = await updateStatusag(agendamento.id);
+                        if (success) {
+                            console.log('BOT-ZDG - Mensagem ID: ' + agendamento.id + ' - statusen atualizado para "enviado"');
+                        } else {
+                            console.log('BOT-ZDG - Falha ao atualizar o statusen da mensagem ID: ' + agendamento.id);
+                        }
+                    }
+                }
+                for (const agendamento of agendamentospapd) {
+                    if (agendamento.data_consulta && agendamento.data_consulta <= hoje && !agendamento.enviado) {
+                        // Marcar o agendamento como enviado
+                        if (agendamento.nome !== '') {
+                            client.sendMessage(agendamento.fone + '@c.us', agendamento.nome);
+                        }
+                        if (agendamento.mensagemco && agendamento.mensagemco !== '') {
+                            console.log('URL da mensagemco:', agendamento.mensagemco);
+                            try {
+                                const media = await MessageMedia.fromUrl(agendamento.mensagemco);
+                                client.sendMessage(agendamento.fone + '@c.us', media, { caption: '©dinizriolargo' });
+                            } catch (error) {
+                                console.error('Erro ao obter a mensagemco:', error);
+                            }
+                        }
+                        const success = await updateStatusco(agendamento.id);
+                        if (success) {
+                            console.log('BOT-ZDG - Mensagem ID: ' + agendamento.id + ' - statusco atualizado para "enviado"');
+                        } else {
+                            console.log('BOT-ZDG - Falha ao atualizar o statusco da mensagem ID: ' + agendamento.id);
                         }
                     }
                 }
@@ -428,27 +666,27 @@ io.on('connection', function (socket) {
     client.on('authenticated', () => {
         if (!authenticated) {
             authenticated = true;
-            socket.emit('authenticated', 'BOT-ZDG Autenticado!');
-            socket.emit('message', 'BOT-ZDG Autenticado!');
-            console.log('BOT-ZDG Autenticado');
+            socket.emit('authenticated', 'Autenticado!');
+            socket.emit('message', 'Autenticado!');
+            console.log('Autenticado');
         }
     });
 
     // Evento disparado quando a autenticação falha
     client.on('auth_failure', function () {
-        socket.emit('message', 'BOT-ZDG Falha na autenticação, reiniciando...');
-        console.error('BOT-ZDG Falha na autenticação');
+        socket.emit('message', 'Falha na autenticação, reiniciando...');
+        console.error('Falha na autenticação');
     });
 
     // Evento disparado quando o estado de conexão do cliente muda
     client.on('change_state', state => {
-        console.log('BOT-ZDG Status de conexão:', state);
+        console.log('Status de conexão:', state);
     });
 
     // Evento disparado quando o cliente é desconectado
     client.on('disconnected', (reason) => {
-        socket.emit('message', 'BOT-ZDG Cliente desconectado!');
-        console.log('BOT-ZDG Cliente desconectado', reason);
+        socket.emit('message', 'Cliente desconectado!');
+        console.log('Cliente desconectado', reason);
         client.initialize();
     });
 });
