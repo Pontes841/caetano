@@ -15,9 +15,9 @@ const nodeCron = require("node-cron");
 const createConnection = async () => {
     return await mysql.createConnection({
         host: '212.1.208.101',
-        user: 'u896627913_loja02',
+        user: 'u896627913_propria04',
         password: 'Felipe.91118825',
-        database: 'u896627913_Penedo'
+        database: 'u896627913_propria'
     });
 }
 
