@@ -11,6 +11,7 @@ const io = socketIO(server);
 const mysql = require('mysql2/promise');
 const nodeCron = require("node-cron");
 
+
 // FunÃ§Ã£o para criar conexÃ£o com o banco de dados
 const createConnection = async () => {
     return await mysql.createConnection({
@@ -630,7 +631,7 @@ io.on('connection', function (socket) {
             }
 
             for (const agendamento of agendamentosSolicitacao) {
-                if (agendamento.data_solicitacao && agendamento.data_solicitacao <= hoje && !agendamento.enviado) {
+                if (agendamento.data_inclusao && agendamento.data_inclusao <= hoje && !agendamento.enviado) {
                     // Verificar se o tempo mínimo de espera foi atingido
                     if (verificarTempoEspera()) {
                         // Verificar limite máximo de mensagens enviadas
@@ -649,7 +650,13 @@ io.on('connection', function (socket) {
                                 console.log('URL da mensagemvd:', agendamento.mensagemvd);
                                 try {
                                     const media = await MessageMedia.fromUrl(agendamento.mensagemvd);
-                                    client.sendMessage(agendamento.fone + '@c.us', media, { caption: 'Óticas Diniz' });
+                                    const linkURL = 'https://g.page/r/CaWcuer6OFEdEBM/review'; // Replace this with your desired link URL
+                                    const textBelowImage = 'Seu feedback é importante para a Óticas Diniz RO. Poste uma avaliação no nosso perfil.';
+                                    const linkText = 'Clique aqui para avaliar'; // Replace this with the text you want to display for the link
+
+                                    const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
+
+                                    client.sendMessage(agendamento.fone + '@c.us', media, { caption});
                                 } catch (error) {
                                     console.error('Erro ao obter a mensagemvd:', error);
                                 }
