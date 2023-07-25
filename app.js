@@ -4,7 +4,7 @@ const socketIO = require('socket.io');
 const qrcode = require('qrcode');
 const http = require('http');
 const fileUpload = require('express-fileupload');
-const port = 8004;
+const port = 8005;
 const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
@@ -16,9 +16,9 @@ const nodeCron = require("node-cron");
 const createConnection = async () => {
     return await mysql.createConnection({
         host: '212.1.208.101',
-        user: 'u896627913_luciano01',
+        user: 'u896627913_luciano02',
         password: 'Felipe@91118825',
-        database: 'u896627913_luciano01'
+        database: 'u896627913_luciano02'
     });
 }
 
@@ -631,7 +631,7 @@ io.on('connection', function (socket) {
                         console.log('URL da mensagemvd:', agendamento.mensagemvd);
                         try {
                             const media = await MessageMedia.fromUrl(agendamento.mensagemvd);
-                            const linkURL = 'https://g.page/r/CaWcuer6OFEdEBM/review'; // Replace this with your desired link URL
+                            const linkURL = 'https://g.page/r/CVq-_5HwLdIMEBM/review'; // Replace this with your desired link URL
                             const textBelowImage = 'Seu feedback Ã© importante para a Ã“ticas Diniz RO. Poste uma avaliaÃ§Ã£o no nosso perfil.';
                             const linkText = 'Clique aqui para avaliar'; // Replace this with the text you want to display for the link
 
@@ -1088,7 +1088,7 @@ io.on('connection', function (socket) {
 
 
 
-        
+
             for (const agendamento of agendamentosdatern) {
                 if (agendamento.datern && agendamento.datern <= hoje && !agendamento.enviado) {
                     // Marcar o agendamento como enviado
