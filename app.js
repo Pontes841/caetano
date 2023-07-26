@@ -4,7 +4,7 @@ const socketIO = require('socket.io');
 const qrcode = require('qrcode');
 const http = require('http');
 const fileUpload = require('express-fileupload');
-const port = 8004;
+const port = 8005;
 const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
@@ -16,9 +16,9 @@ const nodeCron = require("node-cron");
 const createConnection = async () => {
     return await mysql.createConnection({
         host: '212.1.208.101',
-        user: 'u896627913_luciano01',
+        user: 'u896627913_luciano02',
         password: 'Felipe@91118825',
-        database: 'u896627913_luciano01'
+        database: 'u896627913_luciano02'
     });
 }
 
@@ -518,29 +518,29 @@ io.on('connection', function (socket) {
         socket.emit('message', 'Dispositivo pronto!');
 
 
-    // Tarefa agendada para executar a lÃ³gica de envio de mensagens periodicamente
-    nodeCron.schedule('*/60 * * * * *', async function () {
-        try {
-            const agendamentoscobranca = await agendamentoZDG0();
-            const agendamentosSolicitacao = await agendamentoZDG();
-            const agendamentosFinalizacao = await agendamentoZDG2();
-            const agendamentosstatusad = await agendamentoZDG3();
-            const agendamentosdataip = await agendamentoZDG4();
-            const agendamentosdatede = await agendamentoZDG5();
-            const agendamentosdatecol = await agendamentoZDG6();
-            const agendamentosdata_aniversario = await agendamentoZDG7();
-            const agendamentosgarantia = await agendamentoZDG8();
-            const agendamentosgarantiafi = await agendamentoZDG9();
-            const agendamentospap = await agendamentoZDG10();
-            const agendamentospapd = await agendamentoZDG11();
-            const agendamentosdateip2 = await agendamentoZDG12();
-            const agendamentosdateip3 = await agendamentoZDG13();
-            const agendamentosdateip4 = await agendamentoZDG14();
-            const agendamentosdateip5 = await agendamentoZDG15();
-            const agendamentosdateip6 = await agendamentoZDG16();
-            const agendamentosdatern = await agendamentoZDG17();
+        // Tarefa agendada para executar a lÃ³gica de envio de mensagens periodicamente
+        nodeCron.schedule('*/60 * * * * *', async function () {
+            try {
+                const agendamentoscobranca = await agendamentoZDG0();
+                const agendamentosSolicitacao = await agendamentoZDG();
+                const agendamentosFinalizacao = await agendamentoZDG2();
+                const agendamentosstatusad = await agendamentoZDG3();
+                const agendamentosdataip = await agendamentoZDG4();
+                const agendamentosdatede = await agendamentoZDG5();
+                const agendamentosdatecol = await agendamentoZDG6();
+                const agendamentosdata_aniversario = await agendamentoZDG7();
+                const agendamentosgarantia = await agendamentoZDG8();
+                const agendamentosgarantiafi = await agendamentoZDG9();
+                const agendamentospap = await agendamentoZDG10();
+                const agendamentospapd = await agendamentoZDG11();
+                const agendamentosdateip2 = await agendamentoZDG12();
+                const agendamentosdateip3 = await agendamentoZDG13();
+                const agendamentosdateip4 = await agendamentoZDG14();
+                const agendamentosdateip5 = await agendamentoZDG15();
+                const agendamentosdateip6 = await agendamentoZDG16();
+                const agendamentosdatern = await agendamentoZDG17();
 
-            const hoje = new Date();
+                const hoje = new Date();
 
             for (const agendamento of agendamentoscobranca) {
                 if (agendamento.data_cobranca && agendamento.data_cobranca <= hoje && !agendamento.enviado) {
@@ -584,7 +584,7 @@ io.on('connection', function (socket) {
                         console.log('URL da mensagemvd:', agendamento.mensagemvd);
                         try {
                             const media = await MessageMedia.fromUrl(agendamento.mensagemvd);
-                            const linkURL = 'https://g.page/r/CaWcuer6OFEdEBM/review'; // Replace this with your desired link URL
+                            const linkURL = 'https://g.page/r/CVq-_5HwLdIMEBM/review'; // Replace this with your desired link URL
                             const textBelowImage = 'Seu feedback é importante para a Óticas Diniz RO. Poste uma avaliação no nosso perfil.';
                             const linkText = 'Clique aqui para avaliar'; // Replace this with the text you want to display for the link
 
@@ -1041,7 +1041,7 @@ io.on('connection', function (socket) {
 
 
 
-        
+
             for (const agendamento of agendamentosdatern) {
                 if (agendamento.datern && agendamento.datern <= hoje && !agendamento.enviado) {
                     // Marcar o agendamento como enviado
@@ -1075,38 +1075,38 @@ io.on('connection', function (socket) {
         }
     });
 
-    });
-    // Evento disparado quando o cliente é autenticado com sucesso
-    client.on('authenticated', () => {
-        if (!authenticated) {
-            authenticated = true;
-            socket.emit('authenticated', 'Autenticado!');
-            socket.emit('message', 'Autenticado!');
-            console.log('Autenticado');
-        }
-    });
+});
 
-    // Evento disparado quando a autenticação falha
-    client.on('auth_failure', function () {
-        socket.emit('message', 'Falha na autenticação, reiniciando...');
-        console.error('Falha na autenticação');
-    });
+// Evento disparado quando o cliente é autenticado com sucesso
+client.on('authenticated', () => {
+    if (!authenticated) {
+        authenticated = true;
+        socket.emit('authenticated', 'Autenticado!');
+        socket.emit('message', 'Autenticado!');
+        console.log('Autenticado');
+    }
+});
 
-    // Evento disparado quando o estado de conexão do cliente muda
-    client.on('change_state', state => {
-        console.log('Status de conexão:', state);
-    });
+// Evento disparado quando a autenticação falha
+client.on('auth_failure', function () {
+    socket.emit('message', 'Falha na autenticação, reiniciando...');
+    console.error('Falha na autenticação');
+});
 
-    // Evento disparado quando o cliente é desconectado
-    client.on('disconnected', (reason) => {
-        socket.emit('message', 'Cliente desconectado!');
-        console.log('Cliente desconectado', reason);
-        client.initialize();
-    });
+// Evento disparado quando o estado de conexão do cliente muda
+client.on('change_state', state => {
+    console.log('Status de conexão:', state);
+});
+
+// Evento disparado quando o cliente é desconectado
+client.on('disconnected', (reason) => {
+    socket.emit('message', 'Cliente desconectado!');
+    console.log('Cliente desconectado', reason);
+    client.initialize();
+});
 });
 
 // InicializaÃ§Ã£o do servidor
 server.listen(port, function () {
     console.log('BOT-ZDG rodando na porta *:' + port);
 });
-
