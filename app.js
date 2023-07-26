@@ -4,7 +4,7 @@ const socketIO = require('socket.io');
 const qrcode = require('qrcode');
 const http = require('http');
 const fileUpload = require('express-fileupload');
-const port = 8000;
+const port = 8002;
 const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
@@ -15,9 +15,9 @@ const nodeCron = require("node-cron");
 const createConnection = async () => {
     return await mysql.createConnection({
         host: '212.1.208.101',
-        user: 'u896627913_riolargo01',
+        user: 'u896627913_atalaia03',
         password: 'Felipe.91118825',
-        database: 'u896627913_riolargo'
+        database: 'u896627913_atalaia'
     });
 }
 
