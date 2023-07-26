@@ -4,7 +4,7 @@ const socketIO = require('socket.io');
 const qrcode = require('qrcode');
 const http = require('http');
 const fileUpload = require('express-fileupload');
-const port = 8006;
+const port = 8004;
 const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
@@ -16,9 +16,9 @@ const nodeCron = require("node-cron");
 const createConnection = async () => {
     return await mysql.createConnection({
         host: '212.1.208.101',
-        user: 'u896627913_luciano03',
+        user: 'u896627913_luciano01',
         password: 'Felipe@91118825',
-        database: 'u896627913_luciano03'
+        database: 'u896627913_luciano01'
     });
 }
 
@@ -508,7 +508,7 @@ io.on('connection', function (socket) {
         console.log('QR RECEIVED', qr);
         qrcode.toDataURL(qr, (err, url) => {
             socket.emit('qr', url);
-            socket.emit('message', 'QRCode recebido, aponte a cÃ¢mera do seu celular!');
+            socket.emit('message', 'QRCode recebido, aponte a Câmera do seu celular!');
         });
     });
 
@@ -517,53 +517,6 @@ io.on('connection', function (socket) {
         socket.emit('ready', 'Dispositivo pronto!');
         socket.emit('message', 'Dispositivo pronto!');
 
-        // Evento disparado quando o cliente Ã© autenticado com sucesso
-        client.on('authenticated', () => {
-            if (!authenticated) {
-                authenticated = true;
-                socket.emit('authenticated', 'Autenticado!');
-                socket.emit('message', 'Autenticado!');
-                console.log('Autenticado');
-            }
-        });
-
-        // Evento disparado quando a autenticaÃ§Ã£o falha
-        client.on('auth_failure', function () {
-            socket.emit('message', 'Falha na autenticaÃ§Ã£o, reiniciando...');
-            console.error('Falha na autenticaÃ§Ã£o');
-        });
-
-        // Evento disparado quando o estado de conexÃ£o do cliente muda
-        client.on('change_state', state => {
-            console.log('Status de conexÃ£o:', state);
-        });
-
-        // Evento disparado quando o cliente Ã© desconectado
-        client.on('disconnected', (reason) => {
-            socket.emit('message', 'Cliente desconectado!');
-            console.log('Cliente desconectado', reason);
-            client.initialize();
-        });
-    });
-
-
-
-    // Definir variÃ¡veis de controle
-    let contadorMensagens = 0;
-    let ultimoEnvio = null;
-
-    // FunÃ§Ã£o para verificar se o tempo mÃ­nimo de espera entre mensagens foi atingido
-    function verificarTempoEspera() {
-        const agora = new Date();
-        if (ultimoEnvio === null || (agora - ultimoEnvio) / 1000 >= 60) {
-            // Tempo mÃ­nimo de espera atingido, redefinir contador e Ãºltimo envio
-            contadorMensagens = 0;
-            ultimoEnvio = agora;
-            return true;
-        } else {
-            return false;
-        }
-    }
 
     // Tarefa agendada para executar a lÃ³gica de envio de mensagens periodicamente
     nodeCron.schedule('*/60 * * * * *', async function () {
@@ -602,7 +555,7 @@ io.on('connection', function (socket) {
                         console.log('URL da mensagemco:', agendamento.mensagemco);
                         try {
                             const media = await MessageMedia.fromUrl(agendamento.mensagemco);
-                            client.sendMessage(agendamento.fone + '@c.us', media, { caption: 'Ã“ticas Diniz' });
+                            client.sendMessage(agendamento.fone + '@c.us', media, { caption: 'Óticas Diniz' });
                         } catch (error) {
                             console.error('Erro ao obter a mensagemco:', error);
                         }
@@ -631,8 +584,8 @@ io.on('connection', function (socket) {
                         console.log('URL da mensagemvd:', agendamento.mensagemvd);
                         try {
                             const media = await MessageMedia.fromUrl(agendamento.mensagemvd);
-                            const linkURL = 'https://g.page/r/CYHjj8Vb6zLgEBM/review'; // Replace this with your desired link URL
-                            const textBelowImage = 'Seu feedback Ã© importante para a Ã“ticas Diniz RO. Poste uma avaliaÃ§Ã£o no nosso perfil.';
+                            const linkURL = 'https://g.page/r/CaWcuer6OFEdEBM/review'; // Replace this with your desired link URL
+                            const textBelowImage = 'Seu feedback é importante para a Óticas Diniz RO. Poste uma avaliação no nosso perfil.';
                             const linkText = 'Clique aqui para avaliar'; // Replace this with the text you want to display for the link
 
                             const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
@@ -665,7 +618,7 @@ io.on('connection', function (socket) {
                         console.log('URL da mensagemfn:', agendamento.mensagemfn);
                         try {
                             const media = await MessageMedia.fromUrl(agendamento.mensagemfn);
-                            client.sendMessage(agendamento.fone + '@c.us', media, { caption: 'Ã“ticas Diniz' });
+                            client.sendMessage(agendamento.fone + '@c.us', media, { caption: 'Óticas Diniz' });
                         } catch (error) {
                             console.error('Erro ao obter a mensagemfn:', error);
                         }
@@ -693,7 +646,7 @@ io.on('connection', function (socket) {
                         console.log('URL da mensagemad:', agendamento.mensagemad);
                         try {
                             const media = await MessageMedia.fromUrl(agendamento.mensagemad);
-                            client.sendMessage(agendamento.fone + '@c.us', media, { caption: 'Ã“ticas Diniz' });
+                            client.sendMessage(agendamento.fone + '@c.us', media, { caption: 'Óticas Diniz' });
                         } catch (error) {
                             console.error('Erro ao obter a mensagemad:', error);
                         }
@@ -723,7 +676,7 @@ io.on('connection', function (socket) {
                         console.log('URL da mensagemip:', agendamento.mensagemip);
                         try {
                             const media = await MessageMedia.fromUrl(agendamento.mensagemip);
-                            client.sendMessage(agendamento.fone + '@c.us', media, { caption: 'Ã“ticas Diniz' });
+                            client.sendMessage(agendamento.fone + '@c.us', media, { caption: 'Óticas Diniz' });
                         } catch (error) {
                             console.error('Erro ao obter a mensagemip:', error);
                         }
@@ -752,7 +705,7 @@ io.on('connection', function (socket) {
                         console.log('URL da mensagemde:', agendamento.mensagemde);
                         try {
                             const media = await MessageMedia.fromUrl(agendamento.mensagemde);
-                            client.sendMessage(agendamento.fone + '@c.us', media, { caption: 'Ã“ticas Diniz' });
+                            client.sendMessage(agendamento.fone + '@c.us', media, { caption: 'Óticas Diniz' });
                         } catch (error) {
                             console.error('Erro ao obter a mensagemde:', error);
                         }
@@ -781,7 +734,7 @@ io.on('connection', function (socket) {
                         console.log('URL da mesnagemcol:', agendamento.mesnagemcol);
                         try {
                             const media = await MessageMedia.fromUrl(agendamento.mesnagemcol);
-                            client.sendMessage(agendamento.fone + '@c.us', media, { caption: 'Ã“ticas Diniz' });
+                            client.sendMessage(agendamento.fone + '@c.us', media, { caption: 'Óticas Diniz' });
                         } catch (error) {
                             console.error('Erro ao obter a mesnagemcol:', error);
                         }
@@ -810,7 +763,7 @@ io.on('connection', function (socket) {
                         console.log('URL da mensageman:', agendamento.mensageman);
                         try {
                             const media = await MessageMedia.fromUrl(agendamento.mensageman);
-                            client.sendMessage(agendamento.fone + '@c.us', media, { caption: 'Ã“ticas Diniz' });
+                            client.sendMessage(agendamento.fone + '@c.us', media, { caption: 'Óticas Diniz' });
                         } catch (error) {
                             console.error('Erro ao obter a mensageman:', error);
                         }
@@ -839,7 +792,7 @@ io.on('connection', function (socket) {
                         console.log('URL da mensagems:', agendamento.mensagems);
                         try {
                             const media = await MessageMedia.fromUrl(agendamento.mensagems);
-                            client.sendMessage(agendamento.fone + '@c.us', media, { caption: 'Ã“ticas Diniz' });
+                            client.sendMessage(agendamento.fone + '@c.us', media, { caption: 'Óticas Diniz' });
                         } catch (error) {
                             console.error('Erro ao obter a mensagems:', error);
                         }
@@ -868,7 +821,7 @@ io.on('connection', function (socket) {
                         console.log('URL da mensagemf:', agendamento.mensagemf);
                         try {
                             const media = await MessageMedia.fromUrl(agendamento.mensagemf);
-                            client.sendMessage(agendamento.fone + '@c.us', media, { caption: 'Ã“ticas Diniz' });
+                            client.sendMessage(agendamento.fone + '@c.us', media, { caption: 'Óticas Diniz' });
                         } catch (error) {
                             console.error('Erro ao obter a mensagemf:', error);
                         }
@@ -897,7 +850,7 @@ io.on('connection', function (socket) {
                         console.log('URL da mensagemen:', agendamento.mensagemen);
                         try {
                             const media = await MessageMedia.fromUrl(agendamento.mensagemen);
-                            client.sendMessage(agendamento.fone + '@c.us', media, { caption: 'Ã“ticas Diniz' });
+                            client.sendMessage(agendamento.fone + '@c.us', media, { caption: 'Óticas Diniz' });
                         } catch (error) {
                             console.error('Erro ao obter a mensagemen:', error);
                         }
@@ -926,7 +879,7 @@ io.on('connection', function (socket) {
                         console.log('URL da mensagemen:', agendamento.mensagemen);
                         try {
                             const media = await MessageMedia.fromUrl(agendamento.mensagemen);
-                            client.sendMessage(agendamento.fone + '@c.us', media, { caption: 'Ã“ticas Diniz' });
+                            client.sendMessage(agendamento.fone + '@c.us', media, { caption: 'Óticas Diniz' });
                         } catch (error) {
                             console.error('Erro ao obter a mensagemen:', error);
                         }
@@ -955,7 +908,7 @@ io.on('connection', function (socket) {
                         console.log('URL da mensagemip2:', agendamento.mensagemip2);
                         try {
                             const media = await MessageMedia.fromUrl(agendamento.mensagemip2);
-                            client.sendMessage(agendamento.fone + '@c.us', media, { caption: 'Ã“ticas Diniz' });
+                            client.sendMessage(agendamento.fone + '@c.us', media, { caption: 'Óticas Diniz' });
                         } catch (error) {
                             console.error('Erro ao obter a mensagemip2:', error);
                         }
@@ -984,7 +937,7 @@ io.on('connection', function (socket) {
                         console.log('URL da mensagemip3:', agendamento.mensagemip3);
                         try {
                             const media = await MessageMedia.fromUrl(agendamento.mensagemip3);
-                            client.sendMessage(agendamento.fone + '@c.us', media, { caption: 'Ã“ticas Diniz' });
+                            client.sendMessage(agendamento.fone + '@c.us', media, { caption: 'Óticas Diniz' });
                         } catch (error) {
                             console.error('Erro ao obter a mensagemip3:', error);
                         }
@@ -1013,7 +966,7 @@ io.on('connection', function (socket) {
                         console.log('URL da mensagemip4:', agendamento.mensagemip4);
                         try {
                             const media = await MessageMedia.fromUrl(agendamento.mensagemip4);
-                            client.sendMessage(agendamento.fone + '@c.us', media, { caption: 'Ã“ticas Diniz' });
+                            client.sendMessage(agendamento.fone + '@c.us', media, { caption: 'Óticas Diniz' });
                         } catch (error) {
                             console.error('Erro ao obter a mensagemip4:', error);
                         }
@@ -1042,7 +995,7 @@ io.on('connection', function (socket) {
                         console.log('URL da mensagemip5:', agendamento.mensagemip5);
                         try {
                             const media = await MessageMedia.fromUrl(agendamento.mensagemip5);
-                            client.sendMessage(agendamento.fone + '@c.us', media, { caption: 'Ã“ticas Diniz' });
+                            client.sendMessage(agendamento.fone + '@c.us', media, { caption: 'Óticas Diniz' });
                         } catch (error) {
                             console.error('Erro ao obter a mensagemip5:', error);
                         }
@@ -1071,7 +1024,7 @@ io.on('connection', function (socket) {
                         console.log('URL da mensagemip6:', agendamento.mensagemip6);
                         try {
                             const media = await MessageMedia.fromUrl(agendamento.mensagemip6);
-                            client.sendMessage(agendamento.fone + '@c.us', media, { caption: 'Ã“ticas Diniz' });
+                            client.sendMessage(agendamento.fone + '@c.us', media, { caption: 'Óticas Diniz' });
                         } catch (error) {
                             console.error('Erro ao obter a mensagemip6:', error);
                         }
@@ -1088,7 +1041,7 @@ io.on('connection', function (socket) {
 
 
 
-       
+        
             for (const agendamento of agendamentosdatern) {
                 if (agendamento.datern && agendamento.datern <= hoje && !agendamento.enviado) {
                     // Marcar o agendamento como enviado
@@ -1122,6 +1075,34 @@ io.on('connection', function (socket) {
         }
     });
 
+    });
+    // Evento disparado quando o cliente é autenticado com sucesso
+    client.on('authenticated', () => {
+        if (!authenticated) {
+            authenticated = true;
+            socket.emit('authenticated', 'Autenticado!');
+            socket.emit('message', 'Autenticado!');
+            console.log('Autenticado');
+        }
+    });
+
+    // Evento disparado quando a autenticação falha
+    client.on('auth_failure', function () {
+        socket.emit('message', 'Falha na autenticação, reiniciando...');
+        console.error('Falha na autenticação');
+    });
+
+    // Evento disparado quando o estado de conexão do cliente muda
+    client.on('change_state', state => {
+        console.log('Status de conexão:', state);
+    });
+
+    // Evento disparado quando o cliente é desconectado
+    client.on('disconnected', (reason) => {
+        socket.emit('message', 'Cliente desconectado!');
+        console.log('Cliente desconectado', reason);
+        client.initialize();
+    });
 });
 
 // InicializaÃ§Ã£o do servidor
