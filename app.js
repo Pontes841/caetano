@@ -16,9 +16,9 @@ const nodeCron = require("node-cron");
 const createConnection = async () => {
     return await mysql.createConnection({
         host: '212.1.208.101',
-        user: 'u896627913_luciano03',
-        password: 'Felipe@91118825',
-        database: 'u896627913_luciano03'
+        user: 'u896627913_propria04',
+        password: 'Felipe.91118825',
+        database: 'u896627913_propria'
     });
 }
 
@@ -555,7 +555,11 @@ io.on('connection', function (socket) {
                         console.log('URL da mensagemco:', agendamento.mensagemco);
                         try {
                             const media = await MessageMedia.fromUrl(agendamento.mensagemco);
-                            client.sendMessage(agendamento.fone + '@c.us', media, { caption: 'Óticas Diniz' });
+                            const linkURL = 'https://www.instagram.com/oticasdiniz.propria/'; // Replace this with your desired link URL
+                            const textBelowImage = 'siga nosso instagram';
+                            const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
+
+                            const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
                         } catch (error) {
                             console.error('Erro ao obter a mensagemco:', error);
                         }
@@ -584,9 +588,9 @@ io.on('connection', function (socket) {
                         console.log('URL da mensagemvd:', agendamento.mensagemvd);
                         try {
                             const media = await MessageMedia.fromUrl(agendamento.mensagemvd);
-                            const linkURL = 'https://g.page/r/CYHjj8Vb6zLgEBM/review'; // Replace this with your desired link URL
-                            const textBelowImage = 'Seu feedback é importante para a Óticas Diniz RO. Poste uma avaliação no nosso perfil.';
-                            const linkText = 'Clique aqui para avaliar'; // Replace this with the text you want to display for the link
+                            const linkURL = 'https://www.instagram.com/oticasdiniz.propria/'; // Replace this with your desired link URL
+                            const textBelowImage = 'siga nosso instagram';
+                            const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
                             const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
 
@@ -618,7 +622,11 @@ io.on('connection', function (socket) {
                         console.log('URL da mensagemfn:', agendamento.mensagemfn);
                         try {
                             const media = await MessageMedia.fromUrl(agendamento.mensagemfn);
-                            client.sendMessage(agendamento.fone + '@c.us', media, { caption: 'Óticas Diniz' });
+                            const linkURL = 'https://www.instagram.com/oticasdiniz.propria/'; // Replace this with your desired link URL
+                            const textBelowImage = 'siga nosso instagram';
+                            const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
+
+                            const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
                         } catch (error) {
                             console.error('Erro ao obter a mensagemfn:', error);
                         }
@@ -646,7 +654,11 @@ io.on('connection', function (socket) {
                         console.log('URL da mensagemad:', agendamento.mensagemad);
                         try {
                             const media = await MessageMedia.fromUrl(agendamento.mensagemad);
-                            client.sendMessage(agendamento.fone + '@c.us', media, { caption: 'Óticas Diniz' });
+                            const linkURL = 'https://www.instagram.com/oticasdiniz.propria/'; // Replace this with your desired link URL
+                            const textBelowImage = 'siga nosso instagram';
+                            const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
+
+                            const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
                         } catch (error) {
                             console.error('Erro ao obter a mensagemad:', error);
                         }
@@ -676,7 +688,11 @@ io.on('connection', function (socket) {
                         console.log('URL da mensagemip:', agendamento.mensagemip);
                         try {
                             const media = await MessageMedia.fromUrl(agendamento.mensagemip);
-                            client.sendMessage(agendamento.fone + '@c.us', media, { caption: 'Óticas Diniz' });
+                            const linkURL = 'https://www.instagram.com/oticasdiniz.propria/'; // Replace this with your desired link URL
+                            const textBelowImage = 'siga nosso instagram';
+                            const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
+
+                            const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
                         } catch (error) {
                             console.error('Erro ao obter a mensagemip:', error);
                         }
@@ -705,7 +721,11 @@ io.on('connection', function (socket) {
                         console.log('URL da mensagemde:', agendamento.mensagemde);
                         try {
                             const media = await MessageMedia.fromUrl(agendamento.mensagemde);
-                            client.sendMessage(agendamento.fone + '@c.us', media, { caption: 'Óticas Diniz' });
+                            const linkURL = 'https://www.instagram.com/oticasdiniz.propria/'; // Replace this with your desired link URL
+                            const textBelowImage = 'siga nosso instagram';
+                            const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
+
+                            const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
                         } catch (error) {
                             console.error('Erro ao obter a mensagemde:', error);
                         }
@@ -734,7 +754,11 @@ io.on('connection', function (socket) {
                         console.log('URL da mesnagemcol:', agendamento.mesnagemcol);
                         try {
                             const media = await MessageMedia.fromUrl(agendamento.mesnagemcol);
-                            client.sendMessage(agendamento.fone + '@c.us', media, { caption: 'Óticas Diniz' });
+                            const linkURL = 'https://www.instagram.com/oticasdiniz.propria/'; // Replace this with your desired link URL
+                            const textBelowImage = 'siga nosso instagram';
+                            const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
+
+                            const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
                         } catch (error) {
                             console.error('Erro ao obter a mesnagemcol:', error);
                         }
@@ -763,7 +787,11 @@ io.on('connection', function (socket) {
                         console.log('URL da mensageman:', agendamento.mensageman);
                         try {
                             const media = await MessageMedia.fromUrl(agendamento.mensageman);
-                            client.sendMessage(agendamento.fone + '@c.us', media, { caption: 'Óticas Diniz' });
+                            const linkURL = 'https://www.instagram.com/oticasdiniz.propria/'; // Replace this with your desired link URL
+                            const textBelowImage = 'siga nosso instagram';
+                            const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
+
+                            const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
                         } catch (error) {
                             console.error('Erro ao obter a mensageman:', error);
                         }
@@ -792,7 +820,11 @@ io.on('connection', function (socket) {
                         console.log('URL da mensagems:', agendamento.mensagems);
                         try {
                             const media = await MessageMedia.fromUrl(agendamento.mensagems);
-                            client.sendMessage(agendamento.fone + '@c.us', media, { caption: 'Óticas Diniz' });
+                            const linkURL = 'https://www.instagram.com/oticasdiniz.propria/'; // Replace this with your desired link URL
+                            const textBelowImage = 'siga nosso instagram';
+                            const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
+
+                            const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
                         } catch (error) {
                             console.error('Erro ao obter a mensagems:', error);
                         }
@@ -821,7 +853,11 @@ io.on('connection', function (socket) {
                         console.log('URL da mensagemf:', agendamento.mensagemf);
                         try {
                             const media = await MessageMedia.fromUrl(agendamento.mensagemf);
-                            client.sendMessage(agendamento.fone + '@c.us', media, { caption: 'Óticas Diniz' });
+                            const linkURL = 'https://www.instagram.com/oticasdiniz.propria/'; // Replace this with your desired link URL
+                            const textBelowImage = 'siga nosso instagram';
+                            const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
+
+                            const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
                         } catch (error) {
                             console.error('Erro ao obter a mensagemf:', error);
                         }
@@ -850,7 +886,11 @@ io.on('connection', function (socket) {
                         console.log('URL da mensagemen:', agendamento.mensagemen);
                         try {
                             const media = await MessageMedia.fromUrl(agendamento.mensagemen);
-                            client.sendMessage(agendamento.fone + '@c.us', media, { caption: 'Óticas Diniz' });
+                            const linkURL = 'https://www.instagram.com/oticasdiniz.propria/'; // Replace this with your desired link URL
+                            const textBelowImage = 'siga nosso instagram';
+                            const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
+
+                            const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
                         } catch (error) {
                             console.error('Erro ao obter a mensagemen:', error);
                         }
@@ -879,7 +919,11 @@ io.on('connection', function (socket) {
                         console.log('URL da mensagemen:', agendamento.mensagemen);
                         try {
                             const media = await MessageMedia.fromUrl(agendamento.mensagemen);
-                            client.sendMessage(agendamento.fone + '@c.us', media, { caption: 'Óticas Diniz' });
+                            const linkURL = 'https://www.instagram.com/oticasdiniz.propria/'; // Replace this with your desired link URL
+                            const textBelowImage = 'siga nosso instagram';
+                            const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
+
+                            const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
                         } catch (error) {
                             console.error('Erro ao obter a mensagemen:', error);
                         }
@@ -908,7 +952,11 @@ io.on('connection', function (socket) {
                         console.log('URL da mensagemip2:', agendamento.mensagemip2);
                         try {
                             const media = await MessageMedia.fromUrl(agendamento.mensagemip2);
-                            client.sendMessage(agendamento.fone + '@c.us', media, { caption: 'Óticas Diniz' });
+                            const linkURL = 'https://www.instagram.com/oticasdiniz.propria/'; // Replace this with your desired link URL
+                            const textBelowImage = 'siga nosso instagram';
+                            const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
+
+                            const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
                         } catch (error) {
                             console.error('Erro ao obter a mensagemip2:', error);
                         }
@@ -937,7 +985,11 @@ io.on('connection', function (socket) {
                         console.log('URL da mensagemip3:', agendamento.mensagemip3);
                         try {
                             const media = await MessageMedia.fromUrl(agendamento.mensagemip3);
-                            client.sendMessage(agendamento.fone + '@c.us', media, { caption: 'Óticas Diniz' });
+                            const linkURL = 'https://www.instagram.com/oticasdiniz.propria/'; // Replace this with your desired link URL
+                            const textBelowImage = 'siga nosso instagram';
+                            const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
+
+                            const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
                         } catch (error) {
                             console.error('Erro ao obter a mensagemip3:', error);
                         }
@@ -966,7 +1018,11 @@ io.on('connection', function (socket) {
                         console.log('URL da mensagemip4:', agendamento.mensagemip4);
                         try {
                             const media = await MessageMedia.fromUrl(agendamento.mensagemip4);
-                            client.sendMessage(agendamento.fone + '@c.us', media, { caption: 'Óticas Diniz' });
+                            const linkURL = 'https://www.instagram.com/oticasdiniz.propria/'; // Replace this with your desired link URL
+                            const textBelowImage = 'siga nosso instagram';
+                            const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
+
+                            const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
                         } catch (error) {
                             console.error('Erro ao obter a mensagemip4:', error);
                         }
@@ -995,7 +1051,11 @@ io.on('connection', function (socket) {
                         console.log('URL da mensagemip5:', agendamento.mensagemip5);
                         try {
                             const media = await MessageMedia.fromUrl(agendamento.mensagemip5);
-                            client.sendMessage(agendamento.fone + '@c.us', media, { caption: 'Óticas Diniz' });
+                            const linkURL = 'https://www.instagram.com/oticasdiniz.propria/'; // Replace this with your desired link URL
+                            const textBelowImage = 'siga nosso instagram';
+                            const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
+
+                            const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
                         } catch (error) {
                             console.error('Erro ao obter a mensagemip5:', error);
                         }
@@ -1024,7 +1084,11 @@ io.on('connection', function (socket) {
                         console.log('URL da mensagemip6:', agendamento.mensagemip6);
                         try {
                             const media = await MessageMedia.fromUrl(agendamento.mensagemip6);
-                            client.sendMessage(agendamento.fone + '@c.us', media, { caption: 'Óticas Diniz' });
+                            const linkURL = 'https://www.instagram.com/oticasdiniz.propria/'; // Replace this with your desired link URL
+                            const textBelowImage = 'siga nosso instagram';
+                            const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
+
+                            const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
                         } catch (error) {
                             console.error('Erro ao obter a mensagemip6:', error);
                         }
@@ -1055,7 +1119,11 @@ io.on('connection', function (socket) {
                         console.log('URL da mesnagemrn:', agendamento.mesnagemrn);
                         try {
                             const media = await MessageMedia.fromUrl(agendamento.mesnagemrn);
-                            client.sendMessage(agendamento.fone + '@c.us', media, { caption: 'Óticas Diniz' });
+                            const linkURL = 'https://www.instagram.com/oticasdiniz.propria/'; // Replace this with your desired link URL
+                            const textBelowImage = 'siga nosso instagram';
+                            const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
+
+                            const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
                         } catch (error) {
                             console.error('Erro ao obter a mesnagemrn:', error);
                         }
