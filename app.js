@@ -10,15 +10,6 @@ const server = http.createServer(app);
 const io = socketIO(server);
 const mysql = require('mysql2/promise');
 const nodeCron = require("node-cron");
-const i18n = require('i18n');
-
-// Configuração do i18n
-i18n.configure({
-    locales: ['pt'],
-    defaultLocale: 'pt',
-    directory: __dirname + '/locales',
-});
-app.use(i18n.init); // Inicializa o i18n no middleware do Express
 
 
 // FunÃƒÂ§ÃƒÂ£o para criar conexÃƒÂ£o com o banco de dados
