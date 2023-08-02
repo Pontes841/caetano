@@ -4,23 +4,33 @@ const socketIO = require('socket.io');
 const qrcode = require('qrcode');
 const http = require('http');
 const fileUpload = require('express-fileupload');
-const port = 8006;
+const port = 8004;
 const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
 const mysql = require('mysql2/promise');
 const nodeCron = require("node-cron");
+const i18n = require('i18n');
+
+// Configuração do i18n
+i18n.configure({
+    locales: ['pt'],
+    defaultLocale: 'pt',
+    directory: __dirname + '/locales',
+});
+app.use(i18n.init); // Inicializa o i18n no middleware do Express
 
 
 // FunÃƒÂ§ÃƒÂ£o para criar conexÃƒÂ£o com o banco de dados
 const createConnection = async () => {
     return await mysql.createConnection({
         host: '212.1.208.101',
-        user: 'u896627913_propria04',
-        password: 'Felipe.91118825',
-        database: 'u896627913_propria'
+        user: 'u896627913_luciano01',
+        password: 'Felipe@91118825',
+        database: 'u896627913_luciano01'
     });
 }
+
 
 
 // FunÃ§Ã£o para atualizar o statusco no banco de dados (controle de cobranÃ§a)
@@ -542,608 +552,604 @@ io.on('connection', function (socket) {
 
                 const hoje = new Date();
 
-            for (const agendamento of agendamentoscobranca) {
-                if (agendamento.data_cobranca && agendamento.data_cobranca <= hoje && !agendamento.enviado) {
-                    // Marcar o agendamento como enviado
-                    agendamento.enviado = true;
+                for (const agendamento of agendamentoscobranca) {
+                    if (agendamento.data_cobranca && agendamento.data_cobranca <= hoje && !agendamento.enviado) {
+                        // Marcar o agendamento como enviado
+                        agendamento.enviado = true;
 
-                    if (agendamento.nome !== '') {
-                        client.sendMessage(agendamento.fone + '@c.us', agendamento.nome);
-                    }
+                        if (agendamento.nome !== '') {
+                            client.sendMessage(agendamento.fone + '@c.us', agendamento.nome);
+                        }
 
-                    if (agendamento.mensagemco && agendamento.mensagemco !== '') {
-                        console.log('URL da mensagemco:', agendamento.mensagemco);
-                        try {
-                            const media = await MessageMedia.fromUrl(agendamento.mensagemco);
-                            const linkURL = 'https://www.instagram.com/oticasdiniz.propria/'; // Replace this with your desired link URL
-                            const textBelowImage = 'siga nosso instagram';
-                            const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
+                        if (agendamento.mensagemco && agendamento.mensagemco !== '') {
+                            console.log('URL da mensagemco:', agendamento.mensagemco);
+                            try {
+                                const media = await MessageMedia.fromUrl(agendamento.mensagemco);
+                             
+                            } catch (error) {
+                                console.error('Erro ao obter a mensagemco:', error);
+                            }
+                        }
 
-                            const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
-                        } catch (error) {
-                            console.error('Erro ao obter a mensagemco:', error);
+                        const success = await updateStatuscob(agendamento.id);
+                        if (success) {
+                            console.log('BOT-ZDG - Mensagem ID: ' + agendamento.id + ' - statusco atualizado para "enviado"');
+                        } else {
+                            console.log('BOT-ZDG - Falha ao atualizar o statusco da mensagem ID: ' + agendamento.id);
                         }
                     }
-
-                    const success = await updateStatuscob(agendamento.id);
-                    if (success) {
-                        console.log('BOT-ZDG - Mensagem ID: ' + agendamento.id + ' - statusco atualizado para "enviado"');
-                    } else {
-                        console.log('BOT-ZDG - Falha ao atualizar o statusco da mensagem ID: ' + agendamento.id);
-                    }
                 }
-            }
 
 
-            for (const agendamento of agendamentosSolicitacao) {
-                if (agendamento.data_inclusao && agendamento.data_inclusao <= hoje && !agendamento.enviado) {
-                    // Marcar o agendamento como enviado
-                    agendamento.enviado = true;
+                for (const agendamento of agendamentosSolicitacao) {
+                    if (agendamento.data_inclusao && agendamento.data_inclusao <= hoje && !agendamento.enviado) {
+                        // Marcar o agendamento como enviado
+                        agendamento.enviado = true;
 
-                    if (agendamento.nome !== '') {
-                        client.sendMessage(agendamento.fone + '@c.us', agendamento.nome);
-                    }
+                        if (agendamento.nome !== '') {
+                            client.sendMessage(agendamento.fone + '@c.us', agendamento.nome);
+                        }
 
-                    if (agendamento.mensagemvd && agendamento.mensagemvd !== '') {
-                        console.log('URL da mensagemvd:', agendamento.mensagemvd);
-                        try {
-                            const media = await MessageMedia.fromUrl(agendamento.mensagemvd);
-                            const linkURL = 'https://www.instagram.com/oticasdiniz.propria/'; // Replace this with your desired link URL
-                            const textBelowImage = 'siga nosso instagram';
-                            const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
+                        if (agendamento.mensagemvd && agendamento.mensagemvd !== '') {
+                            console.log('URL da mensagemvd:', agendamento.mensagemvd);
+                            try {
+                                const media = await MessageMedia.fromUrl(agendamento.mensagemvd);
+                                const linkURL = 'https://g.page/r/CaWcuer6OFEdEBM/review/'; // Replace this with your desired link URL
+                                const textBelowImage = 'Seu feedback é importante para a Óticas Diniz RO. Poste uma avaliação no nosso perfil.';
+                                const linkText = 'Clique aqui para avaliar'; // Replace this with the text you want to display for the link
 
-                            const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
+                                const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
 
-                            client.sendMessage(agendamento.fone + '@c.us', media, { caption });
-                        } catch (error) {
-                            console.error('Erro ao obter a mensagemvd:', error);
+                                client.sendMessage(agendamento.fone + '@c.us', media, { caption });
+                            } catch (error) {
+                                console.error('Erro ao obter a mensagemvd:', error);
+                            }
+                        }
+
+                        const success = await updateStatusvd(agendamento.id);
+                        if (success) {
+                            console.log('BOT-ZDG - Mensagem ID: ' + agendamento.id + ' - statusvd atualizado para "enviado"');
+                        } else {
+                            console.log('BOT-ZDG - Falha ao atualizar o statusvd da mensagem ID: ' + agendamento.id);
                         }
                     }
-
-                    const success = await updateStatusvd(agendamento.id);
-                    if (success) {
-                        console.log('BOT-ZDG - Mensagem ID: ' + agendamento.id + ' - statusvd atualizado para "enviado"');
-                    } else {
-                        console.log('BOT-ZDG - Falha ao atualizar o statusvd da mensagem ID: ' + agendamento.id);
-                    }
                 }
-            }
 
-            for (const agendamento of agendamentosFinalizacao) {
-                if (agendamento.data_finalizacao && agendamento.data_finalizacao <= hoje && !agendamento.enviado) {
-                    // Marcar o agendamento como enviado
-                    agendamento.enviado = true;
+                for (const agendamento of agendamentosFinalizacao) {
+                    if (agendamento.data_finalizacao && agendamento.data_finalizacao <= hoje && !agendamento.enviado) {
+                        // Marcar o agendamento como enviado
+                        agendamento.enviado = true;
 
-                    if (agendamento.nome !== '') {
-                        client.sendMessage(agendamento.fone + '@c.us', agendamento.nome);
-                    }
+                        if (agendamento.nome !== '') {
+                            client.sendMessage(agendamento.fone + '@c.us', agendamento.nome);
+                        }
 
-                    if (agendamento.mensagemfn && agendamento.mensagemfn !== '') {
-                        console.log('URL da mensagemfn:', agendamento.mensagemfn);
-                        try {
-                            const media = await MessageMedia.fromUrl(agendamento.mensagemfn);
-                            const linkURL = 'https://www.instagram.com/oticasdiniz.propria/'; // Replace this with your desired link URL
-                            const textBelowImage = 'siga nosso instagram';
-                            const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
+                        if (agendamento.mensagemfn && agendamento.mensagemfn !== '') {
+                            console.log('URL da mensagemfn:', agendamento.mensagemfn);
+                            try {
+                                const media = await MessageMedia.fromUrl(agendamento.mensagemfn);
+                                const linkURL = 'https://www.instagram.com/oticasdinizro/'; // Replace this with your desired link URL
+                                const textBelowImage = 'siga nosso instagram';
+                                const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
-                            const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
-                        } catch (error) {
-                            console.error('Erro ao obter a mensagemfn:', error);
+                                const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
+                            } catch (error) {
+                                console.error('Erro ao obter a mensagemfn:', error);
+                            }
+                        }
+
+                        const success = await updateStatusfn(agendamento.id);
+                        if (success) {
+                            console.log('BOT-ZDG - Mensagem ID: ' + agendamento.id + ' - statusfn atualizado para "enviado"');
+                        } else {
+                            console.log('BOT-ZDG - Falha ao atualizar o statusfn da mensagem ID: ' + agendamento.id);
                         }
                     }
-
-                    const success = await updateStatusfn(agendamento.id);
-                    if (success) {
-                        console.log('BOT-ZDG - Mensagem ID: ' + agendamento.id + ' - statusfn atualizado para "enviado"');
-                    } else {
-                        console.log('BOT-ZDG - Falha ao atualizar o statusfn da mensagem ID: ' + agendamento.id);
-                    }
                 }
-            }
 
-            for (const agendamento of agendamentosstatusad) {
-                if (agendamento.dataad && agendamento.dataad <= hoje && !agendamento.enviado) {
-                    // Marcar o agendamento como enviado
-                    agendamento.enviado = true;
+                for (const agendamento of agendamentosstatusad) {
+                    if (agendamento.dataad && agendamento.dataad <= hoje && !agendamento.enviado) {
+                        // Marcar o agendamento como enviado
+                        agendamento.enviado = true;
 
-                    if (agendamento.nome !== '') {
-                        client.sendMessage(agendamento.fone + '@c.us', agendamento.nome);
-                    }
+                        if (agendamento.nome !== '') {
+                            client.sendMessage(agendamento.fone + '@c.us', agendamento.nome);
+                        }
 
-                    if (agendamento.mensagemad && agendamento.mensagemad !== '') {
-                        console.log('URL da mensagemad:', agendamento.mensagemad);
-                        try {
-                            const media = await MessageMedia.fromUrl(agendamento.mensagemad);
-                            const linkURL = 'https://www.instagram.com/oticasdiniz.propria/'; // Replace this with your desired link URL
-                            const textBelowImage = 'siga nosso instagram';
-                            const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
+                        if (agendamento.mensagemad && agendamento.mensagemad !== '') {
+                            console.log('URL da mensagemad:', agendamento.mensagemad);
+                            try {
+                                const media = await MessageMedia.fromUrl(agendamento.mensagemad);
+                                const linkURL = 'https://www.instagram.com/oticasdinizro/'; // Replace this with your desired link URL
+                                const textBelowImage = 'siga nosso instagram';
+                                const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
-                            const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
-                        } catch (error) {
-                            console.error('Erro ao obter a mensagemad:', error);
+                                const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
+                            } catch (error) {
+                                console.error('Erro ao obter a mensagemad:', error);
+                            }
+                        }
+
+                        const success = await updateStatusad(agendamento.id);
+                        if (success) {
+                            console.log('BOT-ZDG - Mensagem ID: ' + agendamento.id + ' - statusad atualizado para "enviado"');
+                        } else {
+                            console.log('BOT-ZDG - Falha ao atualizar o statusad da mensagem ID: ' + agendamento.id);
                         }
                     }
-
-                    const success = await updateStatusad(agendamento.id);
-                    if (success) {
-                        console.log('BOT-ZDG - Mensagem ID: ' + agendamento.id + ' - statusad atualizado para "enviado"');
-                    } else {
-                        console.log('BOT-ZDG - Falha ao atualizar o statusad da mensagem ID: ' + agendamento.id);
-                    }
                 }
-            }
 
-            // mensagem de cuidar do seus oculos (controle OS)
+                // mensagem de cuidar do seus oculos (controle OS)
 
-            for (const agendamento of agendamentosdataip) {
-                if (agendamento.dataip && agendamento.dataip <= hoje && !agendamento.enviado) {
-                    // Marcar o agendamento como enviado
-                    agendamento.enviado = true;
+                for (const agendamento of agendamentosdataip) {
+                    if (agendamento.dataip && agendamento.dataip <= hoje && !agendamento.enviado) {
+                        // Marcar o agendamento como enviado
+                        agendamento.enviado = true;
 
-                    if (agendamento.nome !== '') {
-                        client.sendMessage(agendamento.fone + '@c.us', agendamento.nome);
-                    }
+                        if (agendamento.nome !== '') {
+                            client.sendMessage(agendamento.fone + '@c.us', agendamento.nome);
+                        }
 
-                    if (agendamento.mensagemip && agendamento.mensagemip !== '') {
-                        console.log('URL da mensagemip:', agendamento.mensagemip);
-                        try {
-                            const media = await MessageMedia.fromUrl(agendamento.mensagemip);
-                            const linkURL = 'https://www.instagram.com/oticasdiniz.propria/'; // Replace this with your desired link URL
-                            const textBelowImage = 'siga nosso instagram';
-                            const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
+                        if (agendamento.mensagemip && agendamento.mensagemip !== '') {
+                            console.log('URL da mensagemip:', agendamento.mensagemip);
+                            try {
+                                const media = await MessageMedia.fromUrl(agendamento.mensagemip);
+                                const linkURL = 'https://www.instagram.com/oticasdinizro/'; // Replace this with your desired link URL
+                                const textBelowImage = 'siga nosso instagram';
+                                const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
-                            const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
-                        } catch (error) {
-                            console.error('Erro ao obter a mensagemip:', error);
+                                const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
+                            } catch (error) {
+                                console.error('Erro ao obter a mensagemip:', error);
+                            }
+                        }
+
+                        const success = await updateStatusip(agendamento.id);
+                        if (success) {
+                            console.log('BOT-ZDG - Mensagem ID: ' + agendamento.id + ' - statusip atualizado para "enviado"');
+                        } else {
+                            console.log('BOT-ZDG - Falha ao atualizar o statusip da mensagem ID: ' + agendamento.id);
                         }
                     }
-
-                    const success = await updateStatusip(agendamento.id);
-                    if (success) {
-                        console.log('BOT-ZDG - Mensagem ID: ' + agendamento.id + ' - statusip atualizado para "enviado"');
-                    } else {
-                        console.log('BOT-ZDG - Falha ao atualizar o statusip da mensagem ID: ' + agendamento.id);
-                    }
                 }
-            }
 
-    // mensagem desconto (controle OS)
-            for (const agendamento of agendamentosdatede) {
-                if (agendamento.datede && agendamento.datede <= hoje && !agendamento.enviado) {
-                    // Marcar o agendamento como enviado
-                    agendamento.enviado = true;
+                // mensagem desconto (controle OS)
+                for (const agendamento of agendamentosdatede) {
+                    if (agendamento.datede && agendamento.datede <= hoje && !agendamento.enviado) {
+                        // Marcar o agendamento como enviado
+                        agendamento.enviado = true;
 
-                    if (agendamento.nome !== '') {
-                        client.sendMessage(agendamento.fone + '@c.us', agendamento.nome);
-                    }
+                        if (agendamento.nome !== '') {
+                            client.sendMessage(agendamento.fone + '@c.us', agendamento.nome);
+                        }
 
-                    if (agendamento.mensagemde && agendamento.mensagemde !== '') {
-                        console.log('URL da mensagemde:', agendamento.mensagemde);
-                        try {
-                            const media = await MessageMedia.fromUrl(agendamento.mensagemde);
-                            const linkURL = 'https://www.instagram.com/oticasdiniz.propria/'; // Replace this with your desired link URL
-                            const textBelowImage = 'siga nosso instagram';
-                            const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
+                        if (agendamento.mensagemde && agendamento.mensagemde !== '') {
+                            console.log('URL da mensagemde:', agendamento.mensagemde);
+                            try {
+                                const media = await MessageMedia.fromUrl(agendamento.mensagemde);
+                                const linkURL = 'https://www.instagram.com/oticasdinizro/'; // Replace this with your desired link URL
+                                const textBelowImage = 'siga nosso instagram';
+                                const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
-                            const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
-                        } catch (error) {
-                            console.error('Erro ao obter a mensagemde:', error);
+                                const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
+                            } catch (error) {
+                                console.error('Erro ao obter a mensagemde:', error);
+                            }
+                        }
+
+                        const success = await updateSattusde(agendamento.id);
+                        if (success) {
+                            console.log('BOT-ZDG - Mensagem ID: ' + agendamento.id + ' - sattusde atualizado para "enviado"');
+                        } else {
+                            console.log('BOT-ZDG - Falha ao atualizar o sattusde da mensagem ID: ' + agendamento.id);
                         }
                     }
-
-                    const success = await updateSattusde(agendamento.id);
-                    if (success) {
-                        console.log('BOT-ZDG - Mensagem ID: ' + agendamento.id + ' - sattusde atualizado para "enviado"');
-                    } else {
-                        console.log('BOT-ZDG - Falha ao atualizar o sattusde da mensagem ID: ' + agendamento.id);
-                    }
                 }
-            }
 
-            // Mensagem coleÃ§Ã£o nova (controle OS)
-            for (const agendamento of agendamentosdatecol) {
-                if (agendamento.datecol && agendamento.datecol <= hoje && !agendamento.enviado) {
-                    // Marcar o agendamento como enviado
-                    agendamento.enviado = true;
+                // Mensagem coleÃ§Ã£o nova (controle OS)
+                for (const agendamento of agendamentosdatecol) {
+                    if (agendamento.datecol && agendamento.datecol <= hoje && !agendamento.enviado) {
+                        // Marcar o agendamento como enviado
+                        agendamento.enviado = true;
 
-                    if (agendamento.nome !== '') {
-                        client.sendMessage(agendamento.fone + '@c.us', agendamento.nome);
-                    }
+                        if (agendamento.nome !== '') {
+                            client.sendMessage(agendamento.fone + '@c.us', agendamento.nome);
+                        }
 
-                    if (agendamento.mesnagemcol && agendamento.mesnagemcol !== '') {
-                        console.log('URL da mesnagemcol:', agendamento.mesnagemcol);
-                        try {
-                            const media = await MessageMedia.fromUrl(agendamento.mesnagemcol);
-                            const linkURL = 'https://www.instagram.com/oticasdiniz.propria/'; // Replace this with your desired link URL
-                            const textBelowImage = 'siga nosso instagram';
-                            const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
+                        if (agendamento.mesnagemcol && agendamento.mesnagemcol !== '') {
+                            console.log('URL da mesnagemcol:', agendamento.mesnagemcol);
+                            try {
+                                const media = await MessageMedia.fromUrl(agendamento.mesnagemcol);
+                                const linkURL = 'https://www.instagram.com/oticasdinizro/'; // Replace this with your desired link URL
+                                const textBelowImage = 'siga nosso instagram';
+                                const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
-                            const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
-                        } catch (error) {
-                            console.error('Erro ao obter a mesnagemcol:', error);
+                                const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
+                            } catch (error) {
+                                console.error('Erro ao obter a mesnagemcol:', error);
+                            }
+                        }
+
+                        const success = await updateStatuscol(agendamento.id);
+                        if (success) {
+                            console.log('BOT-ZDG - Mensagem ID: ' + agendamento.id + ' - statuscol atualizado para "enviado"');
+                        } else {
+                            console.log('BOT-ZDG - Falha ao atualizar o statuscol da mensagem ID: ' + agendamento.id);
                         }
                     }
-
-                    const success = await updateStatuscol(agendamento.id);
-                    if (success) {
-                        console.log('BOT-ZDG - Mensagem ID: ' + agendamento.id + ' - statuscol atualizado para "enviado"');
-                    } else {
-                        console.log('BOT-ZDG - Falha ao atualizar o statuscol da mensagem ID: ' + agendamento.id);
-                    }
                 }
-            }
 
-            // Mensagem de Aniversario (controle OS)
-            for (const agendamento of agendamentosdata_aniversario) {
-                if (agendamento.data_aniversario && agendamento.data_aniversario <= hoje && !agendamento.enviado) {
-                    // Marcar o agendamento como enviado
-                    agendamento.enviado = true;
+                // Mensagem de Aniversario (controle OS)
+                for (const agendamento of agendamentosdata_aniversario) {
+                    if (agendamento.data_aniversario && agendamento.data_aniversario <= hoje && !agendamento.enviado) {
+                        // Marcar o agendamento como enviado
+                        agendamento.enviado = true;
 
-                    if (agendamento.nome !== '') {
-                        client.sendMessage(agendamento.fone + '@c.us', agendamento.nome);
-                    }
+                        if (agendamento.nome !== '') {
+                            client.sendMessage(agendamento.fone + '@c.us', agendamento.nome);
+                        }
 
-                    if (agendamento.mensageman && agendamento.mensageman !== '') {
-                        console.log('URL da mensageman:', agendamento.mensageman);
-                        try {
-                            const media = await MessageMedia.fromUrl(agendamento.mensageman);
-                            const linkURL = 'https://www.instagram.com/oticasdiniz.propria/'; // Replace this with your desired link URL
-                            const textBelowImage = 'siga nosso instagram';
-                            const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
+                        if (agendamento.mensageman && agendamento.mensageman !== '') {
+                            console.log('URL da mensageman:', agendamento.mensageman);
+                            try {
+                                const media = await MessageMedia.fromUrl(agendamento.mensageman);
+                                const linkURL = 'https://www.instagram.com/oticasdinizro/'; // Replace this with your desired link URL
+                                const textBelowImage = 'siga nosso instagram';
+                                const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
-                            const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
-                        } catch (error) {
-                            console.error('Erro ao obter a mensageman:', error);
+                                const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
+                            } catch (error) {
+                                console.error('Erro ao obter a mensageman:', error);
+                            }
+                        }
+
+                        const success = await updateStatusan(agendamento.id);
+                        if (success) {
+                            console.log('BOT-ZDG - Mensagem ID: ' + agendamento.id + ' - statusan atualizado para "enviado"');
+                        } else {
+                            console.log('BOT-ZDG - Falha ao atualizar o statusan da mensagem ID: ' + agendamento.id);
                         }
                     }
-
-                    const success = await updateStatusan(agendamento.id);
-                    if (success) {
-                        console.log('BOT-ZDG - Mensagem ID: ' + agendamento.id + ' - statusan atualizado para "enviado"');
-                    } else {
-                        console.log('BOT-ZDG - Falha ao atualizar o statusan da mensagem ID: ' + agendamento.id);
-                    }
                 }
-            }
 
 
-            for (const agendamento of agendamentosgarantia) {
-                if (agendamento.data_solicitacao && agendamento.data_solicitacao <= hoje && !agendamento.enviado) {
-                    // Marcar o agendamento como enviado
-                    agendamento.enviado = true;
+                for (const agendamento of agendamentosgarantia) {
+                    if (agendamento.data_solicitacao && agendamento.data_solicitacao <= hoje && !agendamento.enviado) {
+                        // Marcar o agendamento como enviado
+                        agendamento.enviado = true;
 
-                    if (agendamento.nome !== '') {
-                        client.sendMessage(agendamento.fone + '@c.us', agendamento.nome);
-                    }
+                        if (agendamento.nome !== '') {
+                            client.sendMessage(agendamento.fone + '@c.us', agendamento.nome);
+                        }
 
-                    if (agendamento.mensagems && agendamento.mensagems !== '') {
-                        console.log('URL da mensagems:', agendamento.mensagems);
-                        try {
-                            const media = await MessageMedia.fromUrl(agendamento.mensagems);
-                            const linkURL = 'https://www.instagram.com/oticasdiniz.propria/'; // Replace this with your desired link URL
-                            const textBelowImage = 'siga nosso instagram';
-                            const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
+                        if (agendamento.mensagems && agendamento.mensagems !== '') {
+                            console.log('URL da mensagems:', agendamento.mensagems);
+                            try {
+                                const media = await MessageMedia.fromUrl(agendamento.mensagems);
+                                const linkURL = 'https://www.instagram.com/oticasdinizro/'; // Replace this with your desired link URL
+                                const textBelowImage = 'siga nosso instagram';
+                                const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
-                            const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
-                        } catch (error) {
-                            console.error('Erro ao obter a mensagems:', error);
+                                const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
+                            } catch (error) {
+                                console.error('Erro ao obter a mensagems:', error);
+                            }
+                        }
+
+                        const success = await updateStatusga(agendamento.id);
+                        if (success) {
+                            console.log('BOT-ZDG - Mensagem ID: ' + agendamento.id + ' - statuss atualizado para "enviado"');
+                        } else {
+                            console.log('BOT-ZDG - Falha ao atualizar o statuss da mensagem ID: ' + agendamento.id);
                         }
                     }
-
-                    const success = await updateStatusga(agendamento.id);
-                    if (success) {
-                        console.log('BOT-ZDG - Mensagem ID: ' + agendamento.id + ' - statuss atualizado para "enviado"');
-                    } else {
-                        console.log('BOT-ZDG - Falha ao atualizar o statuss da mensagem ID: ' + agendamento.id);
-                    }
                 }
-            }
 
 
-            for (const agendamento of agendamentosgarantiafi) {
-                if (agendamento.data_finalizacao && agendamento.data_finalizacao <= hoje && !agendamento.enviado) {
-                    // Marcar o agendamento como enviado
-                    agendamento.enviado = true;
+                for (const agendamento of agendamentosgarantiafi) {
+                    if (agendamento.data_finalizacao && agendamento.data_finalizacao <= hoje && !agendamento.enviado) {
+                        // Marcar o agendamento como enviado
+                        agendamento.enviado = true;
 
-                    if (agendamento.nome !== '') {
-                        client.sendMessage(agendamento.fone + '@c.us', agendamento.nome);
-                    }
+                        if (agendamento.nome !== '') {
+                            client.sendMessage(agendamento.fone + '@c.us', agendamento.nome);
+                        }
 
-                    if (agendamento.mensagemf && agendamento.mensagemf !== '') {
-                        console.log('URL da mensagemf:', agendamento.mensagemf);
-                        try {
-                            const media = await MessageMedia.fromUrl(agendamento.mensagemf);
-                            const linkURL = 'https://www.instagram.com/oticasdiniz.propria/'; // Replace this with your desired link URL
-                            const textBelowImage = 'siga nosso instagram';
-                            const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
+                        if (agendamento.mensagemf && agendamento.mensagemf !== '') {
+                            console.log('URL da mensagemf:', agendamento.mensagemf);
+                            try {
+                                const media = await MessageMedia.fromUrl(agendamento.mensagemf);
+                                const linkURL = 'https://www.instagram.com/oticasdinizro/'; // Replace this with your desired link URL
+                                const textBelowImage = 'siga nosso instagram';
+                                const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
-                            const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
-                        } catch (error) {
-                            console.error('Erro ao obter a mensagemf:', error);
+                                const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
+                            } catch (error) {
+                                console.error('Erro ao obter a mensagemf:', error);
+                            }
+                        }
+
+                        const success = await updateStatusgaf(agendamento.id);
+                        if (success) {
+                            console.log('BOT-ZDG - Mensagem ID: ' + agendamento.id + ' - statusf atualizado para "enviado"');
+                        } else {
+                            console.log('BOT-ZDG - Falha ao atualizar o statusf da mensagem ID: ' + agendamento.id);
                         }
                     }
-
-                    const success = await updateStatusgaf(agendamento.id);
-                    if (success) {
-                        console.log('BOT-ZDG - Mensagem ID: ' + agendamento.id + ' - statusf atualizado para "enviado"');
-                    } else {
-                        console.log('BOT-ZDG - Falha ao atualizar o statusf da mensagem ID: ' + agendamento.id);
-                    }
                 }
-            }
 
 
-            for (const agendamento of agendamentospap) {
-                if (agendamento.data_entrevista && agendamento.data_entrevista <= hoje && !agendamento.enviado) {
-                    // Marcar o agendamento como enviado
-                    agendamento.enviado = true;
+                for (const agendamento of agendamentospap) {
+                    if (agendamento.data_entrevista && agendamento.data_entrevista <= hoje && !agendamento.enviado) {
+                        // Marcar o agendamento como enviado
+                        agendamento.enviado = true;
 
-                    if (agendamento.nome !== '') {
-                        client.sendMessage(agendamento.fone + '@c.us', agendamento.nome);
-                    }
+                        if (agendamento.nome !== '') {
+                            client.sendMessage(agendamento.fone + '@c.us', agendamento.nome);
+                        }
 
-                    if (agendamento.mensagemen && agendamento.mensagemen !== '') {
-                        console.log('URL da mensagemen:', agendamento.mensagemen);
-                        try {
-                            const media = await MessageMedia.fromUrl(agendamento.mensagemen);
-                            const linkURL = 'https://www.instagram.com/oticasdiniz.propria/'; // Replace this with your desired link URL
-                            const textBelowImage = 'siga nosso instagram';
-                            const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
+                        if (agendamento.mensagemen && agendamento.mensagemen !== '') {
+                            console.log('URL da mensagemen:', agendamento.mensagemen);
+                            try {
+                                const media = await MessageMedia.fromUrl(agendamento.mensagemen);
+                                const linkURL = 'https://www.instagram.com/oticasdinizro/'; // Replace this with your desired link URL
+                                const textBelowImage = 'siga nosso instagram';
+                                const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
-                            const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
-                        } catch (error) {
-                            console.error('Erro ao obter a mensagemen:', error);
+                                const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
+                            } catch (error) {
+                                console.error('Erro ao obter a mensagemen:', error);
+                            }
+                        }
+
+                        const success = await updateStatusag(agendamento.id);
+                        if (success) {
+                            console.log('BOT-ZDG - Mensagem ID: ' + agendamento.id + ' - statusen atualizado para "enviado"');
+                        } else {
+                            console.log('BOT-ZDG - Falha ao atualizar o statusen da mensagem ID: ' + agendamento.id);
                         }
                     }
-
-                    const success = await updateStatusag(agendamento.id);
-                    if (success) {
-                        console.log('BOT-ZDG - Mensagem ID: ' + agendamento.id + ' - statusen atualizado para "enviado"');
-                    } else {
-                        console.log('BOT-ZDG - Falha ao atualizar o statusen da mensagem ID: ' + agendamento.id);
-                    }
                 }
-            }
 
 
-            for (const agendamento of agendamentospap) {
-                if (agendamento.data_entrevista && agendamento.data_entrevista <= hoje && !agendamento.enviado) {
-                    // Marcar o agendamento como enviado
-                    agendamento.enviado = true;
+                for (const agendamento of agendamentospap) {
+                    if (agendamento.data_entrevista && agendamento.data_entrevista <= hoje && !agendamento.enviado) {
+                        // Marcar o agendamento como enviado
+                        agendamento.enviado = true;
 
-                    if (agendamento.nome !== '') {
-                        client.sendMessage(agendamento.fone + '@c.us', agendamento.nome);
-                    }
+                        if (agendamento.nome !== '') {
+                            client.sendMessage(agendamento.fone + '@c.us', agendamento.nome);
+                        }
 
-                    if (agendamento.mensagemen && agendamento.mensagemen !== '') {
-                        console.log('URL da mensagemen:', agendamento.mensagemen);
-                        try {
-                            const media = await MessageMedia.fromUrl(agendamento.mensagemen);
-                            const linkURL = 'https://www.instagram.com/oticasdiniz.propria/'; // Replace this with your desired link URL
-                            const textBelowImage = 'siga nosso instagram';
-                            const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
+                        if (agendamento.mensagemen && agendamento.mensagemen !== '') {
+                            console.log('URL da mensagemen:', agendamento.mensagemen);
+                            try {
+                                const media = await MessageMedia.fromUrl(agendamento.mensagemen);
+                                const linkURL = 'https://www.instagram.com/oticasdinizro/'; // Replace this with your desired link URL
+                                const textBelowImage = 'siga nosso instagram';
+                                const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
-                            const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
-                        } catch (error) {
-                            console.error('Erro ao obter a mensagemen:', error);
+                                const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
+                            } catch (error) {
+                                console.error('Erro ao obter a mensagemen:', error);
+                            }
+                        }
+
+                        const success = await updateStatusag(agendamento.id);
+                        if (success) {
+                            console.log('BOT-ZDG - Mensagem ID: ' + agendamento.id + ' - statusen atualizado para "enviado"');
+                        } else {
+                            console.log('BOT-ZDG - Falha ao atualizar o statusen da mensagem ID: ' + agendamento.id);
                         }
                     }
-
-                    const success = await updateStatusag(agendamento.id);
-                    if (success) {
-                        console.log('BOT-ZDG - Mensagem ID: ' + agendamento.id + ' - statusen atualizado para "enviado"');
-                    } else {
-                        console.log('BOT-ZDG - Falha ao atualizar o statusen da mensagem ID: ' + agendamento.id);
-                    }
                 }
-            }
 
 
-            for (const agendamento of agendamentosdateip2) {
-                if (agendamento.dateip2 && agendamento.dateip2 <= hoje && !agendamento.enviado) {
-                    // Marcar o agendamento como enviado
-                    agendamento.enviado = true;
+                for (const agendamento of agendamentosdateip2) {
+                    if (agendamento.dateip2 && agendamento.dateip2 <= hoje && !agendamento.enviado) {
+                        // Marcar o agendamento como enviado
+                        agendamento.enviado = true;
 
-                    if (agendamento.nome !== '') {
-                        client.sendMessage(agendamento.fone + '@c.us', agendamento.nome);
-                    }
+                        if (agendamento.nome !== '') {
+                            client.sendMessage(agendamento.fone + '@c.us', agendamento.nome);
+                        }
 
-                    if (agendamento.mensagemip2 && agendamento.mensagemip2 !== '') {
-                        console.log('URL da mensagemip2:', agendamento.mensagemip2);
-                        try {
-                            const media = await MessageMedia.fromUrl(agendamento.mensagemip2);
-                            const linkURL = 'https://www.instagram.com/oticasdiniz.propria/'; // Replace this with your desired link URL
-                            const textBelowImage = 'siga nosso instagram';
-                            const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
+                        if (agendamento.mensagemip2 && agendamento.mensagemip2 !== '') {
+                            console.log('URL da mensagemip2:', agendamento.mensagemip2);
+                            try {
+                                const media = await MessageMedia.fromUrl(agendamento.mensagemip2);
+                                const linkURL = 'https://www.instagram.com/oticasdinizro/'; // Replace this with your desired link URL
+                                const textBelowImage = 'siga nosso instagram';
+                                const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
-                            const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
-                        } catch (error) {
-                            console.error('Erro ao obter a mensagemip2:', error);
+                                const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
+                            } catch (error) {
+                                console.error('Erro ao obter a mensagemip2:', error);
+                            }
+                        }
+
+                        const success = await updateSatusip2(agendamento.id);
+                        if (success) {
+                            console.log('BOT-ZDG - Mensagem ID: ' + agendamento.id + ' - statusip2 atualizado para "enviado"');
+                        } else {
+                            console.log('BOT-ZDG - Falha ao atualizar o statusip2 da mensagem ID: ' + agendamento.id);
                         }
                     }
-
-                    const success = await updateSatusip2(agendamento.id);
-                    if (success) {
-                        console.log('BOT-ZDG - Mensagem ID: ' + agendamento.id + ' - statusip2 atualizado para "enviado"');
-                    } else {
-                        console.log('BOT-ZDG - Falha ao atualizar o statusip2 da mensagem ID: ' + agendamento.id);
-                    }
                 }
-            }
 
 
-            for (const agendamento of agendamentosdateip3) {
-                if (agendamento.dateip3 && agendamento.dateip3 <= hoje && !agendamento.enviado) {
-                    // Marcar o agendamento como enviado
-                    agendamento.enviado = true;
+                for (const agendamento of agendamentosdateip3) {
+                    if (agendamento.dateip3 && agendamento.dateip3 <= hoje && !agendamento.enviado) {
+                        // Marcar o agendamento como enviado
+                        agendamento.enviado = true;
 
-                    if (agendamento.nome !== '') {
-                        client.sendMessage(agendamento.fone + '@c.us', agendamento.nome);
-                    }
+                        if (agendamento.nome !== '') {
+                            client.sendMessage(agendamento.fone + '@c.us', agendamento.nome);
+                        }
 
-                    if (agendamento.mensagemip3 && agendamento.mensagemip3 !== '') {
-                        console.log('URL da mensagemip3:', agendamento.mensagemip3);
-                        try {
-                            const media = await MessageMedia.fromUrl(agendamento.mensagemip3);
-                            const linkURL = 'https://www.instagram.com/oticasdiniz.propria/'; // Replace this with your desired link URL
-                            const textBelowImage = 'siga nosso instagram';
-                            const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
+                        if (agendamento.mensagemip3 && agendamento.mensagemip3 !== '') {
+                            console.log('URL da mensagemip3:', agendamento.mensagemip3);
+                            try {
+                                const media = await MessageMedia.fromUrl(agendamento.mensagemip3);
+                                const linkURL = 'https://www.instagram.com/oticasdinizro/'; // Replace this with your desired link URL
+                                const textBelowImage = 'siga nosso instagram';
+                                const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
-                            const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
-                        } catch (error) {
-                            console.error('Erro ao obter a mensagemip3:', error);
+                                const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
+                            } catch (error) {
+                                console.error('Erro ao obter a mensagemip3:', error);
+                            }
+                        }
+
+                        const success = await updatestatusip3(agendamento.id);
+                        if (success) {
+                            console.log('BOT-ZDG - Mensagem ID: ' + agendamento.id + ' - statusip3 atualizado para "enviado"');
+                        } else {
+                            console.log('BOT-ZDG - Falha ao atualizar o statusip3 da mensagem ID: ' + agendamento.id);
                         }
                     }
-
-                    const success = await updatestatusip3(agendamento.id);
-                    if (success) {
-                        console.log('BOT-ZDG - Mensagem ID: ' + agendamento.id + ' - statusip3 atualizado para "enviado"');
-                    } else {
-                        console.log('BOT-ZDG - Falha ao atualizar o statusip3 da mensagem ID: ' + agendamento.id);
-                    }
                 }
-            }
 
 
-            for (const agendamento of agendamentosdateip4) {
-                if (agendamento.dateip4 && agendamento.dateip4 <= hoje && !agendamento.enviado) {
-                    // Marcar o agendamento como enviado
-                    agendamento.enviado = true;
+                for (const agendamento of agendamentosdateip4) {
+                    if (agendamento.dateip4 && agendamento.dateip4 <= hoje && !agendamento.enviado) {
+                        // Marcar o agendamento como enviado
+                        agendamento.enviado = true;
 
-                    if (agendamento.nome !== '') {
-                        client.sendMessage(agendamento.fone + '@c.us', agendamento.nome);
-                    }
+                        if (agendamento.nome !== '') {
+                            client.sendMessage(agendamento.fone + '@c.us', agendamento.nome);
+                        }
 
-                    if (agendamento.mensagemip4 && agendamento.mensagemip4 !== '') {
-                        console.log('URL da mensagemip4:', agendamento.mensagemip4);
-                        try {
-                            const media = await MessageMedia.fromUrl(agendamento.mensagemip4);
-                            const linkURL = 'https://www.instagram.com/oticasdiniz.propria/'; // Replace this with your desired link URL
-                            const textBelowImage = 'siga nosso instagram';
-                            const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
+                        if (agendamento.mensagemip4 && agendamento.mensagemip4 !== '') {
+                            console.log('URL da mensagemip4:', agendamento.mensagemip4);
+                            try {
+                                const media = await MessageMedia.fromUrl(agendamento.mensagemip4);
+                                const linkURL = 'https://www.instagram.com/oticasdinizro/'; // Replace this with your desired link URL
+                                const textBelowImage = 'siga nosso instagram';
+                                const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
-                            const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
-                        } catch (error) {
-                            console.error('Erro ao obter a mensagemip4:', error);
+                                const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
+                            } catch (error) {
+                                console.error('Erro ao obter a mensagemip4:', error);
+                            }
+                        }
+
+                        const success = await updateStatusiip4(agendamento.id);
+                        if (success) {
+                            console.log('BOT-ZDG - Mensagem ID: ' + agendamento.id + ' - statusiip4 atualizado para "enviado"');
+                        } else {
+                            console.log('BOT-ZDG - Falha ao atualizar o statusiip4 da mensagem ID: ' + agendamento.id);
                         }
                     }
-
-                    const success = await updateStatusiip4(agendamento.id);
-                    if (success) {
-                        console.log('BOT-ZDG - Mensagem ID: ' + agendamento.id + ' - statusiip4 atualizado para "enviado"');
-                    } else {
-                        console.log('BOT-ZDG - Falha ao atualizar o statusiip4 da mensagem ID: ' + agendamento.id);
-                    }
                 }
-            }
 
 
-            for (const agendamento of agendamentosdateip5) {
-                if (agendamento.dateip5 && agendamento.dateip5 <= hoje && !agendamento.enviado) {
-                    // Marcar o agendamento como enviado
-                    agendamento.enviado = true;
+                for (const agendamento of agendamentosdateip5) {
+                    if (agendamento.dateip5 && agendamento.dateip5 <= hoje && !agendamento.enviado) {
+                        // Marcar o agendamento como enviado
+                        agendamento.enviado = true;
 
-                    if (agendamento.nome !== '') {
-                        client.sendMessage(agendamento.fone + '@c.us', agendamento.nome);
-                    }
+                        if (agendamento.nome !== '') {
+                            client.sendMessage(agendamento.fone + '@c.us', agendamento.nome);
+                        }
 
-                    if (agendamento.mensagemip5 && agendamento.mensagemip5 !== '') {
-                        console.log('URL da mensagemip5:', agendamento.mensagemip5);
-                        try {
-                            const media = await MessageMedia.fromUrl(agendamento.mensagemip5);
-                            const linkURL = 'https://www.instagram.com/oticasdiniz.propria/'; // Replace this with your desired link URL
-                            const textBelowImage = 'siga nosso instagram';
-                            const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
+                        if (agendamento.mensagemip5 && agendamento.mensagemip5 !== '') {
+                            console.log('URL da mensagemip5:', agendamento.mensagemip5);
+                            try {
+                                const media = await MessageMedia.fromUrl(agendamento.mensagemip5);
+                                const linkURL = 'https://www.instagram.com/oticasdinizro/'; // Replace this with your desired link URL
+                                const textBelowImage = 'siga nosso instagram';
+                                const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
-                            const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
-                        } catch (error) {
-                            console.error('Erro ao obter a mensagemip5:', error);
+                                const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
+                            } catch (error) {
+                                console.error('Erro ao obter a mensagemip5:', error);
+                            }
+                        }
+
+                        const success = await updateStatusip5(agendamento.id);
+                        if (success) {
+                            console.log('BOT-ZDG - Mensagem ID: ' + agendamento.id + ' - statusip5 atualizado para "enviado"');
+                        } else {
+                            console.log('BOT-ZDG - Falha ao atualizar o statusip5 da mensagem ID: ' + agendamento.id);
                         }
                     }
-
-                    const success = await updateStatusip5(agendamento.id);
-                    if (success) {
-                        console.log('BOT-ZDG - Mensagem ID: ' + agendamento.id + ' - statusip5 atualizado para "enviado"');
-                    } else {
-                        console.log('BOT-ZDG - Falha ao atualizar o statusip5 da mensagem ID: ' + agendamento.id);
-                    }
                 }
-            }
 
 
-            for (const agendamento of agendamentosdateip6) {
-                if (agendamento.dateip6 && agendamento.dateip6 <= hoje && !agendamento.enviado) {
-                    // Marcar o agendamento como enviado
-                    agendamento.enviado = true;
+                for (const agendamento of agendamentosdateip6) {
+                    if (agendamento.dateip6 && agendamento.dateip6 <= hoje && !agendamento.enviado) {
+                        // Marcar o agendamento como enviado
+                        agendamento.enviado = true;
 
-                    if (agendamento.nome !== '') {
-                        client.sendMessage(agendamento.fone + '@c.us', agendamento.nome);
-                    }
+                        if (agendamento.nome !== '') {
+                            client.sendMessage(agendamento.fone + '@c.us', agendamento.nome);
+                        }
 
-                    if (agendamento.mensagemip6 && agendamento.mensagemip6 !== '') {
-                        console.log('URL da mensagemip6:', agendamento.mensagemip6);
-                        try {
-                            const media = await MessageMedia.fromUrl(agendamento.mensagemip6);
-                            const linkURL = 'https://www.instagram.com/oticasdiniz.propria/'; // Replace this with your desired link URL
-                            const textBelowImage = 'siga nosso instagram';
-                            const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
+                        if (agendamento.mensagemip6 && agendamento.mensagemip6 !== '') {
+                            console.log('URL da mensagemip6:', agendamento.mensagemip6);
+                            try {
+                                const media = await MessageMedia.fromUrl(agendamento.mensagemip6);
+                                const linkURL = 'https://www.instagram.com/oticasdinizro/'; // Replace this with your desired link URL
+                                const textBelowImage = 'siga nosso instagram';
+                                const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
-                            const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
-                        } catch (error) {
-                            console.error('Erro ao obter a mensagemip6:', error);
+                                const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
+                            } catch (error) {
+                                console.error('Erro ao obter a mensagemip6:', error);
+                            }
+                        }
+
+                        const success = await updateStatusip6(agendamento.id);
+                        if (success) {
+                            console.log('BOT-ZDG - Mensagem ID: ' + agendamento.id + ' - statusip6 atualizado para "enviado"');
+                        } else {
+                            console.log('BOT-ZDG - Falha ao atualizar o statusip6 da mensagem ID: ' + agendamento.id);
                         }
                     }
-
-                    const success = await updateStatusip6(agendamento.id);
-                    if (success) {
-                        console.log('BOT-ZDG - Mensagem ID: ' + agendamento.id + ' - statusip6 atualizado para "enviado"');
-                    } else {
-                        console.log('BOT-ZDG - Falha ao atualizar o statusip6 da mensagem ID: ' + agendamento.id);
-                    }
                 }
-            }
 
 
 
-       
-            for (const agendamento of agendamentosdatern) {
-                if (agendamento.datern && agendamento.datern <= hoje && !agendamento.enviado) {
-                    // Marcar o agendamento como enviado
-                    agendamento.enviado = true;
 
-                    if (agendamento.nome !== '') {
-                        client.sendMessage(agendamento.fone + '@c.us', agendamento.nome);
-                    }
+                for (const agendamento of agendamentosdatern) {
+                    if (agendamento.datern && agendamento.datern <= hoje && !agendamento.enviado) {
+                        // Marcar o agendamento como enviado
+                        agendamento.enviado = true;
 
-                    if (agendamento.mesnagemrn && agendamento.mesnagemrn !== '') {
-                        console.log('URL da mesnagemrn:', agendamento.mesnagemrn);
-                        try {
-                            const media = await MessageMedia.fromUrl(agendamento.mesnagemrn);
-                            const linkURL = 'https://www.instagram.com/oticasdiniz.propria/'; // Replace this with your desired link URL
-                            const textBelowImage = 'siga nosso instagram';
-                            const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
+                        if (agendamento.nome !== '') {
+                            client.sendMessage(agendamento.fone + '@c.us', agendamento.nome);
+                        }
 
-                            const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
-                        } catch (error) {
-                            console.error('Erro ao obter a mesnagemrn:', error);
+                        if (agendamento.mesnagemrn && agendamento.mesnagemrn !== '') {
+                            console.log('URL da mesnagemrn:', agendamento.mesnagemrn);
+                            try {
+                                const media = await MessageMedia.fromUrl(agendamento.mesnagemrn);
+                                const linkURL = 'https://www.instagram.com/oticasdinizro/'; // Replace this with your desired link URL
+                                const textBelowImage = 'siga nosso instagram';
+                                const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
+
+                                const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
+                            } catch (error) {
+                                console.error('Erro ao obter a mesnagemrn:', error);
+                            }
+                        }
+
+                        const success = await updateStatusrn(agendamento.id);
+                        if (success) {
+                            console.log('BOT-ZDG - Mensagem ID: ' + agendamento.id + ' - statusrn atualizado para "enviado"');
+                        } else {
+                            console.log('BOT-ZDG - Falha ao atualizar o statusrn da mensagem ID: ' + agendamento.id);
                         }
                     }
-
-                    const success = await updateStatusrn(agendamento.id);
-                    if (success) {
-                        console.log('BOT-ZDG - Mensagem ID: ' + agendamento.id + ' - statusrn atualizado para "enviado"');
-                    } else {
-                        console.log('BOT-ZDG - Falha ao atualizar o statusrn da mensagem ID: ' + agendamento.id);
-                    }
                 }
-            }
 
-        } catch (error) {
-            console.error('Erro na tarefa agendada:', error);
-        }
+            } catch (error) {
+                console.error('Erro na tarefa agendada:', error);
+            }
+        });
+
     });
-
-});
 
     // Evento disparado quando o cliente é autenticado com sucesso
     client.on('authenticated', () => {
@@ -1178,4 +1184,3 @@ io.on('connection', function (socket) {
 server.listen(port, function () {
     console.log('BOT-ZDG rodando na porta *:' + port);
 });
-
