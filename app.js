@@ -12,6 +12,7 @@ const mysql = require('mysql2/promise');
 const nodeCron = require("node-cron");
 
 
+
 // FunÃƒÂ§ÃƒÂ£o para criar conexÃƒÂ£o com o banco de dados
 const createConnection = async () => {
     return await mysql.createConnection({
@@ -557,6 +558,8 @@ io.on('connection', function (socket) {
                             try {
                                 const media = await MessageMedia.fromUrl(agendamento.mensagemco);
 
+                                client.sendMessage(agendamento.fone + '@c.us', media, { caption });
+
                             } catch (error) {
                                 console.error('Erro ao obter a mensagemco:', error);
                             }
@@ -624,6 +627,7 @@ io.on('connection', function (socket) {
                                 const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
                                 const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
+                                client.sendMessage(agendamento.fone + '@c.us', media, { caption });
                             } catch (error) {
                                 console.error('Erro ao obter a mensagemfn:', error);
                             }
@@ -656,6 +660,7 @@ io.on('connection', function (socket) {
                                 const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
                                 const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
+                                client.sendMessage(agendamento.fone + '@c.us', media, { caption });
                             } catch (error) {
                                 console.error('Erro ao obter a mensagemad:', error);
                             }
@@ -690,6 +695,7 @@ io.on('connection', function (socket) {
                                 const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
                                 const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
+                                client.sendMessage(agendamento.fone + '@c.us', media, { caption });
                             } catch (error) {
                                 console.error('Erro ao obter a mensagemip:', error);
                             }
@@ -723,6 +729,7 @@ io.on('connection', function (socket) {
                                 const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
                                 const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
+                                client.sendMessage(agendamento.fone + '@c.us', media, { caption });
                             } catch (error) {
                                 console.error('Erro ao obter a mensagemde:', error);
                             }
@@ -756,6 +763,7 @@ io.on('connection', function (socket) {
                                 const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
                                 const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
+                                client.sendMessage(agendamento.fone + '@c.us', media, { caption });
                             } catch (error) {
                                 console.error('Erro ao obter a mesnagemcol:', error);
                             }
@@ -789,6 +797,7 @@ io.on('connection', function (socket) {
                                 const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
                                 const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
+                                client.sendMessage(agendamento.fone + '@c.us', media, { caption });
                             } catch (error) {
                                 console.error('Erro ao obter a mensageman:', error);
                             }
@@ -822,6 +831,8 @@ io.on('connection', function (socket) {
                                 const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
                                 const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
+                                client.sendMessage(agendamento.fone + '@c.us', media, { caption });
+
                             } catch (error) {
                                 console.error('Erro ao obter a mensagems:', error);
                             }
@@ -855,6 +866,8 @@ io.on('connection', function (socket) {
                                 const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
                                 const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
+                                client.sendMessage(agendamento.fone + '@c.us', media, { caption });
+
                             } catch (error) {
                                 console.error('Erro ao obter a mensagemf:', error);
                             }
@@ -888,6 +901,8 @@ io.on('connection', function (socket) {
                                 const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
                                 const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
+                                client.sendMessage(agendamento.fone + '@c.us', media, { caption });
+
                             } catch (error) {
                                 console.error('Erro ao obter a mensagemen:', error);
                             }
@@ -921,6 +936,8 @@ io.on('connection', function (socket) {
                                 const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
                                 const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
+                                client.sendMessage(agendamento.fone + '@c.us', media, { caption });
+
                             } catch (error) {
                                 console.error('Erro ao obter a mensagemen:', error);
                             }
@@ -954,6 +971,8 @@ io.on('connection', function (socket) {
                                 const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
                                 const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
+                                client.sendMessage(agendamento.fone + '@c.us', media, { caption });
+
                             } catch (error) {
                                 console.error('Erro ao obter a mensagemip2:', error);
                             }
@@ -987,6 +1006,8 @@ io.on('connection', function (socket) {
                                 const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
                                 const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
+                                client.sendMessage(agendamento.fone + '@c.us', media, { caption });
+
                             } catch (error) {
                                 console.error('Erro ao obter a mensagemip3:', error);
                             }
@@ -1020,6 +1041,8 @@ io.on('connection', function (socket) {
                                 const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
                                 const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
+                                client.sendMessage(agendamento.fone + '@c.us', media, { caption });
+
                             } catch (error) {
                                 console.error('Erro ao obter a mensagemip4:', error);
                             }
@@ -1053,6 +1076,8 @@ io.on('connection', function (socket) {
                                 const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
                                 const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
+                                client.sendMessage(agendamento.fone + '@c.us', media, { caption });
+
                             } catch (error) {
                                 console.error('Erro ao obter a mensagemip5:', error);
                             }
@@ -1086,6 +1111,8 @@ io.on('connection', function (socket) {
                                 const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
                                 const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
+                                client.sendMessage(agendamento.fone + '@c.us', media, { caption });
+
                             } catch (error) {
                                 console.error('Erro ao obter a mensagemip6:', error);
                             }
@@ -1121,6 +1148,8 @@ io.on('connection', function (socket) {
                                 const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
                                 const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
+                                client.sendMessage(agendamento.fone + '@c.us', media, { caption });
+
                             } catch (error) {
                                 console.error('Erro ao obter a mesnagemrn:', error);
                             }
