@@ -565,7 +565,7 @@ io.on('connection', function (socket) {
                             console.log('URL da mensagemco:', agendamento.mensagemco);
                             try {
                                 const media = await MessageMedia.fromUrl(agendamento.mensagemco);
-                             
+
                             } catch (error) {
                                 console.error('Erro ao obter a mensagemco:', error);
                             }
