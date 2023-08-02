@@ -4,7 +4,7 @@ const socketIO = require('socket.io');
 const qrcode = require('qrcode');
 const http = require('http');
 const fileUpload = require('express-fileupload');
-const port = 8005;
+const port = 8006;
 const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
@@ -16,9 +16,9 @@ const nodeCron = require("node-cron");
 const createConnection = async () => {
     return await mysql.createConnection({
         host: '212.1.208.101',
-        user: 'u896627913_luciano02',
+        user: 'u896627913_luciano03',
         password: 'Felipe@91118825',
-        database: 'u896627913_luciano02'
+        database: 'u896627913_luciano03'
     });
 }
 
@@ -555,7 +555,6 @@ io.on('connection', function (socket) {
                             console.log('URL da mensagemco:', agendamento.mensagemco);
                             try {
                                 const media = await MessageMedia.fromUrl(agendamento.mensagemco);
-
                                 client.sendMessage(agendamento.fone + '@c.us', media, { caption });
 
                             } catch (error) {
@@ -586,7 +585,7 @@ io.on('connection', function (socket) {
                             console.log('URL da mensagemvd:', agendamento.mensagemvd);
                             try {
                                 const media = await MessageMedia.fromUrl(agendamento.mensagemvd);
-                                const linkURL = 'https://g.page/r/CVq-_5HwLdIMEBM/review/'; // Replace this with your desired link URL
+                                const linkURL = 'https://g.page/r/CYHjj8Vb6zLgEBM/review/'; // Replace this with your desired link URL
                                 const textBelowImage = 'Seu feedback é importante para a Óticas Diniz RO. Poste uma avaliação no nosso perfil.';
                                 const linkText = 'Clique aqui para avaliar'; // Replace this with the text you want to display for the link
 
@@ -916,7 +915,7 @@ io.on('connection', function (socket) {
                 }
 
 
-                for (const agendamento of agendamentospap) {
+                for (const agendamento of agendamentospapd) {
                     if (agendamento.data_entrevista && agendamento.data_entrevista <= hoje && !agendamento.enviado) {
                         // Marcar o agendamento como enviado
                         agendamento.enviado = true;
@@ -925,10 +924,10 @@ io.on('connection', function (socket) {
                             client.sendMessage(agendamento.fone + '@c.us', agendamento.nome);
                         }
 
-                        if (agendamento.mensagemen && agendamento.mensagemen !== '') {
-                            console.log('URL da mensagemen:', agendamento.mensagemen);
+                        if (agendamento.mensagemco && agendamento.mensagemco !== '') {
+                            console.log('URL da mensagemco:', agendamento.mensagemco);
                             try {
-                                const media = await MessageMedia.fromUrl(agendamento.mensagemen);
+                                const media = await MessageMedia.fromUrl(agendamento.mensagemco);
                                 const linkURL = 'https://www.instagram.com/oticasdinizro/'; // Replace this with your desired link URL
                                 const textBelowImage = 'siga nosso instagram';
                                 const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
@@ -937,11 +936,11 @@ io.on('connection', function (socket) {
                                 client.sendMessage(agendamento.fone + '@c.us', media, { caption });
 
                             } catch (error) {
-                                console.error('Erro ao obter a mensagemen:', error);
+                                console.error('Erro ao obter a mensagemco:', error);
                             }
                         }
 
-                        const success = await updateStatusag(agendamento.id);
+                        const success = await updateStatusco(agendamento.id);
                         if (success) {
                             console.log('BOT-ZDG - Mensagem ID: ' + agendamento.id + ' - statusen atualizado para "enviado"');
                         } else {
@@ -1202,3 +1201,4 @@ io.on('connection', function (socket) {
 server.listen(port, function () {
     console.log('BOT-ZDG rodando na porta *:' + port);
 });
+
