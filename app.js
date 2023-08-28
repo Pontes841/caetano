@@ -169,19 +169,6 @@ const updateStatusco = async (id) => {
     }
 };
 
-// FunÃ§Ã£o para atualizar o statusan no banco de dados pap
-const updateStatusdia = async (id) => {
-    try {
-        const connection = await createConnection();
-        const query = 'UPDATE controle_pap SET statusdiaantes = "enviado" WHERE id = ?';
-        const [result] = await connection.execute(query, [id]);
-        return result.affectedRows > 0;
-    } catch (error) {
-        console.error('Erro ao atualizar o statusdiaantes:', error);
-        return false;
-    }
-};
-
 // FunÃ§Ã£o para atualizar o statusip2 importancia de cuidar dos seus oculos (controle de OS) 2
 const updateSatusip2 = async (id) => {
     try {
@@ -394,19 +381,6 @@ const agendamentoZDG11 = async () => {
     }
 };
 
-// FunÃ§Ã£o para obter os registros de agendamento do banco de dados statusdiaantes pap
-const agendamentoZDG18= async () => {
-    try {
-        const connection = await createConnection();
-        const [rows] = await connection.execute('SELECT * FROM controle_pap WHERE statusdiaantes IS NULL OR statusdiaantes = ""');
-        return rows;
-    } catch (error) {
-        console.error('Erro ao obter os registros de agendamento:', error);
-        return [];
-    }
-};
-
-
 // importancia de cuidar dos seus oculos (controle de OS) 2
 
 const agendamentoZDG12 = async () => {
@@ -559,7 +533,6 @@ io.on('connection', function (socket) {
                 const agendamentosgarantiafi = await agendamentoZDG9();
                 const agendamentospap = await agendamentoZDG10();
                 const agendamentospapd = await agendamentoZDG11();
-                const agendamentospapdia = await agendamentoZDG18();
                 const agendamentosdateip2 = await agendamentoZDG12();
                 const agendamentosdateip3 = await agendamentoZDG13();
                 const agendamentosdateip4 = await agendamentoZDG14();
@@ -612,8 +585,8 @@ io.on('connection', function (socket) {
                             console.log('URL da mensagemvd:', agendamento.mensagemvd);
                             try {
                                 const media = await MessageMedia.fromUrl(agendamento.mensagemvd);
-                                const linkURL = 'https://www.google.com/search?q=oticas+diniz+penedo&rlz=1C1FCXM_pt-PTBR993BR993&oq=oticas+diniz+penedo&aqs=chrome.0.69i59j46i175i199i512j69i64j0i10i22i30j69i61l3.1925j0j4&sourceid=chrome&ie=UTF-8#lrd=0x70455a218c1c24b:0xff7e08efb81bfc50,3,,,,'; // Replace this with your desired link URL
-                                const textBelowImage = 'Seu feedback é importante para a Óticas Diniz Penedo-AL. Poste uma avaliação no nosso perfil.';
+                                const linkURL = 'https://g.page/r/CYHjj8Vb6zLgEBM/review/'; // Replace this with your desired link URL
+                                const textBelowImage = 'Seu feedback é importante para a Óticas Diniz RO. Poste uma avaliação no nosso perfil.';
                                 const linkText = 'Clique aqui para avaliar'; // Replace this with the text you want to display for the link
 
                                 const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
@@ -646,8 +619,8 @@ io.on('connection', function (socket) {
                             console.log('URL da mensagemfn:', agendamento.mensagemfn);
                             try {
                                 const media = await MessageMedia.fromUrl(agendamento.mensagemfn);
-                                const linkURL = 'https://www.instagram.com/oticasdiniz.penedo/'; // Replace this with your desired link URL
-                                const textBelowImage = 'Olá! Que tal me acompanhar no Instagram? Tenho certeza de que você vai adorar o conteúdo. Basta clicar no link abaixo. Se você já nos segue, por favor, ignore esta mensagem.';
+                                const linkURL = 'https://www.instagram.com/oticasdinizro/'; // Replace this with your desired link URL
+                                const textBelowImage = 'siga nosso instagram';
                                 const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
                                 const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
@@ -679,8 +652,8 @@ io.on('connection', function (socket) {
                             console.log('URL da mensagemad:', agendamento.mensagemad);
                             try {
                                 const media = await MessageMedia.fromUrl(agendamento.mensagemad);
-                                const linkURL = 'https://www.instagram.com/oticasdiniz.penedo/'; // Replace this with your desired link URL
-                                const textBelowImage = 'Olá! Que tal me acompanhar no Instagram? Tenho certeza de que você vai adorar o conteúdo. Basta clicar no link abaixo. Se você já nos segue, por favor, ignore esta mensagem.';
+                                const linkURL = 'https://www.instagram.com/oticasdinizro/'; // Replace this with your desired link URL
+                                const textBelowImage = 'siga nosso instagram';
                                 const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
                                 const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
@@ -714,8 +687,8 @@ io.on('connection', function (socket) {
                             console.log('URL da mensagemip:', agendamento.mensagemip);
                             try {
                                 const media = await MessageMedia.fromUrl(agendamento.mensagemip);
-                                const linkURL = 'https://www.instagram.com/oticasdiniz.penedo/'; // Replace this with your desired link URL
-                                const textBelowImage = 'Olá! Que tal me acompanhar no Instagram? Tenho certeza de que você vai adorar o conteúdo. Basta clicar no link abaixo. Se você já nos segue, por favor, ignore esta mensagem.';
+                                const linkURL = 'https://www.instagram.com/oticasdinizro/'; // Replace this with your desired link URL
+                                const textBelowImage = 'siga nosso instagram';
                                 const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
                                 const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
@@ -748,8 +721,8 @@ io.on('connection', function (socket) {
                             console.log('URL da mensagemde:', agendamento.mensagemde);
                             try {
                                 const media = await MessageMedia.fromUrl(agendamento.mensagemde);
-                                const linkURL = 'https://www.instagram.com/oticasdiniz.penedo/'; // Replace this with your desired link URL
-                                const textBelowImage = 'Olá! Que tal me acompanhar no Instagram? Tenho certeza de que você vai adorar o conteúdo. Basta clicar no link abaixo. Se você já nos segue, por favor, ignore esta mensagem.';
+                                const linkURL = 'https://www.instagram.com/oticasdinizro/'; // Replace this with your desired link URL
+                                const textBelowImage = 'siga nosso instagram';
                                 const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
                                 const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
@@ -782,8 +755,8 @@ io.on('connection', function (socket) {
                             console.log('URL da mesnagemcol:', agendamento.mesnagemcol);
                             try {
                                 const media = await MessageMedia.fromUrl(agendamento.mesnagemcol);
-                                const linkURL = 'https://www.instagram.com/oticasdiniz.penedo/'; // Replace this with your desired link URL
-                                const textBelowImage = 'Olá! Que tal me acompanhar no Instagram? Tenho certeza de que você vai adorar o conteúdo. Basta clicar no link abaixo. Se você já nos segue, por favor, ignore esta mensagem.';
+                                const linkURL = 'https://www.instagram.com/oticasdinizro/'; // Replace this with your desired link URL
+                                const textBelowImage = 'siga nosso instagram';
                                 const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
                                 const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
@@ -816,8 +789,8 @@ io.on('connection', function (socket) {
                             console.log('URL da mensageman:', agendamento.mensageman);
                             try {
                                 const media = await MessageMedia.fromUrl(agendamento.mensageman);
-                                const linkURL = 'https://www.instagram.com/oticasdiniz.penedo/'; // Replace this with your desired link URL
-                                const textBelowImage = 'Olá! Que tal me acompanhar no Instagram? Tenho certeza de que você vai adorar o conteúdo. Basta clicar no link abaixo. Se você já nos segue, por favor, ignore esta mensagem.';
+                                const linkURL = 'https://www.instagram.com/oticasdinizro/'; // Replace this with your desired link URL
+                                const textBelowImage = 'siga nosso instagram';
                                 const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
                                 const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
@@ -850,8 +823,8 @@ io.on('connection', function (socket) {
                             console.log('URL da mensagems:', agendamento.mensagems);
                             try {
                                 const media = await MessageMedia.fromUrl(agendamento.mensagems);
-                                const linkURL = 'https://www.instagram.com/oticasdiniz.penedo/'; // Replace this with your desired link URL
-                                const textBelowImage = 'Olá! Que tal me acompanhar no Instagram? Tenho certeza de que você vai adorar o conteúdo. Basta clicar no link abaixo. Se você já nos segue, por favor, ignore esta mensagem.';
+                                const linkURL = 'https://www.instagram.com/oticasdinizro/'; // Replace this with your desired link URL
+                                const textBelowImage = 'siga nosso instagram';
                                 const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
                                 const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
@@ -885,8 +858,8 @@ io.on('connection', function (socket) {
                             console.log('URL da mensagemf:', agendamento.mensagemf);
                             try {
                                 const media = await MessageMedia.fromUrl(agendamento.mensagemf);
-                                const linkURL = 'https://www.instagram.com/oticasdiniz.penedo/'; // Replace this with your desired link URL
-                                const textBelowImage = 'Olá! Que tal me acompanhar no Instagram? Tenho certeza de que você vai adorar o conteúdo. Basta clicar no link abaixo. Se você já nos segue, por favor, ignore esta mensagem.';
+                                const linkURL = 'https://www.instagram.com/oticasdinizro/'; // Replace this with your desired link URL
+                                const textBelowImage = 'siga nosso instagram';
                                 const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
                                 const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
@@ -920,8 +893,8 @@ io.on('connection', function (socket) {
                             console.log('URL da mensagemen:', agendamento.mensagemen);
                             try {
                                 const media = await MessageMedia.fromUrl(agendamento.mensagemen);
-                                const linkURL = 'https://www.instagram.com/oticasdiniz.penedo/'; // Replace this with your desired link URL
-                                const textBelowImage = 'Olá! Que tal me acompanhar no Instagram? Tenho certeza de que você vai adorar o conteúdo. Basta clicar no link abaixo. Se você já nos segue, por favor, ignore esta mensagem.';
+                                const linkURL = 'https://www.instagram.com/oticasdinizro/'; // Replace this with your desired link URL
+                                const textBelowImage = 'siga nosso instagram';
                                 const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
                                 const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
@@ -955,8 +928,8 @@ io.on('connection', function (socket) {
                             console.log('URL da mensagemco:', agendamento.mensagemco);
                             try {
                                 const media = await MessageMedia.fromUrl(agendamento.mensagemco);
-                                const linkURL = 'https://www.instagram.com/oticasdiniz.penedo/'; // Replace this with your desired link URL
-                                const textBelowImage = 'Olá! Que tal me acompanhar no Instagram? Tenho certeza de que você vai adorar o conteúdo. Basta clicar no link abaixo. Se você já nos segue, por favor, ignore esta mensagem.';
+                                const linkURL = 'https://www.instagram.com/oticasdinizro/'; // Replace this with your desired link URL
+                                const textBelowImage = 'siga nosso instagram';
                                 const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
                                 const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
@@ -976,40 +949,6 @@ io.on('connection', function (socket) {
                     }
                 }
 
-                for (const agendamento of agendamentospapdia) {
-                    if (agendamento.datadiaantes && agendamento.datadiaantes <= hoje && !agendamento.enviado) {
-                        // Marcar o agendamento como enviado
-                        agendamento.enviado = true;
-
-                        if (agendamento.nome !== '') {
-                            client.sendMessage(agendamento.fone + '@c.us', agendamento.nome);
-                        }
-
-                        if (agendamento.mensagemdiaantes && agendamento.mensagemdiaantes !== '') {
-                            console.log('URL da mensagemdiaantes:', agendamento.mensagemdiaantes);
-                            try {
-                                const media = await MessageMedia.fromUrl(agendamento.mensagemdiaantes);
-                                const linkURL = 'https://www.instagram.com/oticasdiniz.penedo/'; // Replace this with your desired link URL
-                                const textBelowImage = 'Olá! Que tal me acompanhar no Instagram? Tenho certeza de que você vai adorar o conteúdo. Basta clicar no link abaixo. Se você já nos segue, por favor, ignore esta mensagem.';
-                                const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
-
-                                const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
-                                client.sendMessage(agendamento.fone + '@c.us', media, { caption });
-
-                            } catch (error) {
-                                console.error('Erro ao obter a mensagemdiaantes:', error);
-                            }
-                        }
-
-                        const success = await updateStatusdia(agendamento.id);
-                        if (success) {
-                            console.log('BOT-ZDG - Mensagem ID: ' + agendamento.id + ' - statusdiaantes atualizado para "enviado"');
-                        } else {
-                            console.log('BOT-ZDG - Falha ao atualizar o statusdiaantes da mensagem ID: ' + agendamento.id);
-                        }
-                    }
-                }
-
 
                 for (const agendamento of agendamentosdateip2) {
                     if (agendamento.dateip2 && agendamento.dateip2 <= hoje && !agendamento.enviado) {
@@ -1024,8 +963,8 @@ io.on('connection', function (socket) {
                             console.log('URL da mensagemip2:', agendamento.mensagemip2);
                             try {
                                 const media = await MessageMedia.fromUrl(agendamento.mensagemip2);
-                                const linkURL = 'https://www.instagram.com/oticasdiniz.penedo/'; // Replace this with your desired link URL
-                                const textBelowImage = 'Olá! Que tal me acompanhar no Instagram? Tenho certeza de que você vai adorar o conteúdo. Basta clicar no link abaixo. Se você já nos segue, por favor, ignore esta mensagem.';
+                                const linkURL = 'https://www.instagram.com/oticasdinizro/'; // Replace this with your desired link URL
+                                const textBelowImage = 'siga nosso instagram';
                                 const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
                                 const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
@@ -1059,8 +998,8 @@ io.on('connection', function (socket) {
                             console.log('URL da mensagemip3:', agendamento.mensagemip3);
                             try {
                                 const media = await MessageMedia.fromUrl(agendamento.mensagemip3);
-                                const linkURL = 'https://www.instagram.com/oticasdiniz.penedo/'; // Replace this with your desired link URL
-                                const textBelowImage = 'Olá! Que tal me acompanhar no Instagram? Tenho certeza de que você vai adorar o conteúdo. Basta clicar no link abaixo. Se você já nos segue, por favor, ignore esta mensagem.';
+                                const linkURL = 'https://www.instagram.com/oticasdinizro/'; // Replace this with your desired link URL
+                                const textBelowImage = 'siga nosso instagram';
                                 const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
                                 const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
@@ -1094,8 +1033,8 @@ io.on('connection', function (socket) {
                             console.log('URL da mensagemip4:', agendamento.mensagemip4);
                             try {
                                 const media = await MessageMedia.fromUrl(agendamento.mensagemip4);
-                                const linkURL = 'https://www.instagram.com/oticasdiniz.penedo/'; // Replace this with your desired link URL
-                                const textBelowImage = 'Olá! Que tal me acompanhar no Instagram? Tenho certeza de que você vai adorar o conteúdo. Basta clicar no link abaixo. Se você já nos segue, por favor, ignore esta mensagem.';
+                                const linkURL = 'https://www.instagram.com/oticasdinizro/'; // Replace this with your desired link URL
+                                const textBelowImage = 'siga nosso instagram';
                                 const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
                                 const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
@@ -1129,8 +1068,8 @@ io.on('connection', function (socket) {
                             console.log('URL da mensagemip5:', agendamento.mensagemip5);
                             try {
                                 const media = await MessageMedia.fromUrl(agendamento.mensagemip5);
-                                const linkURL = 'https://www.instagram.com/oticasdiniz.penedo/'; // Replace this with your desired link URL
-                                const textBelowImage = 'Olá! Que tal me acompanhar no Instagram? Tenho certeza de que você vai adorar o conteúdo. Basta clicar no link abaixo. Se você já nos segue, por favor, ignore esta mensagem.';
+                                const linkURL = 'https://www.instagram.com/oticasdinizro/'; // Replace this with your desired link URL
+                                const textBelowImage = 'siga nosso instagram';
                                 const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
                                 const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
@@ -1164,8 +1103,8 @@ io.on('connection', function (socket) {
                             console.log('URL da mensagemip6:', agendamento.mensagemip6);
                             try {
                                 const media = await MessageMedia.fromUrl(agendamento.mensagemip6);
-                                const linkURL = 'https://www.instagram.com/oticasdiniz.penedo/'; // Replace this with your desired link URL
-                                const textBelowImage = 'Olá! Que tal me acompanhar no Instagram? Tenho certeza de que você vai adorar o conteúdo. Basta clicar no link abaixo. Se você já nos segue, por favor, ignore esta mensagem.';
+                                const linkURL = 'https://www.instagram.com/oticasdinizro/'; // Replace this with your desired link URL
+                                const textBelowImage = 'siga nosso instagram';
                                 const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
                                 const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
@@ -1201,8 +1140,8 @@ io.on('connection', function (socket) {
                             console.log('URL da mesnagemrn:', agendamento.mesnagemrn);
                             try {
                                 const media = await MessageMedia.fromUrl(agendamento.mesnagemrn);
-                                const linkURL = 'https://www.instagram.com/oticasdiniz.penedo/'; // Replace this with your desired link URL
-                                const textBelowImage = 'Olá! Que tal me acompanhar no Instagram? Tenho certeza de que você vai adorar o conteúdo. Basta clicar no link abaixo. Se você já nos segue, por favor, ignore esta mensagem.';
+                                const linkURL = 'https://www.instagram.com/oticasdinizro/'; // Replace this with your desired link URL
+                                const textBelowImage = 'siga nosso instagram';
                                 const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
                                 const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
