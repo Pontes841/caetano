@@ -4,7 +4,7 @@ const socketIO = require('socket.io');
 const qrcode = require('qrcode');
 const http = require('http');
 const fileUpload = require('express-fileupload');
-const port = 8000;
+const port = 8001;
 const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
@@ -18,7 +18,7 @@ const createConnection = async () => {
         host: '212.1.208.101',
         user: 'u896627913_santana',
         password: 'Felipe.91118825',
-        database: 'u896627913_santana	'
+        database: 'u896627913_santana'
     });
 }
 
