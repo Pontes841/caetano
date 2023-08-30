@@ -658,7 +658,7 @@ io.on('connection', function (socket) {
                                 const media = await MessageMedia.fromUrl(agendamento.mensagemvd);
                                 const linkURL = 'https://www.instagram.com/oticasdinizsertaoal.ba/?igshid=MzRlODBiNWFlZA%3D%3D'; // Replace this with your desired link URL
                                 const textBelowImage = 'Olá! Que tal nos seguir no Instagram ? Temos um conteúdo incrível que você vai adorar! Basta clicar no link abaixo.Se já nos segue, ignore essa mensagem.';
-                                const linkText = 'Clique aqui para avaliar'; // Replace this with the text you want to display for the link
+                                const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
                                 const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
 
@@ -959,10 +959,10 @@ io.on('connection', function (socket) {
                             client.sendMessage(agendamento.fone + '@c.us', agendamento.nome);
                         }
 
-                        if (agendamento.statusgaleso && agendamento.statusgaleso !== '') {
-                            console.log('URL da statusgaleso:', agendamento.statusgaleso);
+                        if (agendamento.mensagemgaleso && agendamento.mensagemgaleso !== '') {
+                            console.log('URL da mensagemgaleso:', agendamento.mensagemgaleso);
                             try {
-                                const media = await MessageMedia.fromUrl(agendamento.statusgaleso);
+                                const media = await MessageMedia.fromUrl(agendamento.mensagemgaleso);
                                 const linkURL = 'https://www.instagram.com/oticasdinizsertaoal.ba/?igshid=MzRlODBiNWFlZA%3D%3D'; // Replace this with your desired link URL
                                 const textBelowImage = 'Olá! Que tal nos seguir no Instagram ? Temos um conteúdo incrível que você vai adorar! Basta clicar no link abaixo.Se já nos segue, ignore essa mensagem.';
                                 const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
@@ -971,7 +971,7 @@ io.on('connection', function (socket) {
                                 client.sendMessage(agendamento.fone + '@c.us', media, { caption });
 
                             } catch (error) {
-                                console.error('Erro ao obter a statusgaleso:', error);
+                                console.error('Erro ao obter a mensagemgaleso:', error);
                             }
                         }
 
@@ -993,10 +993,10 @@ io.on('connection', function (socket) {
                             client.sendMessage(agendamento.fone + '@c.us', agendamento.nome);
                         }
 
-                        if (agendamento.statusgalefi && agendamento.statusgalefi !== '') {
-                            console.log('URL da statusgalefi:', agendamento.statusgalefi);
+                        if (agendamento.mensagemgalefi && agendamento.mensagemgalefi !== '') {
+                            console.log('URL da mensagemgalefi:', agendamento.mensagemgalefi);
                             try {
-                                const media = await MessageMedia.fromUrl(agendamento.statusgalefi);
+                                const media = await MessageMedia.fromUrl(agendamento.mensagemgalefi);
                                 const linkURL = 'https://www.instagram.com/oticasdinizsertaoal.ba/?igshid=MzRlODBiNWFlZA%3D%3D'; // Replace this with your desired link URL
                                 const textBelowImage = 'Olá! Que tal nos seguir no Instagram ? Temos um conteúdo incrível que você vai adorar! Basta clicar no link abaixo.Se já nos segue, ignore essa mensagem.';
                                 const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
@@ -1005,7 +1005,7 @@ io.on('connection', function (socket) {
                                 client.sendMessage(agendamento.fone + '@c.us', media, { caption });
 
                             } catch (error) {
-                                console.error('Erro ao obter a statusgalefi:', error);
+                                console.error('Erro ao obter a mensagemgalefi:', error);
                             }
                         }
 
@@ -1054,7 +1054,7 @@ io.on('connection', function (socket) {
 
 
                 for (const agendamento of agendamentospapd) {
-                    if (agendamento.data_entrevista && agendamento.data_entrevista <= hoje && !agendamento.enviado) {
+                    if (agendamento.data_consulta && agendamento.data_consulta <= hoje && !agendamento.enviado) {
                         // Marcar o agendamento como enviado
                         agendamento.enviado = true;
 
