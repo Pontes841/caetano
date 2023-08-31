@@ -4,7 +4,7 @@ const socketIO = require('socket.io');
 const qrcode = require('qrcode');
 const http = require('http');
 const fileUpload = require('express-fileupload');
-const port = 8002;
+const port = 8004;
 const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
@@ -16,9 +16,9 @@ const nodeCron = require("node-cron");
 const createConnection = async () => {
     return await mysql.createConnection({
         host: '212.1.208.101',
-        user: 'u896627913_dinizatalaia',
-        password: 'Felipe.91118825',
-        database: 'u896627913_dinizatalaia'
+        user: 'u896627913_luciano01',
+        password: 'Felipe@91118825',
+        database: 'u896627913_luciano01'
     });
 }
 
@@ -656,11 +656,12 @@ io.on('connection', function (socket) {
                             console.log('URL da mensagemvd:', agendamento.mensagemvd);
                             try {
                                 const media = await MessageMedia.fromUrl(agendamento.mensagemvd);
-                                const linkURL = 'https://instagram.com/oticasdinizatalaia?igshid=NzZhOTFlYzFmZQ=='; // Replace this with your desired link URL
-                                const textBelowImage = 'Olá! Que tal nos seguir no Instagram ? Temos um conteúdo incrível que você vai adorar! Basta clicar no link abaixo.Se já nos segue, ignore essa mensagem.';
-                                const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
+                                const linkURL = 'https://g.page/r/CaWcuer6OFEdEBM/review/'; // Replace this with your desired link URL
+                                const textBelowImage = 'Seu feedback é importante para a Óticas Diniz RO. Poste uma avaliação no nosso perfil.';
+                                const linkText = 'Clique aqui para avaliar'; // Replace this with the text you want to display for the link
 
                                 const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
+
                                 client.sendMessage(agendamento.fone + '@c.us', media, { caption });
                             } catch (error) {
                                 console.error('Erro ao obter a mensagemvd:', error);
@@ -689,7 +690,7 @@ io.on('connection', function (socket) {
                             console.log('URL da mensagemfn:', agendamento.mensagemfn);
                             try {
                                 const media = await MessageMedia.fromUrl(agendamento.mensagemfn);
-                                const linkURL = 'https://instagram.com/oticasdinizatalaia?igshid=NzZhOTFlYzFmZQ=='; // Replace this with your desired link URL
+                                const linkURL = 'https://www.instagram.com/oticasdinizro/'; // Replace this with your desired link URL
                                 const textBelowImage = 'Olá! Que tal nos seguir no Instagram ? Temos um conteúdo incrível que você vai adorar! Basta clicar no link abaixo.Se já nos segue, ignore essa mensagem.';
                                 const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
@@ -722,7 +723,7 @@ io.on('connection', function (socket) {
                             console.log('URL da mensagemad:', agendamento.mensagemad);
                             try {
                                 const media = await MessageMedia.fromUrl(agendamento.mensagemad);
-                                const linkURL = 'https://instagram.com/oticasdinizatalaia?igshid=NzZhOTFlYzFmZQ=='; // Replace this with your desired link URL
+                                const linkURL = 'https://www.instagram.com/oticasdinizro/'; // Replace this with your desired link URL
                                 const textBelowImage = 'Olá! Que tal nos seguir no Instagram ? Temos um conteúdo incrível que você vai adorar! Basta clicar no link abaixo.Se já nos segue, ignore essa mensagem.';
                                 const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
@@ -757,7 +758,7 @@ io.on('connection', function (socket) {
                             console.log('URL da mensagemip:', agendamento.mensagemip);
                             try {
                                 const media = await MessageMedia.fromUrl(agendamento.mensagemip);
-                                const linkURL = 'https://instagram.com/oticasdinizatalaia?igshid=NzZhOTFlYzFmZQ=='; // Replace this with your desired link URL
+                                const linkURL = 'https://www.instagram.com/oticasdinizro/'; // Replace this with your desired link URL
                                 const textBelowImage = 'Olá! Que tal nos seguir no Instagram ? Temos um conteúdo incrível que você vai adorar! Basta clicar no link abaixo.Se já nos segue, ignore essa mensagem.';
                                 const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
@@ -791,7 +792,7 @@ io.on('connection', function (socket) {
                             console.log('URL da mensagemde:', agendamento.mensagemde);
                             try {
                                 const media = await MessageMedia.fromUrl(agendamento.mensagemde);
-                                const linkURL = 'https://instagram.com/oticasdinizatalaia?igshid=NzZhOTFlYzFmZQ=='; // Replace this with your desired link URL
+                                const linkURL = 'https://www.instagram.com/oticasdinizro/'; // Replace this with your desired link URL
                                 const textBelowImage = 'Olá! Que tal nos seguir no Instagram ? Temos um conteúdo incrível que você vai adorar! Basta clicar no link abaixo.Se já nos segue, ignore essa mensagem.';
                                 const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
@@ -825,7 +826,7 @@ io.on('connection', function (socket) {
                             console.log('URL da mesnagemcol:', agendamento.mesnagemcol);
                             try {
                                 const media = await MessageMedia.fromUrl(agendamento.mesnagemcol);
-                                const linkURL = 'https://instagram.com/oticasdinizatalaia?igshid=NzZhOTFlYzFmZQ=='; // Replace this with your desired link URL
+                                const linkURL = 'https://www.instagram.com/oticasdinizro/'; // Replace this with your desired link URL
                                 const textBelowImage = 'Olá! Que tal nos seguir no Instagram ? Temos um conteúdo incrível que você vai adorar! Basta clicar no link abaixo.Se já nos segue, ignore essa mensagem.';
                                 const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
@@ -859,7 +860,7 @@ io.on('connection', function (socket) {
                             console.log('URL da mensageman:', agendamento.mensageman);
                             try {
                                 const media = await MessageMedia.fromUrl(agendamento.mensageman);
-                                const linkURL = 'https://instagram.com/oticasdinizatalaia?igshid=NzZhOTFlYzFmZQ=='; // Replace this with your desired link URL
+                                const linkURL = 'https://www.instagram.com/oticasdinizro/'; // Replace this with your desired link URL
                                 const textBelowImage = 'Olá! Que tal nos seguir no Instagram ? Temos um conteúdo incrível que você vai adorar! Basta clicar no link abaixo.Se já nos segue, ignore essa mensagem.';
                                 const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
@@ -893,7 +894,7 @@ io.on('connection', function (socket) {
                             console.log('URL da mensagems:', agendamento.mensagems);
                             try {
                                 const media = await MessageMedia.fromUrl(agendamento.mensagems);
-                                const linkURL = 'https://instagram.com/oticasdinizatalaia?igshid=NzZhOTFlYzFmZQ=='; // Replace this with your desired link URL
+                                const linkURL = 'https://www.instagram.com/oticasdinizro/'; // Replace this with your desired link URL
                                 const textBelowImage = 'Olá! Que tal nos seguir no Instagram ? Temos um conteúdo incrível que você vai adorar! Basta clicar no link abaixo.Se já nos segue, ignore essa mensagem.';
                                 const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
@@ -928,7 +929,7 @@ io.on('connection', function (socket) {
                             console.log('URL da mensagemf:', agendamento.mensagemf);
                             try {
                                 const media = await MessageMedia.fromUrl(agendamento.mensagemf);
-                                const linkURL = 'https://instagram.com/oticasdinizatalaia?igshid=NzZhOTFlYzFmZQ=='; // Replace this with your desired link URL
+                                const linkURL = 'https://www.instagram.com/oticasdinizro/'; // Replace this with your desired link URL
                                 const textBelowImage = 'Olá! Que tal nos seguir no Instagram ? Temos um conteúdo incrível que você vai adorar! Basta clicar no link abaixo.Se já nos segue, ignore essa mensagem.';
                                 const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
@@ -962,7 +963,7 @@ io.on('connection', function (socket) {
                             console.log('URL da mensagemgaleso:', agendamento.mensagemgaleso);
                             try {
                                 const media = await MessageMedia.fromUrl(agendamento.mensagemgaleso);
-                                const linkURL = 'https://instagram.com/oticasdinizatalaia?igshid=NzZhOTFlYzFmZQ=='; // Replace this with your desired link URL
+                                const linkURL = 'https://www.instagram.com/oticasdinizro/'; // Replace this with your desired link URL
                                 const textBelowImage = 'Olá! Que tal nos seguir no Instagram ? Temos um conteúdo incrível que você vai adorar! Basta clicar no link abaixo.Se já nos segue, ignore essa mensagem.';
                                 const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
@@ -996,7 +997,7 @@ io.on('connection', function (socket) {
                             console.log('URL da mensagemgalefi:', agendamento.mensagemgalefi);
                             try {
                                 const media = await MessageMedia.fromUrl(agendamento.mensagemgalefi);
-                                const linkURL = 'https://instagram.com/oticasdinizatalaia?igshid=NzZhOTFlYzFmZQ=='; // Replace this with your desired link URL
+                                const linkURL = 'https://www.instagram.com/oticasdinizro/'; // Replace this with your desired link URL
                                 const textBelowImage = 'Olá! Que tal nos seguir no Instagram ? Temos um conteúdo incrível que você vai adorar! Basta clicar no link abaixo.Se já nos segue, ignore essa mensagem.';
                                 const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
@@ -1030,7 +1031,7 @@ io.on('connection', function (socket) {
                             console.log('URL da mensagemen:', agendamento.mensagemen);
                             try {
                                 const media = await MessageMedia.fromUrl(agendamento.mensagemen);
-                                const linkURL = 'https://instagram.com/oticasdinizatalaia?igshid=NzZhOTFlYzFmZQ=='; // Replace this with your desired link URL
+                                const linkURL = 'https://www.instagram.com/oticasdinizro/'; // Replace this with your desired link URL
                                 const textBelowImage = 'Olá! Que tal nos seguir no Instagram ? Temos um conteúdo incrível que você vai adorar! Basta clicar no link abaixo.Se já nos segue, ignore essa mensagem.';
                                 const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
@@ -1065,7 +1066,7 @@ io.on('connection', function (socket) {
                             console.log('URL da mensagemco:', agendamento.mensagemco);
                             try {
                                 const media = await MessageMedia.fromUrl(agendamento.mensagemco);
-                                const linkURL = 'https://instagram.com/oticasdinizatalaia?igshid=NzZhOTFlYzFmZQ=='; // Replace this with your desired link URL
+                                const linkURL = 'https://www.instagram.com/oticasdinizro/'; // Replace this with your desired link URL
                                 const textBelowImage = 'Olá! Que tal nos seguir no Instagram ? Temos um conteúdo incrível que você vai adorar! Basta clicar no link abaixo.Se já nos segue, ignore essa mensagem.';
                                 const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
@@ -1100,7 +1101,7 @@ io.on('connection', function (socket) {
                             console.log('URL da mensagemdiaantes:', agendamento.mensagemdiaantes);
                             try {
                                 const media = await MessageMedia.fromUrl(agendamento.mensagemdiaantes);
-                                const linkURL = 'https://instagram.com/oticasdinizatalaia?igshid=NzZhOTFlYzFmZQ=='; // Replace this with your desired link URL
+                                const linkURL = 'https://www.instagram.com/oticasdinizro/'; // Replace this with your desired link URL
                                 const textBelowImage = 'Olá! Que tal nos seguir no Instagram ? Temos um conteúdo incrível que você vai adorar! Basta clicar no link abaixo.Se já nos segue, ignore essa mensagem.';
                                 const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
@@ -1134,7 +1135,7 @@ io.on('connection', function (socket) {
                             console.log('URL da mensagemip2:', agendamento.mensagemip2);
                             try {
                                 const media = await MessageMedia.fromUrl(agendamento.mensagemip2);
-                                const linkURL = 'https://instagram.com/oticasdinizatalaia?igshid=NzZhOTFlYzFmZQ=='; // Replace this with your desired link URL
+                                const linkURL = 'https://www.instagram.com/oticasdinizro/'; // Replace this with your desired link URL
                                 const textBelowImage = 'Olá! Que tal nos seguir no Instagram ? Temos um conteúdo incrível que você vai adorar! Basta clicar no link abaixo.Se já nos segue, ignore essa mensagem.';
                                 const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
@@ -1169,7 +1170,7 @@ io.on('connection', function (socket) {
                             console.log('URL da mensagemip3:', agendamento.mensagemip3);
                             try {
                                 const media = await MessageMedia.fromUrl(agendamento.mensagemip3);
-                                const linkURL = 'https://instagram.com/oticasdinizatalaia?igshid=NzZhOTFlYzFmZQ=='; // Replace this with your desired link URL
+                                const linkURL = 'https://www.instagram.com/oticasdinizro/'; // Replace this with your desired link URL
                                 const textBelowImage = 'Olá! Que tal nos seguir no Instagram ? Temos um conteúdo incrível que você vai adorar! Basta clicar no link abaixo.Se já nos segue, ignore essa mensagem.';
                                 const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
@@ -1204,7 +1205,7 @@ io.on('connection', function (socket) {
                             console.log('URL da mensagemip4:', agendamento.mensagemip4);
                             try {
                                 const media = await MessageMedia.fromUrl(agendamento.mensagemip4);
-                                const linkURL = 'https://instagram.com/oticasdinizatalaia?igshid=NzZhOTFlYzFmZQ=='; // Replace this with your desired link URL
+                                const linkURL = 'https://www.instagram.com/oticasdinizro/'; // Replace this with your desired link URL
                                 const textBelowImage = 'Olá! Que tal nos seguir no Instagram ? Temos um conteúdo incrível que você vai adorar! Basta clicar no link abaixo.Se já nos segue, ignore essa mensagem.';
                                 const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
@@ -1239,7 +1240,7 @@ io.on('connection', function (socket) {
                             console.log('URL da mensagemip5:', agendamento.mensagemip5);
                             try {
                                 const media = await MessageMedia.fromUrl(agendamento.mensagemip5);
-                                const linkURL = 'https://instagram.com/oticasdinizatalaia?igshid=NzZhOTFlYzFmZQ=='; // Replace this with your desired link URL
+                                const linkURL = 'https://www.instagram.com/oticasdinizro/'; // Replace this with your desired link URL
                                 const textBelowImage = 'Olá! Que tal nos seguir no Instagram ? Temos um conteúdo incrível que você vai adorar! Basta clicar no link abaixo.Se já nos segue, ignore essa mensagem.';
                                 const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
@@ -1274,7 +1275,7 @@ io.on('connection', function (socket) {
                             console.log('URL da mensagemip6:', agendamento.mensagemip6);
                             try {
                                 const media = await MessageMedia.fromUrl(agendamento.mensagemip6);
-                                const linkURL = 'https://instagram.com/oticasdinizatalaia?igshid=NzZhOTFlYzFmZQ=='; // Replace this with your desired link URL
+                                const linkURL = 'https://www.instagram.com/oticasdinizro/'; // Replace this with your desired link URL
                                 const textBelowImage = 'Olá! Que tal nos seguir no Instagram ? Temos um conteúdo incrível que você vai adorar! Basta clicar no link abaixo.Se já nos segue, ignore essa mensagem.';
                                 const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
@@ -1311,7 +1312,7 @@ io.on('connection', function (socket) {
                             console.log('URL da mesnagemrn:', agendamento.mesnagemrn);
                             try {
                                 const media = await MessageMedia.fromUrl(agendamento.mesnagemrn);
-                                const linkURL = 'https://instagram.com/oticasdinizatalaia?igshid=NzZhOTFlYzFmZQ=='; // Replace this with your desired link URL
+                                const linkURL = 'https://www.instagram.com/oticasdinizro/'; // Replace this with your desired link URL
                                 const textBelowImage = 'Olá! Que tal nos seguir no Instagram ? Temos um conteúdo incrível que você vai adorar! Basta clicar no link abaixo.Se já nos segue, ignore essa mensagem.';
                                 const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
 
