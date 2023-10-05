@@ -4,7 +4,7 @@ const socketIO = require('socket.io');
 const qrcode = require('qrcode');
 const http = require('http');
 const fileUpload = require('express-fileupload');
-const port = 8000;
+const port = 8010;
 const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
@@ -16,9 +16,9 @@ const nodeCron = require("node-cron");
 const createConnection = async () => {
     return await mysql.createConnection({
         host: '212.1.208.101',
-        user: 'u896627913_dinizriolargo',
+        user: 'u896627913_coruripe',
         password: 'Felipe.91118825',
-        database: 'u896627913_dinizriolargo'
+        database: 'u896627913_coruripe'
     });
 }
 
@@ -612,7 +612,7 @@ io.on('connection', function (socket) {
                 const agendamentospapdia = await agendamentoZDG20();
 
                 const hoje = new Date();
-                
+
                 for (const agendamento of agendamentoscobranca) {
                     if (agendamento.data_cobranca && agendamento.data_cobranca <= hoje && !agendamento.enviado) {
                         // Marcar o agendamento como enviado
@@ -623,20 +623,14 @@ io.on('connection', function (socket) {
                         }
 
                         if (agendamento.mensagemco && agendamento.mensagemco !== '') {
-                            console.log('URL da mensagemco:', agendamento.mensagemco);
-                            try {
-                                const media = await MessageMedia.fromUrl(agendamento.mensagemco);
-                                const linkURL = ''; // Replace this with your desired link URL
-                                const textBelowImage = 'Informação importante';
-                                const linkText = ''; // Replace this with the text you want to display for the link
-
-                                const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
-
-                                client.sendMessage(agendamento.fone + '@c.us', media, { caption });
-                            } catch (error) {
-                                console.error('Erro ao obter a mensagemco:', error);
-                            }
-                        }
+                                console.log('URL da mensagemfn:', agendamento.mensagemfn);
+                                try {
+                                    const media = await MessageMedia.fromUrl(agendamento.mensagemfn);
+                                    client.sendMessage(agendamento.fone + '@c.us', media, { caption: '' });
+                                } catch (error) {
+                                    console.error('Erro ao obter a mensagemfn:', error);
+                                }
+                            } 
 
                         const success = await updateStatuscob(agendamento.id);
                         if (success) {
@@ -661,11 +655,12 @@ io.on('connection', function (socket) {
                             console.log('URL da mensagemvd:', agendamento.mensagemvd);
                             try {
                                 const media = await MessageMedia.fromUrl(agendamento.mensagemvd);
-                                const linkURL = 'https://instagram.com/dinizriolargo?igshid=NzZhOTFlYzFmZQ=='; // Replace this with your desired link URL
-                                const textBelowImage = 'Olá! Que tal nos seguir no Instagram ? Temos um conteúdo incrível que você vai adorar! Basta clicar no link abaixo.Se já nos segue, ignore essa mensagem.';
-                                const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
+                                const linkURL = 'https://www.instagram.com/oticasdinizcoruripe/?igshid=MzRlODBiNWFlZA%3D%3D'; // Replace this with your desired link URL
+                                const textBelowImage = 'Seu feedback é importante para a Óticas Diniz. Poste uma avaliação no nosso perfil.';
+                                const linkText = 'Clique aqui para avaliar'; // Replace this with the text you want to display for the link
 
                                 const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
+
                                 client.sendMessage(agendamento.fone + '@c.us', media, { caption });
                             } catch (error) {
                                 console.error('Erro ao obter a mensagemvd:', error);
@@ -694,12 +689,7 @@ io.on('connection', function (socket) {
                             console.log('URL da mensagemfn:', agendamento.mensagemfn);
                             try {
                                 const media = await MessageMedia.fromUrl(agendamento.mensagemfn);
-                                const linkURL = 'https://instagram.com/dinizriolargo?igshid=NzZhOTFlYzFmZQ=='; // Replace this with your desired link URL
-                                const textBelowImage = 'Olá! Que tal nos seguir no Instagram ? Temos um conteúdo incrível que você vai adorar! Basta clicar no link abaixo.Se já nos segue, ignore essa mensagem.';
-                                const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
-
-                                const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
-                                client.sendMessage(agendamento.fone + '@c.us', media, { caption });
+                                client.sendMessage(agendamento.fone + '@c.us', media, { caption: '' });
                             } catch (error) {
                                 console.error('Erro ao obter a mensagemfn:', error);
                             }
@@ -714,6 +704,7 @@ io.on('connection', function (socket) {
                     }
                 }
 
+
                 for (const agendamento of agendamentosstatusad) {
                     if (agendamento.dataad && agendamento.dataad <= hoje && !agendamento.enviado) {
                         // Marcar o agendamento como enviado
@@ -722,21 +713,15 @@ io.on('connection', function (socket) {
                         if (agendamento.nome !== '') {
                             client.sendMessage(agendamento.fone + '@c.us', agendamento.nome);
                         }
-
-                        if (agendamento.mensagemad && agendamento.mensagemad !== '') {
-                            console.log('URL da mensagemad:', agendamento.mensagemad);
-                            try {
-                                const media = await MessageMedia.fromUrl(agendamento.mensagemad);
-                                const linkURL = 'https://instagram.com/dinizriolargo?igshid=NzZhOTFlYzFmZQ=='; // Replace this with your desired link URL
-                                const textBelowImage = 'Olá! Que tal nos seguir no Instagram ? Temos um conteúdo incrível que você vai adorar! Basta clicar no link abaixo.Se já nos segue, ignore essa mensagem.';
-                                const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
-
-                                const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
-                                client.sendMessage(agendamento.fone + '@c.us', media, { caption });
-                            } catch (error) {
-                                console.error('Erro ao obter a mensagemad:', error);
+                            if (agendamento.mensagemad && agendamento.mensagemad !== '') {
+                                console.log('URL da mensagemad:', agendamento.mensagemad);
+                                try {
+                                    const media = await MessageMedia.fromUrl(agendamento.mensagemad);
+                                    client.sendMessage(agendamento.fone + '@c.us', media, { caption: '' });
+                                } catch (error) {
+                                    console.error('Erro ao obter a mensagemad:', error);
+                                }
                             }
-                        }
 
                         const success = await updateStatusad(agendamento.id);
                         if (success) {
@@ -760,18 +745,13 @@ io.on('connection', function (socket) {
 
                         if (agendamento.mensagemip && agendamento.mensagemip !== '') {
                             console.log('URL da mensagemip:', agendamento.mensagemip);
-                            try {
-                                const media = await MessageMedia.fromUrl(agendamento.mensagemip);
-                                const linkURL = 'https://instagram.com/dinizriolargo?igshid=NzZhOTFlYzFmZQ=='; // Replace this with your desired link URL
-                                const textBelowImage = 'Olá! Que tal nos seguir no Instagram ? Temos um conteúdo incrível que você vai adorar! Basta clicar no link abaixo.Se já nos segue, ignore essa mensagem.';
-                                const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
-
-                                const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
-                                client.sendMessage(agendamento.fone + '@c.us', media, { caption });
-                            } catch (error) {
-                                console.error('Erro ao obter a mensagemip:', error);
+                                try {
+                                    const media = await MessageMedia.fromUrl(agendamento.mensagemip);
+                                    client.sendMessage(agendamento.fone + '@c.us', media, { caption: '' });
+                                } catch (error) {
+                                    console.error('Erro ao obter a mensagemip:', error);
+                                }
                             }
-                        }
 
                         const success = await updateStatusip(agendamento.id);
                         if (success) {
@@ -792,20 +772,15 @@ io.on('connection', function (socket) {
                             client.sendMessage(agendamento.fone + '@c.us', agendamento.nome);
                         }
 
-                        if (agendamento.mensagemde && agendamento.mensagemde !== '') {
-                            console.log('URL da mensagemde:', agendamento.mensagemde);
-                            try {
-                                const media = await MessageMedia.fromUrl(agendamento.mensagemde);
-                                const linkURL = 'https://instagram.com/dinizriolargo?igshid=NzZhOTFlYzFmZQ=='; // Replace this with your desired link URL
-                                const textBelowImage = 'Olá! Que tal nos seguir no Instagram ? Temos um conteúdo incrível que você vai adorar! Basta clicar no link abaixo.Se já nos segue, ignore essa mensagem.';
-                                const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
-
-                                const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
-                                client.sendMessage(agendamento.fone + '@c.us', media, { caption });
-                            } catch (error) {
-                                console.error('Erro ao obter a mensagemde:', error);
+                            if (agendamento.mensagemde && agendamento.mensagemde !== '') {
+                                console.log('URL da mensagemde:', agendamento.mensagemde);
+                                try {
+                                    const media = await MessageMedia.fromUrl(agendamento.mensagemde);
+                                    client.sendMessage(agendamento.fone + '@c.us', media, { caption: '' });
+                                } catch (error) {
+                                    console.error('Erro ao obter a mensagemde:', error);
+                                }
                             }
-                        }
 
                         const success = await updateSattusde(agendamento.id);
                         if (success) {
@@ -826,20 +801,15 @@ io.on('connection', function (socket) {
                             client.sendMessage(agendamento.fone + '@c.us', agendamento.nome);
                         }
 
-                        if (agendamento.mesnagemcol && agendamento.mesnagemcol !== '') {
-                            console.log('URL da mesnagemcol:', agendamento.mesnagemcol);
-                            try {
-                                const media = await MessageMedia.fromUrl(agendamento.mesnagemcol);
-                                const linkURL = 'https://instagram.com/dinizriolargo?igshid=NzZhOTFlYzFmZQ=='; // Replace this with your desired link URL
-                                const textBelowImage = 'Olá! Que tal nos seguir no Instagram ? Temos um conteúdo incrível que você vai adorar! Basta clicar no link abaixo.Se já nos segue, ignore essa mensagem.';
-                                const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
-
-                                const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
-                                client.sendMessage(agendamento.fone + '@c.us', media, { caption });
-                            } catch (error) {
-                                console.error('Erro ao obter a mesnagemcol:', error);
+                            if (agendamento.mesnagemcol && agendamento.mesnagemcol !== '') {
+                                console.log('URL da mesnagemcol:', agendamento.mesnagemcol);
+                                try {
+                                    const media = await MessageMedia.fromUrl(agendamento.mesnagemcol);
+                                    client.sendMessage(agendamento.fone + '@c.us', media, { caption: '' });
+                                } catch (error) {
+                                    console.error('Erro ao obter a mesnagemcol:', error);
+                                }
                             }
-                        }
 
                         const success = await updateStatuscol(agendamento.id);
                         if (success) {
@@ -859,21 +829,15 @@ io.on('connection', function (socket) {
                         if (agendamento.nome !== '') {
                             client.sendMessage(agendamento.fone + '@c.us', agendamento.nome);
                         }
-
-                        if (agendamento.mensageman && agendamento.mensageman !== '') {
-                            console.log('URL da mensageman:', agendamento.mensageman);
-                            try {
-                                const media = await MessageMedia.fromUrl(agendamento.mensageman);
-                                const linkURL = 'https://instagram.com/dinizriolargo?igshid=NzZhOTFlYzFmZQ=='; // Replace this with your desired link URL
-                                const textBelowImage = 'Olá! Que tal nos seguir no Instagram ? Temos um conteúdo incrível que você vai adorar! Basta clicar no link abaixo.Se já nos segue, ignore essa mensagem.';
-                                const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
-
-                                const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
-                                client.sendMessage(agendamento.fone + '@c.us', media, { caption });
-                            } catch (error) {
-                                console.error('Erro ao obter a mensageman:', error);
+                            if (agendamento.mensageman && agendamento.mensageman !== '') {
+                                console.log('URL da mensageman:', agendamento.mensageman);
+                                try {
+                                    const media = await MessageMedia.fromUrl(agendamento.mensageman);
+                                    client.sendMessage(agendamento.fone + '@c.us', media, { caption: '' });
+                                } catch (error) {
+                                    console.error('Erro ao obter a mensageman:', error);
+                                }
                             }
-                        }
 
                         const success = await updateStatusan(agendamento.id);
                         if (success) {
@@ -896,19 +860,13 @@ io.on('connection', function (socket) {
 
                         if (agendamento.mensagems && agendamento.mensagems !== '') {
                             console.log('URL da mensagems:', agendamento.mensagems);
-                            try {
-                                const media = await MessageMedia.fromUrl(agendamento.mensagems);
-                                const linkURL = 'https://instagram.com/dinizriolargo?igshid=NzZhOTFlYzFmZQ=='; // Replace this with your desired link URL
-                                const textBelowImage = 'Olá! Que tal nos seguir no Instagram ? Temos um conteúdo incrível que você vai adorar! Basta clicar no link abaixo.Se já nos segue, ignore essa mensagem.';
-                                const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
-
-                                const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
-                                client.sendMessage(agendamento.fone + '@c.us', media, { caption });
-
-                            } catch (error) {
-                                console.error('Erro ao obter a mensagems:', error);
+                                try {
+                                    const media = await MessageMedia.fromUrl(agendamento.mensagems);
+                                    client.sendMessage(agendamento.fone + '@c.us', media, { caption: '' });
+                                } catch (error) {
+                                    console.error('Erro ao obter a mensagems:', error);
+                                }
                             }
-                        }
 
                         const success = await updateStatusga(agendamento.id);
                         if (success) {
@@ -931,19 +889,13 @@ io.on('connection', function (socket) {
 
                         if (agendamento.mensagemf && agendamento.mensagemf !== '') {
                             console.log('URL da mensagemf:', agendamento.mensagemf);
-                            try {
-                                const media = await MessageMedia.fromUrl(agendamento.mensagemf);
-                                const linkURL = 'https://instagram.com/dinizriolargo?igshid=NzZhOTFlYzFmZQ=='; // Replace this with your desired link URL
-                                const textBelowImage = 'Olá! Que tal nos seguir no Instagram ? Temos um conteúdo incrível que você vai adorar! Basta clicar no link abaixo.Se já nos segue, ignore essa mensagem.';
-                                const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
-
-                                const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
-                                client.sendMessage(agendamento.fone + '@c.us', media, { caption });
-
-                            } catch (error) {
-                                console.error('Erro ao obter a mensagemf:', error);
+                                try {
+                                    const media = await MessageMedia.fromUrl(agendamento.mensagemf);
+                                    client.sendMessage(agendamento.fone + '@c.us', media, { caption: '' });
+                                } catch (error) {
+                                    console.error('Erro ao obter a mensagemf:', error);
+                                }
                             }
-                        }
 
                         const success = await updateStatusgaf(agendamento.id);
                         if (success) {
@@ -963,21 +915,15 @@ io.on('connection', function (socket) {
                             client.sendMessage(agendamento.fone + '@c.us', agendamento.nome);
                         }
 
-                        if (agendamento.mensagemgaleso && agendamento.mensagemgaleso !== '') {
-                            console.log('URL da mensagemgaleso:', agendamento.mensagemgaleso);
-                            try {
-                                const media = await MessageMedia.fromUrl(agendamento.mensagemgaleso);
-                                const linkURL = 'https://instagram.com/dinizriolargo?igshid=NzZhOTFlYzFmZQ=='; // Replace this with your desired link URL
-                                const textBelowImage = 'Olá! Que tal nos seguir no Instagram ? Temos um conteúdo incrível que você vai adorar! Basta clicar no link abaixo.Se já nos segue, ignore essa mensagem.';
-                                const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
-
-                                const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
-                                client.sendMessage(agendamento.fone + '@c.us', media, { caption });
-
-                            } catch (error) {
-                                console.error('Erro ao obter a mensagemgaleso:', error);
+                            if (agendamento.mensagemgaleso && agendamento.mensagemgaleso !== '') {
+                                console.log('URL da mensagemgaleso:', agendamento.mensagemgaleso);
+                                try {
+                                    const media = await MessageMedia.fromUrl(agendamento.mensagemgaleso);
+                                    client.sendMessage(agendamento.fone + '@c.us', media, { caption: '' });
+                                } catch (error) {
+                                    console.error('Erro ao obter a mensagemgaleso:', error);
+                                }
                             }
-                        }
 
                         const success = await updateStatusgale(agendamento.id);
                         if (success) {
@@ -997,21 +943,15 @@ io.on('connection', function (socket) {
                             client.sendMessage(agendamento.fone + '@c.us', agendamento.nome);
                         }
 
-                        if (agendamento.mensagemgalefi && agendamento.mensagemgalefi !== '') {
-                            console.log('URL da mensagemgalefi:', agendamento.mensagemgalefi);
-                            try {
-                                const media = await MessageMedia.fromUrl(agendamento.mensagemgalefi);
-                                const linkURL = 'https://instagram.com/dinizriolargo?igshid=NzZhOTFlYzFmZQ=='; // Replace this with your desired link URL
-                                const textBelowImage = 'Olá! Que tal nos seguir no Instagram ? Temos um conteúdo incrível que você vai adorar! Basta clicar no link abaixo.Se já nos segue, ignore essa mensagem.';
-                                const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
-
-                                const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
-                                client.sendMessage(agendamento.fone + '@c.us', media, { caption });
-
-                            } catch (error) {
-                                console.error('Erro ao obter a mensagemgalefi:', error);
+                            if (agendamento.mensagemgalefi && agendamento.mensagemgalefi !== '') {
+                                console.log('URL da mensagemgalefi:', agendamento.mensagemgalefi);
+                                try {
+                                    const media = await MessageMedia.fromUrl(agendamento.mensagemgalefi);
+                                    client.sendMessage(agendamento.fone + '@c.us', media, { caption: '' });
+                                } catch (error) {
+                                    console.error('Erro ao obter a mensagemgalefi:', error);
+                                }
                             }
-                        }
 
                         const success = await updateStatusgafle(agendamento.id);
                         if (success) {
@@ -1030,22 +970,15 @@ io.on('connection', function (socket) {
                         if (agendamento.nome !== '') {
                             client.sendMessage(agendamento.fone + '@c.us', agendamento.nome);
                         }
-
                         if (agendamento.mensagemen && agendamento.mensagemen !== '') {
                             console.log('URL da mensagemen:', agendamento.mensagemen);
-                            try {
-                                const media = await MessageMedia.fromUrl(agendamento.mensagemen);
-                                const linkURL = 'https://instagram.com/dinizriolargo?igshid=NzZhOTFlYzFmZQ=='; // Replace this with your desired link URL
-                                const textBelowImage = 'Olá! Que tal nos seguir no Instagram ? Temos um conteúdo incrível que você vai adorar! Basta clicar no link abaixo.Se já nos segue, ignore essa mensagem.';
-                                const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
-
-                                const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
-                                client.sendMessage(agendamento.fone + '@c.us', media, { caption });
-
-                            } catch (error) {
-                                console.error('Erro ao obter a mensagemen:', error);
+                                try {
+                                    const media = await MessageMedia.fromUrl(agendamento.mensagemen);
+                                    client.sendMessage(agendamento.fone + '@c.us', media, { caption: '' });
+                                } catch (error) {
+                                    console.error('Erro ao obter a mensagemen:', error);
+                                }
                             }
-                        }
 
                         const success = await updateStatusag(agendamento.id);
                         if (success) {
@@ -1068,19 +1001,13 @@ io.on('connection', function (socket) {
 
                         if (agendamento.mensagemco && agendamento.mensagemco !== '') {
                             console.log('URL da mensagemco:', agendamento.mensagemco);
-                            try {
-                                const media = await MessageMedia.fromUrl(agendamento.mensagemco);
-                                const linkURL = 'https://instagram.com/dinizriolargo?igshid=NzZhOTFlYzFmZQ=='; // Replace this with your desired link URL
-                                const textBelowImage = 'Olá! Que tal nos seguir no Instagram ? Temos um conteúdo incrível que você vai adorar! Basta clicar no link abaixo.Se já nos segue, ignore essa mensagem.';
-                                const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
-
-                                const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
-                                client.sendMessage(agendamento.fone + '@c.us', media, { caption });
-
-                            } catch (error) {
-                                console.error('Erro ao obter a mensagemco:', error);
+                                try {
+                                    const media = await MessageMedia.fromUrl(agendamento.mensagemco);
+                                    client.sendMessage(agendamento.fone + '@c.us', media, { caption: '' });
+                                } catch (error) {
+                                    console.error('Erro ao obter a mensagemco:', error);
+                                }
                             }
-                        }
 
                         const success = await updateStatusco(agendamento.id);
                         if (success) {
@@ -1101,21 +1028,15 @@ io.on('connection', function (socket) {
                             client.sendMessage(agendamento.fone + '@c.us', agendamento.nome);
                         }
 
-                        if (agendamento.mensagemdiaantes && agendamento.mensagemdiaantes !== '') {
-                            console.log('URL da mensagemdiaantes:', agendamento.mensagemdiaantes);
-                            try {
-                                const media = await MessageMedia.fromUrl(agendamento.mensagemdiaantes);
-                                const linkURL = 'https://instagram.com/dinizriolargo?igshid=NzZhOTFlYzFmZQ=='; // Replace this with your desired link URL
-                                const textBelowImage = 'Olá! Que tal nos seguir no Instagram ? Temos um conteúdo incrível que você vai adorar! Basta clicar no link abaixo.Se já nos segue, ignore essa mensagem.';
-                                const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
-
-                                const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
-                                client.sendMessage(agendamento.fone + '@c.us', media, { caption });
-
-                            } catch (error) {
-                                console.error('Erro ao obter a mensagemdiaantes:', error);
+                            if (agendamento.mensagemdiaantes && agendamento.mensagemdiaantes !== '') {
+                                console.log('URL da mensagemdiaantes:', agendamento.mensagemdiaantes);
+                                try {
+                                    const media = await MessageMedia.fromUrl(agendamento.mensagemdiaantes);
+                                    client.sendMessage(agendamento.fone + '@c.us', media, { caption: '' });
+                                } catch (error) {
+                                    console.error('Erro ao obter a mensagemdiaantes:', error);
+                                }
                             }
-                        }
 
                         const success = await updateStatuscodia(agendamento.id);
                         if (success) {
@@ -1135,21 +1056,15 @@ io.on('connection', function (socket) {
                             client.sendMessage(agendamento.fone + '@c.us', agendamento.nome);
                         }
 
-                        if (agendamento.mensagemip2 && agendamento.mensagemip2 !== '') {
-                            console.log('URL da mensagemip2:', agendamento.mensagemip2);
-                            try {
-                                const media = await MessageMedia.fromUrl(agendamento.mensagemip2);
-                                const linkURL = 'https://instagram.com/dinizriolargo?igshid=NzZhOTFlYzFmZQ=='; // Replace this with your desired link URL
-                                const textBelowImage = 'Olá! Que tal nos seguir no Instagram ? Temos um conteúdo incrível que você vai adorar! Basta clicar no link abaixo.Se já nos segue, ignore essa mensagem.';
-                                const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
-
-                                const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
-                                client.sendMessage(agendamento.fone + '@c.us', media, { caption });
-
-                            } catch (error) {
-                                console.error('Erro ao obter a mensagemip2:', error);
+                            if (agendamento.mensagemip2 && agendamento.mensagemip2 !== '') {
+                                console.log('URL da mensagemip2:', agendamento.mensagemip2);
+                                try {
+                                    const media = await MessageMedia.fromUrl(agendamento.mensagemip2);
+                                    client.sendMessage(agendamento.fone + '@c.us', media, { caption: '' });
+                                } catch (error) {
+                                    console.error('Erro ao obter a mensagemip2:', error);
+                                }
                             }
-                        }
 
                         const success = await updateSatusip2(agendamento.id);
                         if (success) {
@@ -1170,21 +1085,15 @@ io.on('connection', function (socket) {
                             client.sendMessage(agendamento.fone + '@c.us', agendamento.nome);
                         }
 
-                        if (agendamento.mensagemip3 && agendamento.mensagemip3 !== '') {
-                            console.log('URL da mensagemip3:', agendamento.mensagemip3);
-                            try {
-                                const media = await MessageMedia.fromUrl(agendamento.mensagemip3);
-                                const linkURL = 'https://instagram.com/dinizriolargo?igshid=NzZhOTFlYzFmZQ=='; // Replace this with your desired link URL
-                                const textBelowImage = 'Olá! Que tal nos seguir no Instagram ? Temos um conteúdo incrível que você vai adorar! Basta clicar no link abaixo.Se já nos segue, ignore essa mensagem.';
-                                const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
-
-                                const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
-                                client.sendMessage(agendamento.fone + '@c.us', media, { caption });
-
-                            } catch (error) {
-                                console.error('Erro ao obter a mensagemip3:', error);
+                            if (agendamento.mensagemip3 && agendamento.mensagemip3 !== '') {
+                                console.log('URL da mensagemip3:', agendamento.mensagemip3);
+                                try {
+                                    const media = await MessageMedia.fromUrl(agendamento.mensagemip3);
+                                    client.sendMessage(agendamento.fone + '@c.us', media, { caption: '' });
+                                } catch (error) {
+                                    console.error('Erro ao obter a mensagemip3:', error);
+                                }
                             }
-                        }
 
                         const success = await updatestatusip3(agendamento.id);
                         if (success) {
@@ -1205,21 +1114,15 @@ io.on('connection', function (socket) {
                             client.sendMessage(agendamento.fone + '@c.us', agendamento.nome);
                         }
 
-                        if (agendamento.mensagemip4 && agendamento.mensagemip4 !== '') {
-                            console.log('URL da mensagemip4:', agendamento.mensagemip4);
-                            try {
-                                const media = await MessageMedia.fromUrl(agendamento.mensagemip4);
-                                const linkURL = 'https://instagram.com/dinizriolargo?igshid=NzZhOTFlYzFmZQ=='; // Replace this with your desired link URL
-                                const textBelowImage = 'Olá! Que tal nos seguir no Instagram ? Temos um conteúdo incrível que você vai adorar! Basta clicar no link abaixo.Se já nos segue, ignore essa mensagem.';
-                                const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
-
-                                const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
-                                client.sendMessage(agendamento.fone + '@c.us', media, { caption });
-
-                            } catch (error) {
-                                console.error('Erro ao obter a mensagemip4:', error);
+                            if (agendamento.mensagemip4 && agendamento.mensagemip4 !== '') {
+                                console.log('URL da mensagemip4:', agendamento.mensagemip4);
+                                try {
+                                    const media = await MessageMedia.fromUrl(agendamento.mensagemip4);
+                                    client.sendMessage(agendamento.fone + '@c.us', media, { caption: '' });
+                                } catch (error) {
+                                    console.error('Erro ao obter a mensagemip4:', error);
+                                }
                             }
-                        }
 
                         const success = await updateStatusiip4(agendamento.id);
                         if (success) {
@@ -1240,21 +1143,15 @@ io.on('connection', function (socket) {
                             client.sendMessage(agendamento.fone + '@c.us', agendamento.nome);
                         }
 
-                        if (agendamento.mensagemip5 && agendamento.mensagemip5 !== '') {
-                            console.log('URL da mensagemip5:', agendamento.mensagemip5);
-                            try {
-                                const media = await MessageMedia.fromUrl(agendamento.mensagemip5);
-                                const linkURL = 'https://instagram.com/dinizriolargo?igshid=NzZhOTFlYzFmZQ=='; // Replace this with your desired link URL
-                                const textBelowImage = 'Olá! Que tal nos seguir no Instagram ? Temos um conteúdo incrível que você vai adorar! Basta clicar no link abaixo.Se já nos segue, ignore essa mensagem.';
-                                const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
-
-                                const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
-                                client.sendMessage(agendamento.fone + '@c.us', media, { caption });
-
-                            } catch (error) {
-                                console.error('Erro ao obter a mensagemip5:', error);
+                            if (agendamento.mensagemip5 && agendamento.mensagemip5 !== '') {
+                                console.log('URL da mensagemip5:', agendamento.mensagemip5);
+                                try {
+                                    const media = await MessageMedia.fromUrl(agendamento.mensagemip5);
+                                    client.sendMessage(agendamento.fone + '@c.us', media, { caption: '' });
+                                } catch (error) {
+                                    console.error('Erro ao obter a mensagemip5:', error);
+                                }
                             }
-                        }
 
                         const success = await updateStatusip5(agendamento.id);
                         if (success) {
@@ -1275,21 +1172,15 @@ io.on('connection', function (socket) {
                             client.sendMessage(agendamento.fone + '@c.us', agendamento.nome);
                         }
 
-                        if (agendamento.mensagemip6 && agendamento.mensagemip6 !== '') {
-                            console.log('URL da mensagemip6:', agendamento.mensagemip6);
-                            try {
-                                const media = await MessageMedia.fromUrl(agendamento.mensagemip6);
-                                const linkURL = 'https://instagram.com/dinizriolargo?igshid=NzZhOTFlYzFmZQ=='; // Replace this with your desired link URL
-                                const textBelowImage = 'Olá! Que tal nos seguir no Instagram ? Temos um conteúdo incrível que você vai adorar! Basta clicar no link abaixo.Se já nos segue, ignore essa mensagem.';
-                                const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
-
-                                const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
-                                client.sendMessage(agendamento.fone + '@c.us', media, { caption });
-
-                            } catch (error) {
-                                console.error('Erro ao obter a mensagemip6:', error);
+                            if (agendamento.mensagemip6 && agendamento.mensagemip6 !== '') {
+                                console.log('URL da mensagemip6:', agendamento.mensagemip6);
+                                try {
+                                    const media = await MessageMedia.fromUrl(agendamento.mensagemip6);
+                                    client.sendMessage(agendamento.fone + '@c.us', media, { caption: '' });
+                                } catch (error) {
+                                    console.error('Erro ao obter a mensagemip6:', error);
+                                }
                             }
-                        }
 
                         const success = await updateStatusip6(agendamento.id);
                         if (success) {
@@ -1312,21 +1203,15 @@ io.on('connection', function (socket) {
                             client.sendMessage(agendamento.fone + '@c.us', agendamento.nome);
                         }
 
-                        if (agendamento.mesnagemrn && agendamento.mesnagemrn !== '') {
-                            console.log('URL da mesnagemrn:', agendamento.mesnagemrn);
-                            try {
-                                const media = await MessageMedia.fromUrl(agendamento.mesnagemrn);
-                                const linkURL = 'https://instagram.com/dinizriolargo?igshid=NzZhOTFlYzFmZQ=='; // Replace this with your desired link URL
-                                const textBelowImage = 'Olá! Que tal nos seguir no Instagram ? Temos um conteúdo incrível que você vai adorar! Basta clicar no link abaixo.Se já nos segue, ignore essa mensagem.';
-                                const linkText = 'Clique aqui'; // Replace this with the text you want to display for the link
-
-                                const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
-                                client.sendMessage(agendamento.fone + '@c.us', media, { caption });
-
-                            } catch (error) {
-                                console.error('Erro ao obter a mesnagemrn:', error);
+                            if (agendamento.mesnagemrn && agendamento.mesnagemrn !== '') {
+                                console.log('URL da mesnagemrn:', agendamento.mesnagemrn);
+                                try {
+                                    const media = await MessageMedia.fromUrl(agendamento.mesnagemrn);
+                                    client.sendMessage(agendamento.fone + '@c.us', media, { caption: '' });
+                                } catch (error) {
+                                    console.error('Erro ao obter a mesnagemrn:', error);
+                                }
                             }
-                        }
 
                         const success = await updateStatusrn(agendamento.id);
                         if (success) {
