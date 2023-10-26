@@ -682,7 +682,7 @@ io.on('connection', function (socket) {
                             console.log('URL da mensagemvd:', agendamento.mensagemvd);
                             try {
                                 const media = await MessageMedia.fromUrl(agendamento.mensagemvd);
-                                const linkURL = 'https://www.instagram.com/oticasdiniz.penedo/'; // Replace this with your desired link URL
+                                const linkURL = 'https://www.instagram.com/oticasdiniz.lagarto/'; // Replace this with your desired link URL
                                 const textBelowImage = 'Olá! Que tal nos seguir no Instagram ? Temos um conteúdo incrível que você vai adorar! Basta clicar no link abaixo.Se já nos segue, ignore essa mensagem.';
                                 const linkText = 'Clique aqui para avaliar'; // Replace this with the text you want to display for the link
 
@@ -939,14 +939,14 @@ io.on('connection', function (socket) {
                         agendamento.enviado = true;
 
                         if (agendamento.nome !== '') {
-                            client.sendMessage(agendamento.FONE + '@c.us', agendamento.nome);
+                            client.sendMessage(agendamento.fone + '@c.us', agendamento.nome);
                         }
 
                         if (agendamento.mensagemgaleso && agendamento.mensagemgaleso !== '') {
                             console.log('URL da mensagemgaleso:', agendamento.mensagemgaleso);
                             try {
                                 const media = await MessageMedia.fromUrl(agendamento.mensagemgaleso);
-                                client.sendMessage(agendamento.FONE + '@c.us', media, { caption: '' });
+                                client.sendMessage(agendamento.fone + '@c.us', media, { caption: '' });
                             } catch (error) {
                                 console.error('Erro ao obter a mensagemgaleso:', error);
                             }
@@ -967,14 +967,14 @@ io.on('connection', function (socket) {
                         agendamento.enviado = true;
 
                         if (agendamento.nome !== '') {
-                            client.sendMessage(agendamento.FONE + '@c.us', agendamento.nome);
+                            client.sendMessage(agendamento.fone + '@c.us', agendamento.nome);
                         }
 
                         if (agendamento.mensagemgalefi && agendamento.mensagemgalefi !== '') {
                             console.log('URL da mensagemgalefi:', agendamento.mensagemgalefi);
                             try {
                                 const media = await MessageMedia.fromUrl(agendamento.mensagemgalefi);
-                                client.sendMessage(agendamento.FONE + '@c.us', media, { caption: '' });
+                                client.sendMessage(agendamento.fone + '@c.us', media, { caption: '' });
                             } catch (error) {
                                 console.error('Erro ao obter a mensagemgalefi:', error);
                             }
