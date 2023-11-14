@@ -39,17 +39,12 @@
     <div id="app">
         <h1>Whatsapp API</h1>
         <h3>Tecnologia move o mundo!</h3>
-        <p>E nós te ajudaremos a mover-se também!</p>
+        <p>E n�s te ajudaremos a mover-se tamb�m!</p>
         <img src="" alt="QR Code" id="qrcode">
         <h3>Logs:</h3>
         <ul class="logs"></ul>
     </div>
     <div class="box">
-        <!-- Adicione um aviso ou alerta aqui -->
-        <div class="alert">
-            <p>Atenção: Não é permitido atualizar esta pagina.</p>
-        </div>
-
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js" crossorigin="anonymous"></script>
         <script>
@@ -63,14 +58,6 @@
                 socket.on('qr', function (src) {
                     $('#qrcode').attr('src', src);
                     $('#qrcode').show();
-                });
-
-                socket.on('ready', function (data) {
-                    $('#qrcode').hide();
-                });
-
-                socket.on('authenticated', function (data) {
-                    $('#qrcode').hide();
                 });
             });
         </script>
