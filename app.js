@@ -2,29 +2,26 @@ const express = require('express');
 const socketIO = require('socket.io');
 const http = require('http');
 const qrcode = require('qrcode');
-const path = require('path');
 const fileUpload = require('express-fileupload');
 const moment = require('moment');
-const port = 8021;
+const port = 8009;
 const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
 
-const { Client, LocalAuth } = require('whatsapp-web.js');
+const { Client, LocalAuth, MessageMedia } = require('whatsapp-web.js');
 const mysql = require('mysql2/promise');
 const nodeCron = require('node-cron');
-
 
 // FunÃƒÂ§ÃƒÂ£o para criar conexÃƒÂ£o com o banco de dados
 const createConnection = async () => {
     return await mysql.createConnection({
         host: '212.1.208.101',
-        user: 'u896627913_saocaetano',
+        user: 'u896627913_dinizuniao',
         password: 'Felipe.91118825',
-        database: 'u896627913_saocaetano'
-    });;
+        database: 'u896627913_dinizuniao'
+    });
 }
-
 
 
 // FunÃ§Ã£o para atualizar o statusco no banco de dados (controle de cobranÃ§a)
@@ -557,12 +554,19 @@ const agendamentoZDG21 = async () => {
         return [];
     }
 };
+
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(fileUpload({ debug: true }));
+app.use(express.urlencoded({
+    extended: true
+}));
+app.use(fileUpload({
+    debug: true
+}));
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
+    res.sendFile('index.html', {
+        root: __dirname
+    });
 });
 
 const client = new Client({
@@ -602,15 +606,15 @@ io.on('connection', function (socket) {
     // Handle disconnections and restarts as necessary
     socket.on('disconnect', () => {
         console.log('Socket disconnected');
-        client.destroy(); // Desconectar o cliente ao fechar o socket
     });
 });
+
 
 client.initialize();
 
 client.on('ready', async () => {
     // Add your scheduled task here
-    nodeCron.schedule('*/60 * * * * *', async function () {
+    nodeCron.schedule('*/5 * * * *', async function () {
         try {
             const agendamentoscobranca = await agendamentoZDG0();
             const agendamentosSolicitacao = await agendamentoZDG();
@@ -679,7 +683,7 @@ client.on('ready', async () => {
                         console.log('URL da mensagemvd:', agendamento.mensagemvd);
                         try {
                             const media = await MessageMedia.fromUrl(agendamento.mensagemvd);
-                            const linkURL = 'https://www.instagram.com/oticasdiniz.pdi/'; // Replace this with your desired link URL
+                            const linkURL = 'https://instagram.com/oticasdinizuniaodospalmares/'; // Replace this with your desired link URL
                             const textBelowImage = 'Olá! Que tal nos seguir no Instagram ? Temos um conteúdo incrível que você vai adorar! Basta clicar no link abaixo.Se já nos segue, ignore essa mensagem.';
                             const linkText = 'Clique aqui para avaliar'; // Replace this with the text you want to display for the link
 
@@ -1273,7 +1277,6 @@ client.on('ready', async () => {
                     }
                 }
             }
-
         } catch (error) {
             console.error('Erro na tarefa agendada:', error);
         }
@@ -1295,7 +1298,7 @@ client.on('disconnected', (reason) => {
 
 
 
-server.listen(8021, () => {
-    console.log('Server is running on port 8021');
+server.listen(port, function () {
+    console.log('BOT-ZDG rodando na porta *:' + port);
 });
 
