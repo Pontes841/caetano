@@ -2,6 +2,7 @@ const express = require('express');
 const socketIO = require('socket.io');
 const http = require('http');
 const qrcode = require('qrcode');
+const path = require('path');
 const fileUpload = require('express-fileupload');
 const moment = require('moment');
 const port = 8021;
@@ -9,7 +10,7 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
 
-const { Client, LocalAuth, MessageMedia } = require('whatsapp-web.js');
+const { Client, LocalAuth } = require('whatsapp-web.js');
 const mysql = require('mysql2/promise');
 const nodeCron = require('node-cron');
 
@@ -556,19 +557,12 @@ const agendamentoZDG21 = async () => {
         return [];
     }
 };
-
 app.use(express.json());
-app.use(express.urlencoded({
-    extended: true
-}));
-app.use(fileUpload({
-    debug: true
-}));
+app.use(express.urlencoded({ extended: true }));
+app.use(fileUpload({ debug: true }));
 
 app.get('/', (req, res) => {
-    res.sendFile('index.html', {
-        root: __dirname
-    });
+    res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 const client = new Client({
@@ -608,10 +602,9 @@ io.on('connection', function (socket) {
     // Handle disconnections and restarts as necessary
     socket.on('disconnect', () => {
         console.log('Socket disconnected');
+        client.destroy(); // Desconectar o cliente ao fechar o socket
     });
 });
-
-
 
 client.initialize();
 
@@ -686,7 +679,7 @@ client.on('ready', async () => {
                         console.log('URL da mensagemvd:', agendamento.mensagemvd);
                         try {
                             const media = await MessageMedia.fromUrl(agendamento.mensagemvd);
-                            const linkURL = 'https://www.instagram.com/oticasdiniz01?igsh=MTltZDM1YzBpOW5tNQ%3D%3D&utm_source=qr'; // Replace this with your desired link URL
+                            const linkURL = 'https://www.instagram.com/oticasdiniz.pdi/'; // Replace this with your desired link URL
                             const textBelowImage = 'Olá! Que tal nos seguir no Instagram ? Temos um conteúdo incrível que você vai adorar! Basta clicar no link abaixo.Se já nos segue, ignore essa mensagem.';
                             const linkText = 'Clique aqui para avaliar'; // Replace this with the text you want to display for the link
 
@@ -1302,8 +1295,7 @@ client.on('disconnected', (reason) => {
 
 
 
-server.listen(port, function () {
-    console.log('BOT-ZDG rodando na porta *:' + port);
+server.listen(8021, () => {
+    console.log('Server is running on port 8021');
 });
-
 
