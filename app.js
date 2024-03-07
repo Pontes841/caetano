@@ -4,7 +4,7 @@ const http = require('http');
 const qrcode = require('qrcode');
 const fileUpload = require('express-fileupload');
 const moment = require('moment');
-const port = 8009;
+const port = 8004;
 const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
@@ -13,13 +13,14 @@ const { Client, LocalAuth, MessageMedia } = require('whatsapp-web.js');
 const mysql = require('mysql2/promise');
 const nodeCron = require('node-cron');
 
+
 // FunÃƒÂ§ÃƒÂ£o para criar conexÃƒÂ£o com o banco de dados
 const createConnection = async () => {
     return await mysql.createConnection({
         host: '212.1.208.101',
-        user: 'u896627913_dinizuniao',
-        password: 'Felipe.91118825',
-        database: 'u896627913_dinizuniao'
+        user: 'u896627913_luciano01',
+        password: 'Felipe@91118825',
+        database: 'u896627913_luciano01'
     });
 }
 
@@ -587,34 +588,43 @@ const client = new Client({
 });
 
 io.on('connection', function (socket) {
-    socket.emit('message', 'Conectando...');
+    // Check if the current time is within the allowed time frame
+    const now = moment();
+    const startHour = moment('08:00:00', 'HH:mm:ss'); // 8:00 AM
+    const endHour = moment('18:00:00', 'HH:mm:ss');   // 6:00 PM
 
-    // Event to receive the QR Code and display it on the interface
-    client.on('qr', (qr) => {
-        console.log('QR RECEIVED', qr);
-        qrcode.toDataURL(qr, (err, url) => {
-            socket.emit('qr', url);
-            socket.emit('message', 'QRCode recebido, aponte a Câmera do seu celular!');
+    if (now.isBetween(startHour, endHour)) {
+        socket.emit('message', 'Conectando...');
+
+        // Event to receive the QR Code and display it on the interface
+        client.on('qr', (qr) => {
+            console.log('QR RECEIVED', qr);
+            qrcode.toDataURL(qr, (err, url) => {
+                socket.emit('qr', url);
+                socket.emit('message', 'QRCode recebido, aponte a Câmera do seu celular!');
+            });
         });
-    });
 
-    // Event to inform that the QR Code connection has been successful
-    client.on('authenticated', (session) => {
-        socket.emit('message', 'Conexão do QR Code realizada com sucesso!');
-    });
+        // Event to inform that the QR Code connection has been successful
+        client.on('authenticated', (session) => {
+            socket.emit('message', 'Conexão do QR Code realizada com sucesso!');
+        });
 
-    // Handle disconnections and restarts as necessary
-    socket.on('disconnect', () => {
-        console.log('Socket disconnected');
-    });
+        // Handle disconnections and restarts as necessary
+        socket.on('disconnect', () => {
+            console.log('Socket disconnected');
+        });
+    } else {
+        socket.emit('message', 'A conexão está disponível somente entre 8:00 AM e 6:00 PM.');
+        socket.disconnect(true);
+    }
 });
-
 
 client.initialize();
 
 client.on('ready', async () => {
     // Add your scheduled task here
-    nodeCron.schedule('*/5 * * * *', async function () {
+    nodeCron.schedule('*/60 * * * * *', async function () {
         try {
             const agendamentoscobranca = await agendamentoZDG0();
             const agendamentosSolicitacao = await agendamentoZDG();
@@ -683,8 +693,8 @@ client.on('ready', async () => {
                         console.log('URL da mensagemvd:', agendamento.mensagemvd);
                         try {
                             const media = await MessageMedia.fromUrl(agendamento.mensagemvd);
-                            const linkURL = 'https://instagram.com/oticasdinizuniaodospalmares/'; // Replace this with your desired link URL
-                            const textBelowImage = 'Olá! Que tal nos seguir no Instagram ? Temos um conteúdo incrível que você vai adorar! Basta clicar no link abaixo.Se já nos segue, ignore essa mensagem.';
+                            const linkURL = 'https://g.page/r/CaWcuer6OFEdEBM/review/'; // Replace this with your desired link URL
+                            const textBelowImage = 'Seu feedback é importante para a Óticas Diniz RO. Poste uma avaliação no nosso perfil.';
                             const linkText = 'Clique aqui para avaliar'; // Replace this with the text you want to display for the link
 
                             const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
@@ -1277,6 +1287,7 @@ client.on('ready', async () => {
                     }
                 }
             }
+
         } catch (error) {
             console.error('Erro na tarefa agendada:', error);
         }
@@ -1290,15 +1301,12 @@ client.on('authenticated', () => {
 });
 
 client.on('disconnected', (reason) => {
-    console.log('Bot desconectado:', reason);
     io.emit('status', 'disconnected');
-    // Adicione lógica para reiniciar o processo, se necessário
-    // Exemplo: client.initialize();
+    console.log('Bot desconectado:', reason);
 });
-
-
 
 server.listen(port, function () {
     console.log('BOT-ZDG rodando na porta *:' + port);
 });
+
 
