@@ -21,8 +21,9 @@ const createConnection = async () => {
         user: 'u896627913_saocaetano',
         password: 'Felipe.91118825',
         database: 'u896627913_saocaetano'
-    });
+    });;
 }
+
 
 
 // FunÃ§Ã£o para atualizar o statusco no banco de dados (controle de cobranÃ§a)
@@ -587,98 +588,26 @@ const client = new Client({
     }
 });
 
-let isConnected = false;
-let isConnecting = false;
-let qrCodeTimer;
+io.on('connection', function (socket) {
+    socket.emit('message', 'Conectando...');
 
-const conectarCliente = async () => {
-    try {
-        isConnecting = true;
-        await client.initialize();
-    } catch (error) {
-        console.error('Erro ao conectar:', error);
-        // Adicione lógica para lidar com o erro, se necessário
-    } finally {
-        isConnecting = false;
-    }
-};
-
-client.on('error', (error) => {
-    console.error('Erro no cliente WhatsApp:', error);
-    isConnected = false;
-    io.emit('status', 'disconnected');
-    io.emit('message', 'Erro no cliente WhatsApp. Tentando reconectar...');
-    tentarReconectar();
-});
-
-client.on('authenticated', (session) => {
-    if (!isConnected) {
-        isConnected = true;
-        io.emit('message', 'Conexão do QR Code realizada com sucesso!');
-        io.emit('status', 'connected');
-        clearTimeout(qrCodeTimer);
-    }
-});
-
-client.on('disconnected', (reason) => {
-    isConnected = false;
-    io.emit('status', 'disconnected');
-    io.emit('message', `Bot desconectado: ${reason}. Tentando reconectar...`);
-    tentarReconectar();
-});
-
-client.on('ready', () => {
-    if (!isConnected) {
-        isConnected = true;
-        io.emit('message', 'Cliente WhatsApp está pronto.');
-        io.emit('status', 'connected');
-    }
-});
-
-const tentarReconectar = () => {
-    if (!isConnecting) {
-        console.log('Tentando reconectar...');
-        conectarCliente();
-    }
-};
-
-io.on('connection', (socket) => {
-    socket.emit('message', isConnected ? 'Cliente WhatsApp está pronto.' : 'Conectando...');
-
-    const iniciarTemporizador = () => {
-        qrCodeTimer = setTimeout(() => {
-            if (!isConnected) {
-                socket.emit('message', 'Tempo limite atingido. Reiniciando o processo...');
-                tentarReconectar();
-            } else {
-                socket.emit('message', 'Cliente WhatsApp está pronto.');
-            }
-        }, 5 * 60 * 1000); // 5 minutos em milissegundos
-    };
-
-    const reiniciarProcesso = () => {
-        console.log('Reiniciando o processo de conexão...');
-        conectarCliente();
-    };
-
-    iniciarTemporizador();
-
+    // Event to receive the QR Code and display it on the interface
     client.on('qr', (qr) => {
-        console.log('QR RECEBIDO', qr);
+        console.log('QR RECEIVED', qr);
         qrcode.toDataURL(qr, (err, url) => {
             socket.emit('qr', url);
             socket.emit('message', 'QRCode recebido, aponte a Câmera do seu celular!');
-            clearTimeout(qrCodeTimer);
         });
     });
 
+    // Event to inform that the QR Code connection has been successful
+    client.on('authenticated', (session) => {
+        socket.emit('message', 'Conexão do QR Code realizada com sucesso!');
+    });
+
+    // Handle disconnections and restarts as necessary
     socket.on('disconnect', () => {
-        console.log('Socket desconectado');
-        if (qrCodeTimer) {
-            clearTimeout(qrCodeTimer);
-            iniciarTemporizador();
-        }
-        tentarReconectar();
+        console.log('Socket disconnected');
     });
 });
 
