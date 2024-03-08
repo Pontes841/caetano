@@ -4,7 +4,7 @@ const http = require('http');
 const qrcode = require('qrcode');
 const fileUpload = require('express-fileupload');
 const moment = require('moment');
-const port = 8011;
+const port = 8016;
 const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
@@ -18,9 +18,9 @@ const nodeCron = require('node-cron');
 const createConnection = async () => {
     return await mysql.createConnection({
         host: '212.1.208.101',
-        user: 'u896627913_quixada',
+        user: 'u896627913_russas',
         password: 'Felipe.91118825',
-        database: 'u896627913_quixada'
+        database: 'u896627913_russas'
     });
 }
 
@@ -752,7 +752,7 @@ client.on('ready', async () => {
                         }
             
                         // Enviar uma mensagem de agradecimento apenas uma vez
-                        const instagramLink = 'https://www.instagram.com/oticasdinizquixada?igshid=OGQ5ZDc2ODk2ZA%3D%3D';
+                        const instagramLink = 'https://www.instagram.com/oticasdinizrussas?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==';
                         const confirmationMessage = `Obrigado por compartilhar sua opinião conosco! 🙏\n\nQue tal nos seguir no Instagram? Temos um conteúdo incrível que você vai adorar! Basta clicar [aqui](${instagramLink}). Se já nos segue, ignore essa mensagem.`;
                         
                         client.sendMessage(agendamento.fone_do_cliente + '@c.us', confirmationMessage);
@@ -775,7 +775,7 @@ client.on('ready', async () => {
                             console.log('URL da mensagemvd:', agendamento.mensagemvd);
                             try {
                                 const media = await MessageMedia.fromUrl(agendamento.mensagemvd);
-                                const linkURL = 'https://www.instagram.com/oticasdinizquixada?igshid=OGQ5ZDc2ODk2ZA%3D%3D'; // Replace this with your desired link URL
+                                const linkURL = 'https://www.instagram.com/oticasdinizrussas?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=='; // Replace this with your desired link URL
                                 const textBelowImage = 'Olá! Que tal nos seguir no Instagram ? Temos um conteúdo incrível que você vai adorar! Basta clicar no link abaixo.Se já nos segue, ignore essa mensagem.';
                                 const linkText = 'Clique aqui para avaliar'; // Replace this with the text you want to display for the link
 
