@@ -1339,25 +1339,24 @@ client.on('ready', async () => {
                 }
             }
 
-        } catch (error) {
-            console.error('Erro na tarefa agendada:', error);
-        }
+            } catch (error) {
+                console.error('Erro na tarefa agendada:', error);
+            }
+        });
+    
+        console.log('Cliente WhatsApp está pronto.');
     });
-
-    console.log('Cliente WhatsApp está pronto.');
-});
-
-client.on('authenticated', () => {
-    // Handle authentication
-});
-
-client.on('disconnected', (reason) => {
-    io.emit('status', 'disconnected');
-    console.log('Bot desconectado:', reason);
-});
-
-server.listen(port, function () {
-    console.log('BOT-ZDG rodando na porta *:' + port);
-});
-
+    
+    client.on('authenticated', () => {
+        // Handle authentication
+    });
+    
+    client.on('disconnected', (reason) => {
+        io.emit('status', 'disconnected');
+        console.log('Bot desconectado:', reason);
+    });
+    
+    server.listen(port, function () {
+        console.log('BOT-ZDG rodando na porta *:' + port);
+    });
 
