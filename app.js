@@ -614,26 +614,36 @@ const client = new Client({
 });
 
 io.on('connection', function (socket) {
-    socket.emit('message', 'Conectando...');
+    // Check if the current time is within the allowed time frame
+    const now = moment();
+    const startHour = moment('08:00:00', 'HH:mm:ss'); // 8:00 AM
+    const endHour = moment('18:00:00', 'HH:mm:ss');   // 6:00 PM
 
-    // Event to receive the QR Code and display it on the interface
-    client.on('qr', (qr) => {
-        console.log('QR RECEIVED', qr);
-        qrcode.toDataURL(qr, (err, url) => {
-            socket.emit('qr', url);
-            socket.emit('message', 'QRCode recebido, aponte a Câmera do seu celular!');
+    if (now.isBetween(startHour, endHour)) {
+        socket.emit('message', 'Conectando...');
+
+        // Event to receive the QR Code and display it on the interface
+        client.on('qr', (qr) => {
+            console.log('QR RECEIVED', qr);
+            qrcode.toDataURL(qr, (err, url) => {
+                socket.emit('qr', url);
+                socket.emit('message', 'QRCode recebido, aponte a Câmera do seu celular!');
+            });
         });
-    });
 
-    // Event to inform that the QR Code connection has been successful
-    client.on('authenticated', (session) => {
-        socket.emit('message', 'Conexão do QR Code realizada com sucesso!');
-    });
+        // Event to inform that the QR Code connection has been successful
+        client.on('authenticated', (session) => {
+            socket.emit('message', 'Conexão do QR Code realizada com sucesso!');
+        });
 
-    // Handle disconnections and restarts as necessary
-    socket.on('disconnect', () => {
-        console.log('Socket disconnected');
-    });
+        // Handle disconnections and restarts as necessary
+        socket.on('disconnect', () => {
+            console.log('Socket disconnected');
+        });
+    } else {
+        socket.emit('message', 'A conexão está disponível somente entre 8:00 AM e 6:00 PM.');
+        socket.disconnect(true);
+    }
 });
 
 client.initialize();
