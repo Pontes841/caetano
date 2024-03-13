@@ -18,12 +18,11 @@ const nodeCron = require('node-cron');
 const createConnection = async () => {
     return await mysql.createConnection({
         host: '212.1.208.101',
-        user: 'u896627913_luciano04',
+        user: 'u896627913_saocaetano',
         password: 'Felipe.91118825',
-        database: 'u896627913_luciano04'
-    });
+        database: 'u896627913_saocaetano'
+    });;
 }
-
 
 // FunÃ§Ã£o para atualizar o statusco no banco de dados (controle de cobranÃ§a)
 const updateStatuscob = async (id) => {
@@ -699,6 +698,7 @@ client.on('ready', async () => {
 
 
 
+
             for (const agendamento of agendamentosSolicitacao) {
                 if (agendamento.data_inclusao && agendamento.data_inclusao <= hoje && !agendamento.enviado) {
                     // Marcar o agendamento como enviado
@@ -712,8 +712,8 @@ client.on('ready', async () => {
                         console.log('URL da mensagemvd:', agendamento.mensagemvd);
                         try {
                             const media = await MessageMedia.fromUrl(agendamento.mensagemvd);
-                            const linkURL = 'https://g.page/r/CTF_pAhn1KLAEBE/review'; // Replace this with your desired link URL
-                            const textBelowImage = 'Seu feedback é importante para a Óticas Diniz. Poste uma avaliação no nosso perfil.';
+                            const linkURL = 'https://www.instagram.com/oticasdiniz01?igsh=MTltZDM1YzBpOW5tNQ%3D%3D&utm_source=qr'; // Replace this with your desired link URL
+                            const textBelowImage = 'Olá! Que tal nos seguir no Instagram ? Temos um conteúdo incrível que você vai adorar! Basta clicar no link abaixo.Se já nos segue, ignore essa mensagem.';
                             const linkText = 'Clique aqui para avaliar'; // Replace this with the text you want to display for the link
 
                             const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
