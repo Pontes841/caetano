@@ -4,7 +4,7 @@ const http = require('http');
 const qrcode = require('qrcode');
 const fileUpload = require('express-fileupload');
 const moment = require('moment');
-const port = 8003;
+const port = 8015;
 const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
@@ -18,9 +18,9 @@ const nodeCron = require('node-cron');
 const createConnection = async () => {
     return await mysql.createConnection({
         host: '212.1.208.101',
-        user: 'u896627913_diniztobias',
+        user: 'u896627913_luciano04',
         password: 'Felipe.91118825',
-        database: 'u896627913_diniztobias'
+        database: 'u896627913_luciano04'
     });
 }
 
@@ -712,8 +712,8 @@ client.on('ready', async () => {
                         console.log('URL da mensagemvd:', agendamento.mensagemvd);
                         try {
                             const media = await MessageMedia.fromUrl(agendamento.mensagemvd);
-                            const linkURL = 'https://www.instagram.com/oticasdiniztobiasbarreto/'; // Replace this with your desired link URL
-                            const textBelowImage = 'Olá! Que tal nos seguir no Instagram ? Temos um conteúdo incrível que você vai adorar! Basta clicar no link abaixo.Se já nos segue, ignore essa mensagem.';
+                            const linkURL = 'https://g.page/r/CTF_pAhn1KLAEBE/review'; // Replace this with your desired link URL
+                            const textBelowImage = 'Seu feedback é importante para a Óticas Diniz. Poste uma avaliação no nosso perfil.';
                             const linkText = 'Clique aqui para avaliar'; // Replace this with the text you want to display for the link
 
                             const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
@@ -1339,25 +1339,24 @@ client.on('ready', async () => {
                 }
             }
 
-        } catch (error) {
-            console.error('Erro na tarefa agendada:', error);
-        }
+            } catch (error) {
+                console.error('Erro na tarefa agendada:', error);
+            }
+        });
+    
+        console.log('Cliente WhatsApp está pronto.');
     });
-
-    console.log('Cliente WhatsApp está pronto.');
-});
-
-client.on('authenticated', () => {
-    // Handle authentication
-});
-
-client.on('disconnected', (reason) => {
-    io.emit('status', 'disconnected');
-    console.log('Bot desconectado:', reason);
-});
-
-server.listen(port, function () {
-    console.log('BOT-ZDG rodando na porta *:' + port);
-});
-
+    
+    client.on('authenticated', () => {
+        // Handle authentication
+    });
+    
+    client.on('disconnected', (reason) => {
+        io.emit('status', 'disconnected');
+        console.log('Bot desconectado:', reason);
+    });
+    
+    server.listen(port, function () {
+        console.log('BOT-ZDG rodando na porta *:' + port);
+    });
 
