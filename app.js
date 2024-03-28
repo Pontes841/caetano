@@ -571,28 +571,33 @@ app.get('/', (req, res) => {
     });
 });
 
-const client = new Client({
-    restartOnAuthFail: true,
+const cliente = new Cliente({
+    // Reiniciar o cliente em caso de falha de autenticação
+    reiniciarEmFalhaDeAutenticacao: true,
     puppeteer: {
+        // Executar em modo headless (sem interface gráfica)
         headless: true,
         args: [
-            '--no-sandbox',
-            '--disable-setuid-sandbox',
-            '--disable-dev-shm-usage',
-            '--disable-accelerated-2d-canvas',
-            '--no-first-run',
-            '--no-zygote',
-            '--single-process', 
-            '--disable-gpu'
+            '--no-sandbox', // Desabilitar sandbox para segurança
+            '--disable-setuid-sandbox', // Desabilitar configurações de UID sandbox
+            '--disable-dev-shm-usage', // Desabilitar uso de memória compartilhada
+            '--disable-accelerated-2d-canvas', // Desabilitar aceleração de canvas 2D
+            '--no-first-run', // Não executar primeira execução
+            '--no-zygote', // Não usar processo zygote para inicialização do Chrome
+            '--single-process', // Executar em um único processo
+            '--disable-gpu' // Desabilitar GPU
         ],
     },
-    authStrategy: new LocalAuth({
-        clientId: 'bot-zdg_2', // Provided clientId
-        dataPath: path.join(__dirname, '..', 'sessions')
+    authStrategy: new AutenticacaoLocal({
+        clientId: 'bot-zdg_2', // Identificação exclusiva do cliente
+        dataPath: path.join(__dirname, '..', 'sessoes', 'instancia2') // Caminho de dados único para cada instância
     }),
-    webVersion: '2.2409.2',
-    webVersionCache: { type: 'local' }
+    // Versão específica do WhatsApp Web
+    versaoWeb: '2.2409.2',
+    // Tipo de cache local para a versão web
+    cacheVersaoWeb: { tipo: 'local' }
 });
+
 
 io.on('connection', function (socket) {
     // No time restriction - connection allowed anytime
