@@ -4,7 +4,7 @@ const http = require('http');
 const qrcode = require('qrcode');
 const fileUpload = require('express-fileupload');
 const moment = require('moment');
-const port = 8000;
+const port = 8006;
 const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
@@ -14,30 +14,16 @@ const { Client, LocalAuth, MessageMedia } = require('whatsapp-web.js');
 const mysql = require('mysql2/promise');
 const nodeCron = require('node-cron');
 
-
 // FunÃƒÂ§ÃƒÂ£o para criar conexÃƒÂ£o com o banco de dados
 const createConnection = async () => {
     return await mysql.createConnection({
         host: '212.1.208.101',
-        user: 'u896627913_dinizriolargo',
-        password: 'Felipe.91118825',
-        database: 'u896627913_dinizriolargo'
+        user: 'u896627913_loja03',
+        password: 'Felipe@91118825',
+        database: 'u896627913_Lagarto'
     });
 }
 
-
-// FunÃ§Ã£o para atualizar o statusco no banco de dados (controle de cobranÃ§a)
-const updateStatuscob = async (id) => {
-    try {
-        const connection = await createConnection();
-        const query = 'UPDATE cobranca SET statusco = "enviado" WHERE id = ?';
-        const [result] = await connection.execute(query, [id]);
-        return result.affectedRows > 0;
-    } catch (error) {
-        console.error('Erro ao atualizar o statusco:', error);
-        return false;
-    }
-};
 
 // FunÃ§Ã£o para atualizar o statusvd no banco de dados (controle OS)
 const updateStatusvd = async (id) => {
@@ -299,17 +285,6 @@ const updateStatastaxa = async (id) => {
     }
 };
 
-// FunÃ§Ã£o para obter os registros de agendamento do banco de dados
-const agendamentoZDG0 = async () => {
-    try {
-        const connection = await createConnection();
-        const [rows] = await connection.execute('SELECT * FROM cobranca WHERE statusco IS NULL OR statusco = ""');
-        return rows;
-    } catch (error) {
-        console.error('Erro ao obter os registros de agendamento:', error);
-        return [];
-    }
-};
 
 // FunÃ§Ã£o para obter os registros de agendamento do banco de dados
 const agendamentoZDG = async () => {
@@ -587,16 +562,25 @@ const client = new Client({
         ],
     },
     authStrategy: new LocalAuth({
-        clientId: 'bot-zdg_18', // Provided clientId
+        clientId: 'bot-zdg_9', // Provided clientId
         // Para o segundo cliente
-        dataPath: path.join(__dirname, '..', 'sessions', 'instancia18')
+        dataPath: path.join(__dirname, '..', 'sessions', 'instancia9')
     }),
     webVersion: '2.2409.2',
     webVersionCache: { type: 'local' }
 });
 
+// Inicializa isAuthenticated com o valor das variáveis de ambiente ou false
+let isAuthenticated = process.env.AUTHENTICATED === 'true';
+
+// Configurações do Socket.IO
 io.on('connection', function (socket) {
-    socket.emit('message', 'Conectando...');
+    // Envia uma mensagem para o cliente WebSocket quando a conexão é estabelecida
+    if (isAuthenticated) {
+        socket.emit('message', 'Cliente autenticado!');
+    } else {
+        socket.emit('message', 'Cliente não autenticado!');
+    }
 
     // Event to receive the QR Code and display it on the interface
     client.on('qr', (qr) => {
@@ -609,22 +593,46 @@ io.on('connection', function (socket) {
 
     // Event to inform that the QR Code connection has been successful
     client.on('authenticated', (session) => {
+        isAuthenticated = true; // Define como true quando autenticado
         socket.emit('message', 'Conexão do QR Code realizada com sucesso!');
+        process.env.AUTHENTICATED = 'true'; // Atualiza a variável de ambiente
     });
 
-    // Handle disconnections and restarts as necessary
+    // Handle disconnections
     socket.on('disconnect', () => {
         console.log('Socket disconnected');
     });
+
+    // Evento para reiniciar o aplicativo
+    socket.on('restartApp', function () {
+        console.log('Reiniciando aplicativo...');
+        const { exec } = require('child_process');
+        exec('pm2 restart app.js', (error, stdout, stderr) => {
+            if (error) {
+                console.error(`Erro ao reiniciar o aplicativo: ${error.message}`);
+                socket.emit('message', `Erro ao reiniciar o aplicativo: ${error.message}`);
+                return;
+            }
+            if (stderr) {
+                console.error(`Erro ao reiniciar o aplicativo: ${stderr}`);
+                socket.emit('message', `Erro ao reiniciar o aplicativo: ${stderr}`);
+                return;
+            }
+            console.log(`Aplicativo reiniciado: ${stdout}`);
+            socket.emit('message', 'Aplicativo reiniciado com sucesso!');
+        });
+    });
 });
 
+// Inicia o cliente WhatsApp
 client.initialize();
+
 
 client.on('ready', async () => {
     // Add your scheduled task here
     nodeCron.schedule('*/60 * * * * *', async function () {
         try {
-                const agendamentoscobranca = await agendamentoZDG0();
+            
                 const agendamentosSolicitacao = await agendamentoZDG();
                 const agendamentosFinalizacao = await agendamentoZDG2();
                 const agendamentosstatusad = await agendamentoZDG3();
@@ -649,34 +657,6 @@ client.on('ready', async () => {
 
                 const hoje = new Date();
 
-                for (const agendamento of agendamentoscobranca) {
-                    if (agendamento.data_cobranca && agendamento.data_cobranca <= hoje && !agendamento.enviado) {
-                        // Marcar o agendamento como enviado
-                        agendamento.enviado = true;
-
-                        if (agendamento.nome !== '') {
-                            client.sendMessage(agendamento.fone + '@c.us', agendamento.nome);
-                        }
-
-                        if (agendamento.mensagemco && agendamento.mensagemco !== '') {
-                            console.log('URL da mensagemco:', agendamento.mensagemco);
-                            try {
-                                const media = await MessageMedia.fromUrl(agendamento.mensagemco);
-                                client.sendMessage(agendamento.fone + '@c.us', media, { caption: '' });
-                            } catch (error) {
-                                console.error('Erro ao obter a mensagemco:', error);
-                            }
-                        }
-
-                        const success = await updateStatuscob(agendamento.id);
-                        if (success) {
-                            console.log('BOT-ZDG - Mensagem ID: ' + agendamento.id + ' - statusco atualizado para "enviado"');
-                        } else {
-                            console.log('BOT-ZDG - Falha ao atualizar o statusco da mensagem ID: ' + agendamento.id);
-                        }
-                    }
-                }
-
 
                 for (const agendamento of agendamentosSolicitacao) {
                     if (agendamento.data_inclusao && agendamento.data_inclusao <= hoje && !agendamento.enviado) {
@@ -691,7 +671,7 @@ client.on('ready', async () => {
                             console.log('URL da mensagemvd:', agendamento.mensagemvd);
                             try {
                                 const media = await MessageMedia.fromUrl(agendamento.mensagemvd);
-                                const linkURL = 'https://instagram.com/dinizriolargo/'; // Replace this with your desired link URL
+                                const linkURL = 'https://www.instagram.com/oticasdiniz.lagarto/'; // Replace this with your desired link URL
                                 const textBelowImage = 'Olá! Que tal nos seguir no Instagram ? Temos um conteúdo incrível que você vai adorar! Basta clicar no link abaixo.Se já nos segue, ignore essa mensagem.';
                                 const linkText = 'Clique aqui para avaliar'; // Replace this with the text you want to display for the link
 
