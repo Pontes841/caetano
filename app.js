@@ -4,7 +4,7 @@ const http = require('http');
 const qrcode = require('qrcode');
 const fileUpload = require('express-fileupload');
 const moment = require('moment');
-const port = 8021;
+const port = 8025;
 const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
@@ -20,9 +20,9 @@ const nodeCron = require('node-cron');
 const createConnection = async () => {
     return await mysql.createConnection({
         host: '212.1.208.101',
-        user: 'u896627913_saocaetano',
+        user: 'u896627913_bahia',
         password: 'Felipe.91118825',
-        database: 'u896627913_saocaetano'
+        database: 'u896627913_bahia'
     });;
 }
 
@@ -611,9 +611,9 @@ const client = new Client({
         ],
     },
     authStrategy: new LocalAuth({
-        clientId: 'bot-zdg_1', // Provided clientId
+        clientId: 'bot-zdg_20', // Provided clientId
         // Para o primeiro cliente
-        dataPath: path.join(__dirname, '..', 'sessions', 'instancia1')
+        dataPath: path.join(__dirname, '..', 'sessions', 'instancia20')
     }),
     webVersion: '2.2409.2',
     webVersionCache: { type: 'local' }
