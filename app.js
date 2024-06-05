@@ -592,7 +592,7 @@ const client = new Client({
         // Para o primeiro cliente
         dataPath: path.join(__dirname, '..', 'sessions', 'instancia40')
     }),
-    webVersion: '2.2412.51',
+    webVersion: '',
     webVersionCache: { type: 'local' }
 });
 
