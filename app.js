@@ -1968,4 +1968,3 @@ client.on('ready', async () => {
     server.listen(port, function () {
         console.log('BOT-ZDG rodando na porta *:' + port);
     });
-
