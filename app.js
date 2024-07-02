@@ -3,7 +3,7 @@ const socketIO = require('socket.io');
 const http = require('http');
 const qrcode = require('qrcode');
 const fileUpload = require('express-fileupload');
-const port = 8006;
+const port = 8005;
 const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
@@ -15,13 +15,14 @@ const mysql = require('mysql2/promise');
 const nodeCron = require('node-cron');
 
 
+
 // FunÃƒÂ§ÃƒÂ£o para criar conexÃƒÂ£o com o banco de dados
 const createConnection = async () => {
     return await mysql.createConnection({
         host: '212.1.208.101',
-        user: 'u896627913_luciano03',
+        user: 'u896627913_luciano02',
         password: 'Felipe@91118825',
-        database: 'u896627913_luciano03'
+        database: 'u896627913_luciano02'
     });
 }
 
@@ -599,11 +600,11 @@ const client = new Client({
     },
 
     authStrategy: new LocalAuth({
-        clientId: 'bot-zdg_8006', // Provided clientId
+        clientId: 'bot-zdg_8005', // Provided clientId
         // Para o segundo cliente
-        dataPath: path.join(__dirname, '..', 'sessions', 'instancia8006')
+        dataPath: path.join(__dirname, '..', 'sessions', 'instancia8005')
     }),
-});;
+});
 
 // Inicializa isAuthenticated com o valor das variáveis de ambiente ou false
 let isAuthenticated = process.env.AUTHENTICATED === 'true';
@@ -1313,7 +1314,7 @@ client.on('ready', async () => {
                             console.log('URL da mensagemvd:', agendamento.mensagemvd);
                             try {
                                 const media = await MessageMedia.fromUrl(agendamento.mensagemvd);
-                                const linkURL = 'https://g.page/r/CYHjj8Vb6zLgEBM/review/'; // Replace this with your desired link URL
+                                const linkURL = 'https://g.page/r/CVq-_5HwLdIMEBM/review/'; // Replace this with your desired link URL
                                 const textBelowImage = 'Seu feedback é importante para a Óticas Diniz RO. Poste uma avaliação no nosso perfil.';
                                 const linkText = 'Clique aqui para avaliar'; // Replace this with the text you want to display for the link
 
