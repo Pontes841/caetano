@@ -3,7 +3,7 @@ const socketIO = require('socket.io');
 const http = require('http');
 const qrcode = require('qrcode');
 const fileUpload = require('express-fileupload');
-const port = 8025;
+const port = 8021;
 const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
@@ -15,14 +15,13 @@ const mysql = require('mysql2/promise');
 const nodeCron = require('node-cron');
 
 
-
 // FunÃƒÂ§ÃƒÂ£o para criar conexÃƒÂ£o com o banco de dados
 const createConnection = async () => {
     return await mysql.createConnection({
         host: '212.1.208.101',
-        user: 'u896627913_bahia',
+        user: 'u896627913_saocaetano',
         password: 'Felipe.91118825',
-        database: 'u896627913_bahia'
+        database: 'u896627913_saocaetano'
     });;
 }
 
@@ -601,9 +600,9 @@ const client = new Client({
     },
 
     authStrategy: new LocalAuth({
-        clientId: 'bot-zdg_8025', // Provided clientId
-        // Para o primeiro cliente
-        dataPath: path.join(__dirname, '..', 'sessions', 'instancia8025')
+        clientId: 'bot-zdg_8021', // Provided clientId
+        // Para o segundo cliente
+        dataPath: path.join(__dirname, '..', 'sessions', 'instancia8021')
     }),
 });
 
@@ -1274,7 +1273,7 @@ client.initialize();
 
 client.on('ready', async () => {
     // Add your scheduled task here
-    nodeCron.schedule('*/5 8-18 * * *', async function () {
+    nodeCron.schedule('*/5 9-18 * * *', async function () {
         try {
 
                 const agendamentosSolicitacao = await agendamentoZDG();
@@ -1302,7 +1301,6 @@ client.on('ready', async () => {
 
                 const hoje = new Date();
 
-                
                 for (const agendamento of agendamentosSolicitacao) {
                     if (agendamento.data_inclusao && agendamento.data_inclusao <= hoje && !agendamento.enviado) {
                         // Marcar o agendamento como enviado
@@ -1336,6 +1334,7 @@ client.on('ready', async () => {
                         }
                     }
                 }
+    
                 
 
                 for (const agendamento of agendamentosFinalizacao) {
