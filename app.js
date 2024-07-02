@@ -3,29 +3,25 @@ const socketIO = require('socket.io');
 const http = require('http');
 const qrcode = require('qrcode');
 const fileUpload = require('express-fileupload');
-const moment = require('moment');
-const port = 8050;
+const port = 8006;
 const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
 const path = require('path');
 
-
 const { Client, LocalAuth, MessageMedia } = require('whatsapp-web.js');
 const mysql = require('mysql2/promise');
 const nodeCron = require('node-cron');
-
 
 // FunÃƒÂ§ÃƒÂ£o para criar conexÃƒÂ£o com o banco de dados
 const createConnection = async () => {
     return await mysql.createConnection({
         host: '212.1.208.101',
-        user: 'u896627913_arapiraca01',
-        password: 'Felipe.91118825',
-        database: 'u896627913_arapiraca01'
-    });;
+        user: 'u896627913_loja03',
+        password: 'Felipe@91118825',
+        database: 'u896627913_Lagarto'
+    });
 }
-
 
 
 // Mantenha uma conexão global
@@ -602,9 +598,9 @@ const client = new Client({
         ],
     },
     authStrategy: new LocalAuth({
-        clientId: 'bot-zdg_8050', // Provided clientId
+        clientId: 'bot-zdg_8006', // Provided clientId
         // Para o primeiro cliente
-        dataPath: path.join(__dirname, '..', 'sessions', 'instancia8050')
+        dataPath: path.join(__dirname, '..', 'sessions', 'instancia8006')
     }),
 });
 
@@ -1252,7 +1248,7 @@ client.on('message', async (message) => {
 
 // Função para enviar o status da meta para o destinatário especificado
 async function enviarStatusDaMeta(to) {
-    const url = 'https://statusmetapenedo.pontestec.com.br/'; // URL do status da meta
+    const url = 'http://statuslagarto.pontestec.com.br/'; // URL do status da meta
     try {
         await client.sendMessage(to, url);
         console.log(`Status da meta enviado para ${to}`);
@@ -1275,7 +1271,7 @@ client.initialize();
 
 client.on('ready', async () => {
     // Add your scheduled task here
-    nodeCron.schedule('*/5 10-18 * * *', async function () {
+    nodeCron.schedule('*/5 7-18 * * *', async function () {
         try {
 
                 const agendamentosSolicitacao = await agendamentoZDG();
@@ -1303,7 +1299,6 @@ client.on('ready', async () => {
 
                 const hoje = new Date();
 
-
                 for (const agendamento of agendamentosSolicitacao) {
                     if (agendamento.data_inclusao && agendamento.data_inclusao <= hoje && !agendamento.enviado) {
                         // Marcar o agendamento como enviado
@@ -1317,8 +1312,8 @@ client.on('ready', async () => {
                             console.log('URL da mensagemvd:', agendamento.mensagemvd);
                             try {
                                 const media = await MessageMedia.fromUrl(agendamento.mensagemvd);
-                                const linkURL = 'https://www.instagram.com/otiicasdinizarapiraca/?igsh=MXZlMWpocXozNXViYw%3D%3D'; // Replace this with your desired link URL
-                                const textBelowImage = 'Olá! Que tal nos seguir no Instagram ? Temos um conteúdo incrível que você vai adorar! Basta clicar no link abaixo.Se já nos segue, ignore essa mensagem.';
+                                const linkURL = 'https://g.co/kgs/oLj5PHF'; // Replace this with your desired link URL
+                                const textBelowImage = 'Avalie o nosso atendimento, é muito importante!';
                                 const linkText = 'Clique aqui para avaliar'; // Replace this with the text you want to display for the link
 
                                 const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
