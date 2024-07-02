@@ -3,29 +3,30 @@ const socketIO = require('socket.io');
 const http = require('http');
 const qrcode = require('qrcode');
 const fileUpload = require('express-fileupload');
-const port = 8008;
+const port = 8003;
 const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
 const path = require('path');
 
+
 const { Client, LocalAuth, MessageMedia } = require('whatsapp-web.js');
 const mysql = require('mysql2/promise');
 const nodeCron = require('node-cron');
+
 
 // FunÃƒÂ§ÃƒÂ£o para criar conexÃƒÂ£o com o banco de dados
 const createConnection = async () => {
     return await mysql.createConnection({
         host: '212.1.208.101',
-        user: 'u896627913_dinizpalmeira',
+        user: 'u896627913_diniztobias',
         password: 'Felipe.91118825',
-        database: 'u896627913_dinizpalmeira'
+        database: 'u896627913_diniztobias'
     });
 }
 
 
-
-/// Mantenha uma conexão global
+// Mantenha uma conexão global
 let globalConnection = null;
 
 // Função para criar conexão se não existir ou reutilizar se existir
@@ -599,11 +600,10 @@ const client = new Client({
         ],
     },
     authStrategy: new LocalAuth({
-        clientId: 'bot-zdg_8008', // Provided clientId
+        clientId: 'bot-zdg_8003', // Provided clientId
         // Para o primeiro cliente
-        dataPath: path.join(__dirname, '..', 'sessions', 'instancia8008')
+        dataPath: path.join(__dirname, '..', 'sessions', 'instancia8003')
     }),
-
 });
 
 // Inicializa isAuthenticated com o valor das variáveis de ambiente ou false
@@ -659,8 +659,6 @@ io.on('connection', function (socket) {
         });
     });
 });
-
-
 
 /////INICIO///////
 
@@ -1252,7 +1250,7 @@ client.on('message', async (message) => {
 
 // Função para enviar o status da meta para o destinatário especificado
 async function enviarStatusDaMeta(to) {
-    const url = 'link aqui'; // URL do status da meta
+    const url = 'https://statusmetapenedo.pontestec.com.br/'; // URL do status da meta
     try {
         await client.sendMessage(to, url);
         console.log(`Status da meta enviado para ${to}`);
@@ -1275,7 +1273,7 @@ client.initialize();
 
 client.on('ready', async () => {
     // Add your scheduled task here
-    nodeCron.schedule('*/5 9-18 * * *', async function () {
+    nodeCron.schedule('*/5 8-18 * * *', async function () {
         try {
 
                 const agendamentosSolicitacao = await agendamentoZDG();
@@ -1303,39 +1301,39 @@ client.on('ready', async () => {
 
                 const hoje = new Date();
 
-                for (const agendamento of agendamentosSolicitacao) {
-                    if (agendamento.data_inclusao && agendamento.data_inclusao <= hoje && !agendamento.enviado) {
-                        // Marcar o agendamento como enviado
-                        agendamento.enviado = true;
+            for (const agendamento of agendamentosSolicitacao) {
+                if (agendamento.data_inclusao && agendamento.data_inclusao <= hoje && !agendamento.enviado) {
+                    // Marcar o agendamento como enviado
+                    agendamento.enviado = true;
 
-                        if (agendamento.nome !== '') {
-                            client.sendMessage(agendamento.fone + '@c.us', agendamento.nome);
-                        }
+                    if (agendamento.nome !== '') {
+                        client.sendMessage(agendamento.fone + '@c.us', agendamento.nome);
+                    }
 
-                        if (agendamento.mensagemvd && agendamento.mensagemvd !== '') {
-                            console.log('URL da mensagemvd:', agendamento.mensagemvd);
-                            try {
-                                const media = await MessageMedia.fromUrl(agendamento.mensagemvd);
-                                const linkURL = 'https://www.instagram.com/oticasdiniz.pdi/'; // Replace this with your desired link URL
-                                const textBelowImage = 'Olá! Que tal nos seguir no Instagram ? Temos um conteúdo incrível que você vai adorar! Basta clicar no link abaixo.Se já nos segue, ignore essa mensagem.';
-                                const linkText = 'Clique aqui para avaliar'; // Replace this with the text you want to display for the link
+                    if (agendamento.mensagemvd && agendamento.mensagemvd !== '') {
+                        console.log('URL da mensagemvd:', agendamento.mensagemvd);
+                        try {
+                            const media = await MessageMedia.fromUrl(agendamento.mensagemvd);
+                            const linkURL = 'https://www.instagram.com/oticasdiniztobiasbarreto/'; // Replace this with your desired link URL
+                            const textBelowImage = 'Olá! Que tal nos seguir no Instagram ? Temos um conteúdo incrível que você vai adorar! Basta clicar no link abaixo.Se já nos segue, ignore essa mensagem.';
+                            const linkText = 'Clique aqui para avaliar'; // Replace this with the text you want to display for the link
 
-                                const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
+                            const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
 
-                                client.sendMessage(agendamento.fone + '@c.us', media, { caption });
-                            } catch (error) {
-                                console.error('Erro ao obter a mensagemvd:', error);
-                            }
-                        }
-
-                        const success = await updateStatusvd(agendamento.id);
-                        if (success) {
-                            console.log('BOT-ZDG - Mensagem ID: ' + agendamento.id + ' - statusvd atualizado para "enviado"');
-                        } else {
-                            console.log('BOT-ZDG - Falha ao atualizar o statusvd da mensagem ID: ' + agendamento.id);
+                            client.sendMessage(agendamento.fone + '@c.us', media, { caption });
+                        } catch (error) {
+                            console.error('Erro ao obter a mensagemvd:', error);
                         }
                     }
+
+                    const success = await updateStatusvd(agendamento.id);
+                    if (success) {
+                        console.log('BOT-ZDG - Mensagem ID: ' + agendamento.id + ' - statusvd atualizado para "enviado"');
+                    } else {
+                        console.log('BOT-ZDG - Falha ao atualizar o statusvd da mensagem ID: ' + agendamento.id);
+                    }
                 }
+            }
 
                 for (const agendamento of agendamentosFinalizacao) {
                     if (agendamento.data_finalizacao && agendamento.data_finalizacao <= hoje && !agendamento.enviado) {
@@ -1967,4 +1965,3 @@ client.on('ready', async () => {
     server.listen(port, function () {
         console.log('BOT-ZDG rodando na porta *:' + port);
     });
-
