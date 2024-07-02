@@ -3,11 +3,12 @@ const socketIO = require('socket.io');
 const http = require('http');
 const qrcode = require('qrcode');
 const fileUpload = require('express-fileupload');
-const port = 8002;
+const port = 8007;
 const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
 const path = require('path');
+
 
 const { Client, LocalAuth, MessageMedia } = require('whatsapp-web.js');
 const mysql = require('mysql2/promise');
@@ -18,10 +19,10 @@ const nodeCron = require('node-cron');
 const createConnection = async () => {
     return await mysql.createConnection({
         host: '212.1.208.101',
-        user: 'u896627913_propria04',
-        password: 'Felipe.91118825',
-        database: 'u896627913_propria'
-    });
+        user: 'u896627913_loja02',
+        password: 'Felipe@91118825',
+        database: 'u896627913_Penedo'
+    });;
 }
 
 
@@ -599,9 +600,9 @@ const client = new Client({
         ],
     },
     authStrategy: new LocalAuth({
-        clientId: 'bot-zdg_8002', // Provided clientId
+        clientId: 'bot-zdg_8007', // Provided clientId
         // Para o primeiro cliente
-        dataPath: path.join(__dirname, '..', 'sessions', 'instancia8002')
+        dataPath: path.join(__dirname, '..', 'sessions', 'instancia8007')
     }),
 });
 
@@ -1249,7 +1250,7 @@ client.on('message', async (message) => {
 
 // Função para enviar o status da meta para o destinatário especificado
 async function enviarStatusDaMeta(to) {
-    const url = 'https://statuspropria.pontestec.com.br/'; // URL do status da meta
+    const url = 'https://statusmetapenedo.pontestec.com.br/'; // URL do status da meta
     try {
         await client.sendMessage(to, url);
         console.log(`Status da meta enviado para ${to}`);
@@ -1272,7 +1273,7 @@ client.initialize();
 
 client.on('ready', async () => {
     // Add your scheduled task here
-    nodeCron.schedule('*/5 8-18 * * *', async function () {
+    nodeCron.schedule('*/5 10-18 * * *', async function () {
         try {
 
                 const agendamentosSolicitacao = await agendamentoZDG();
@@ -1313,7 +1314,7 @@ client.on('ready', async () => {
                             console.log('URL da mensagemvd:', agendamento.mensagemvd);
                             try {
                                 const media = await MessageMedia.fromUrl(agendamento.mensagemvd);
-                                const linkURL = 'https://www.instagram.com/oticasdiniz.propria/'; // Replace this with your desired link URL
+                                const linkURL = 'https://www.instagram.com/oticasdiniz.penedo/?igsh=NW1wY2lxNzExdm9k'; // Replace this with your desired link URL
                                 const textBelowImage = 'Olá! Que tal nos seguir no Instagram ? Temos um conteúdo incrível que você vai adorar! Basta clicar no link abaixo.Se já nos segue, ignore essa mensagem.';
                                 const linkText = 'Clique aqui para avaliar'; // Replace this with the text you want to display for the link
 
