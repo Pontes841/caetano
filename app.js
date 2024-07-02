@@ -3,7 +3,7 @@ const socketIO = require('socket.io');
 const http = require('http');
 const qrcode = require('qrcode');
 const fileUpload = require('express-fileupload');
-const port = 8007;
+const port = 8080;
 const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
@@ -19,13 +19,11 @@ const nodeCron = require('node-cron');
 const createConnection = async () => {
     return await mysql.createConnection({
         host: '212.1.208.101',
-        user: 'u896627913_loja02',
-        password: 'Felipe@91118825',
-        database: 'u896627913_Penedo'
+        user: 'u896627913_teste',
+        password: 'Felipe.91118825',
+        database: 'u896627913_teste',
     });;
 }
-
-
 // Mantenha uma conexão global
 let globalConnection = null;
 
@@ -600,11 +598,12 @@ const client = new Client({
         ],
     },
     authStrategy: new LocalAuth({
-        clientId: 'bot-zdg_8007', // Provided clientId
+        clientId: 'bot-zdg_8080', // Provided clientId
         // Para o primeiro cliente
-        dataPath: path.join(__dirname, '..', 'sessions', 'instancia8007')
+        dataPath: path.join(__dirname, '..', 'sessions', 'instancia8080')
     }),
 });
+
 
 // Inicializa isAuthenticated com o valor das variáveis de ambiente ou false
 let isAuthenticated = process.env.AUTHENTICATED === 'true';
@@ -1239,7 +1238,7 @@ const processarConfirmacaoMetasMensais = async (clientId, confirmacao) => {
 client.on('message', async (message) => {
     const { from, body } = message;
     try {
-        if (body.toLowerCase() === 'status da meta') {
+        if (body.toLowerCase() === 'life') {
             await enviarStatusDaMeta(from);
         }
     } catch (error) {
@@ -1250,7 +1249,7 @@ client.on('message', async (message) => {
 
 // Função para enviar o status da meta para o destinatário especificado
 async function enviarStatusDaMeta(to) {
-    const url = 'https://statusmetapenedo.pontestec.com.br/'; // URL do status da meta
+    const url = 'happý'; // URL do status da meta
     try {
         await client.sendMessage(to, url);
         console.log(`Status da meta enviado para ${to}`);
@@ -1965,4 +1964,3 @@ client.on('ready', async () => {
     server.listen(port, function () {
         console.log('BOT-ZDG rodando na porta *:' + port);
     });
-
