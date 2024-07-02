@@ -3,7 +3,7 @@ const socketIO = require('socket.io');
 const http = require('http');
 const qrcode = require('qrcode');
 const fileUpload = require('express-fileupload');
-const port = 8021;
+const port = 8001;
 const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
@@ -19,12 +19,11 @@ const nodeCron = require('node-cron');
 const createConnection = async () => {
     return await mysql.createConnection({
         host: '212.1.208.101',
-        user: 'u896627913_saocaetano',
+        user: 'u896627913_santana',
         password: 'Felipe.91118825',
-        database: 'u896627913_saocaetano'
-    });;
+        database: 'u896627913_santana'
+    });
 }
-
 
 
 // Mantenha uma conexão global
@@ -600,9 +599,9 @@ const client = new Client({
     },
 
     authStrategy: new LocalAuth({
-        clientId: 'bot-zdg_8021', // Provided clientId
+        clientId: 'bot-zdg_8001', // Provided clientId
         // Para o segundo cliente
-        dataPath: path.join(__dirname, '..', 'sessions', 'instancia8021')
+        dataPath: path.join(__dirname, '..', 'sessions', 'instancia8001')
     }),
 });
 
@@ -1305,27 +1304,27 @@ client.on('ready', async () => {
                     if (agendamento.data_inclusao && agendamento.data_inclusao <= hoje && !agendamento.enviado) {
                         // Marcar o agendamento como enviado
                         agendamento.enviado = true;
-
+    
                         if (agendamento.nome !== '') {
                             client.sendMessage(agendamento.fone + '@c.us', agendamento.nome);
                         }
-
+    
                         if (agendamento.mensagemvd && agendamento.mensagemvd !== '') {
                             console.log('URL da mensagemvd:', agendamento.mensagemvd);
                             try {
                                 const media = await MessageMedia.fromUrl(agendamento.mensagemvd);
-                                const linkURL = 'https://www.instagram.com/oticasdiniz01?igsh=MTltZDM1YzBpOW5tNQ%3D%3D&utm_source=qr'; // Replace this with your desired link URL
+                                const linkURL = 'https://www.instagram.com/oticasdinizsantanadoipanema/'; // Replace this with your desired link URL
                                 const textBelowImage = 'Olá! Que tal nos seguir no Instagram ? Temos um conteúdo incrível que você vai adorar! Basta clicar no link abaixo.Se já nos segue, ignore essa mensagem.';
                                 const linkText = 'Clique aqui para avaliar'; // Replace this with the text you want to display for the link
-
+    
                                 const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
-
+    
                                 client.sendMessage(agendamento.fone + '@c.us', media, { caption });
                             } catch (error) {
                                 console.error('Erro ao obter a mensagemvd:', error);
                             }
                         }
-
+    
                         const success = await updateStatusvd(agendamento.id);
                         if (success) {
                             console.log('BOT-ZDG - Mensagem ID: ' + agendamento.id + ' - statusvd atualizado para "enviado"');
