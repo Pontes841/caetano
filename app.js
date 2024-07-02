@@ -3,7 +3,7 @@ const socketIO = require('socket.io');
 const http = require('http');
 const qrcode = require('qrcode');
 const fileUpload = require('express-fileupload');
-const port = 8005;
+const port = 8004;
 const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
@@ -15,14 +15,13 @@ const mysql = require('mysql2/promise');
 const nodeCron = require('node-cron');
 
 
-
 // FunÃƒÂ§ÃƒÂ£o para criar conexÃƒÂ£o com o banco de dados
 const createConnection = async () => {
     return await mysql.createConnection({
         host: '212.1.208.101',
-        user: 'u896627913_luciano02',
+        user: 'u896627913_luciano01',
         password: 'Felipe@91118825',
-        database: 'u896627913_luciano02'
+        database: 'u896627913_luciano01'
     });
 }
 
@@ -600,9 +599,9 @@ const client = new Client({
     },
 
     authStrategy: new LocalAuth({
-        clientId: 'bot-zdg_8005', // Provided clientId
+        clientId: 'bot-zdg_8004', // Provided clientId
         // Para o segundo cliente
-        dataPath: path.join(__dirname, '..', 'sessions', 'instancia8005')
+        dataPath: path.join(__dirname, '..', 'sessions', 'instancia8004')
     }),
 });
 
@@ -1301,31 +1300,32 @@ client.on('ready', async () => {
 
                 const hoje = new Date();
 
+                
                 for (const agendamento of agendamentosSolicitacao) {
                     if (agendamento.data_inclusao && agendamento.data_inclusao <= hoje && !agendamento.enviado) {
                         // Marcar o agendamento como enviado
                         agendamento.enviado = true;
-
+    
                         if (agendamento.nome !== '') {
                             client.sendMessage(agendamento.fone + '@c.us', agendamento.nome);
                         }
-
+    
                         if (agendamento.mensagemvd && agendamento.mensagemvd !== '') {
                             console.log('URL da mensagemvd:', agendamento.mensagemvd);
                             try {
                                 const media = await MessageMedia.fromUrl(agendamento.mensagemvd);
-                                const linkURL = 'https://g.page/r/CVq-_5HwLdIMEBM/review/'; // Replace this with your desired link URL
+                                const linkURL = 'https://g.page/r/CaWcuer6OFEdEBM/review/'; // Replace this with your desired link URL
                                 const textBelowImage = 'Seu feedback é importante para a Óticas Diniz RO. Poste uma avaliação no nosso perfil.';
                                 const linkText = 'Clique aqui para avaliar'; // Replace this with the text you want to display for the link
-
+    
                                 const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
-
+    
                                 client.sendMessage(agendamento.fone + '@c.us', media, { caption });
                             } catch (error) {
                                 console.error('Erro ao obter a mensagemvd:', error);
                             }
                         }
-
+    
                         const success = await updateStatusvd(agendamento.id);
                         if (success) {
                             console.log('BOT-ZDG - Mensagem ID: ' + agendamento.id + ' - statusvd atualizado para "enviado"');
