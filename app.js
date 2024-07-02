@@ -3,7 +3,7 @@ const socketIO = require('socket.io');
 const http = require('http');
 const qrcode = require('qrcode');
 const fileUpload = require('express-fileupload');
-const port = 8006;
+const port = 8008;
 const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
@@ -17,14 +17,15 @@ const nodeCron = require('node-cron');
 const createConnection = async () => {
     return await mysql.createConnection({
         host: '212.1.208.101',
-        user: 'u896627913_loja03',
-        password: 'Felipe@91118825',
-        database: 'u896627913_Lagarto'
+        user: 'u896627913_dinizpalmeira',
+        password: 'Felipe.91118825',
+        database: 'u896627913_dinizpalmeira'
     });
 }
 
 
-// Mantenha uma conexão global
+
+/// Mantenha uma conexão global
 let globalConnection = null;
 
 // Função para criar conexão se não existir ou reutilizar se existir
@@ -598,10 +599,11 @@ const client = new Client({
         ],
     },
     authStrategy: new LocalAuth({
-        clientId: 'bot-zdg_8006', // Provided clientId
+        clientId: 'bot-zdg_8008', // Provided clientId
         // Para o primeiro cliente
-        dataPath: path.join(__dirname, '..', 'sessions', 'instancia8006')
+        dataPath: path.join(__dirname, '..', 'sessions', 'instancia8008')
     }),
+
 });
 
 // Inicializa isAuthenticated com o valor das variáveis de ambiente ou false
@@ -657,6 +659,8 @@ io.on('connection', function (socket) {
         });
     });
 });
+
+
 
 /////INICIO///////
 
@@ -1248,7 +1252,7 @@ client.on('message', async (message) => {
 
 // Função para enviar o status da meta para o destinatário especificado
 async function enviarStatusDaMeta(to) {
-    const url = 'http://statuslagarto.pontestec.com.br/'; // URL do status da meta
+    const url = 'link aqui'; // URL do status da meta
     try {
         await client.sendMessage(to, url);
         console.log(`Status da meta enviado para ${to}`);
@@ -1271,7 +1275,7 @@ client.initialize();
 
 client.on('ready', async () => {
     // Add your scheduled task here
-    nodeCron.schedule('*/5 7-18 * * *', async function () {
+    nodeCron.schedule('*/5 9-18 * * *', async function () {
         try {
 
                 const agendamentosSolicitacao = await agendamentoZDG();
@@ -1312,8 +1316,8 @@ client.on('ready', async () => {
                             console.log('URL da mensagemvd:', agendamento.mensagemvd);
                             try {
                                 const media = await MessageMedia.fromUrl(agendamento.mensagemvd);
-                                const linkURL = 'https://g.co/kgs/oLj5PHF'; // Replace this with your desired link URL
-                                const textBelowImage = 'Avalie o nosso atendimento, é muito importante!';
+                                const linkURL = 'https://www.instagram.com/oticasdiniz.pdi/'; // Replace this with your desired link URL
+                                const textBelowImage = 'Olá! Que tal nos seguir no Instagram ? Temos um conteúdo incrível que você vai adorar! Basta clicar no link abaixo.Se já nos segue, ignore essa mensagem.';
                                 const linkText = 'Clique aqui para avaliar'; // Replace this with the text you want to display for the link
 
                                 const caption = `${textBelowImage}\n\n${linkText}: ${linkURL}`;
