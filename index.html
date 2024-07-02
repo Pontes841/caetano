@@ -149,4 +149,155 @@
         });
     </script>
 </body>
+</html><!DOCTYPE html>
+<html>
+<head>
+    <title>Whatsapp API</title>
+    <meta charset="utf-8">
+    <style>
+        body {
+            background-color: #1A2C38;
+            color: white;
+            text-align: center;
+        }
+
+        a {
+            background-color: #1A2C38;
+            color: white;
+        }
+
+        .box {
+            margin: 20px auto;
+            width: 80%;
+            max-width: 500px;
+            position: relative;
+        }
+
+        .alert {
+            background-color: #FF0000;
+            color: white;
+            padding: 5px;
+            margin-bottom: 5px;
+            border: 1px solid #FF0000;
+            border-radius: 3px;
+        }
+
+        p {
+            margin: 0;
+        }
+
+        /* Estilos CSS para o botão de atualização */
+        #restartButton {
+            background-color: #4CAF50; /* Cor de fundo verde */
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: block;
+            font-size: 14px;
+            margin: 20px auto; /* Centralizar o botão */
+            cursor: pointer;
+            border-radius: 8px;
+        }
+
+        #warningMessage {
+            color: red;
+            font-style: italic;
+            display: none;
+            margin-top: 10px;
+        }
+
+        #waitingMessage {
+            color: #4CAF50; /* Cor do texto verde */
+            display: none;
+            margin-top: 10px;
+        }
+
+        #loader {
+            display: none;
+            border: 4px solid #f3f3f3; /* Cinza claro */
+            border-top: 4px solid #3498db; /* Azul */
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 2s linear infinite;
+            margin: 10px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+    </style>
+</head>
+<body>
+    <div id="app">
+        <h1>Whatsapp API</h1>
+        <h3>Tecnologia move o mundo!</h3>
+        <p>E n s te ajudaremos a mover-se também!</p>
+        <img src="" alt="QR Code" id="qrcode">
+        <h3>Logs:</h3>
+        <ul class="logs"></ul>
+    </div>
+    <div class="box">
+        <!-- Botão de atualização -->
+        <button id="restartButton">Atualizar</button>
+        <!-- Mensagem de aguardando -->
+        <p id="waitingMessage" style="display: none;">Aguardando reinicialização do servidor...</p>
+        <!-- Animação de carregamento -->
+        <div id="loader"></div>
+    </div>
+    <!-- Aviso -->
+    <p id="warningMessage">Acione o botão apenas se o sistema não estiver funcionado corretamente como não aparecendo o QRcode ou aparecendo Cliente autenticado! Sem estar.</p>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function () {
+            var socket = io();
+
+            socket.on('message', function (msg) {
+                $('.logs').append($('<li>').text(msg));
+            });
+
+            socket.on('qr', function (src) {
+                $('#qrcode').attr('src', src);
+                $('#qrcode').show();
+            });
+
+            // Event listener para o clique no botão de atualização
+            $('#restartButton').click(function() {
+                // Esconder o botão de atualização
+                $('#restartButton').hide();
+                // Exibir a mensagem de aviso
+                $('#warningMessage').show();
+                // Exibir a mensagem de "Aguardando reinicialização do servidor"
+                $('#waitingMessage').show();
+                // Exibir a animação de carregamento
+                $('#loader').show();
+                // Emitir um evento para o servidor indicando que é necessário reiniciar o aplicativo
+                socket.emit('restartApp');
+
+                // Mostrar novamente o botão após 30 segundos
+                setTimeout(function() {
+                    $('#restartButton').show();
+                    $('#warningMessage').hide();
+                    $('#waitingMessage').hide();
+                    // Ocultar a animação de carregamento
+                    $('#loader').hide();
+                }, 30000); // 30 segundos
+            });
+
+            // Exibir a animação de carregamento quando a mensagem "Aguardando reinicialização do servidor..." estiver visível
+            setInterval(function() {
+                if ($('#waitingMessage').is(':visible')) {
+                    $('#loader').show();
+                } else {
+                    $('#loader').hide();
+                }
+            }, 100); // Verificar a cada 100 milissegundos
+        });
+    </script>
+</body>
 </html>
