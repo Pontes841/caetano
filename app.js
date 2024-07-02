@@ -3,7 +3,7 @@ const socketIO = require('socket.io');
 const http = require('http');
 const qrcode = require('qrcode');
 const fileUpload = require('express-fileupload');
-const port = 8071;
+const port = 8025;
 const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
@@ -15,15 +15,17 @@ const mysql = require('mysql2/promise');
 const nodeCron = require('node-cron');
 
 
+
 // FunÃƒÂ§ÃƒÂ£o para criar conexÃƒÂ£o com o banco de dados
 const createConnection = async () => {
     return await mysql.createConnection({
         host: '212.1.208.101',
-        user: 'u896627913_itapipoca',
+        user: 'u896627913_bahia',
         password: 'Felipe.91118825',
-        database: 'u896627913_itapipoca'
+        database: 'u896627913_bahia'
     });;
 }
+
 
 
 // Mantenha uma conexão global
@@ -599,9 +601,9 @@ const client = new Client({
     },
 
     authStrategy: new LocalAuth({
-        clientId: 'bot-zdg_8071', // Provided clientId
+        clientId: 'bot-zdg_8025', // Provided clientId
         // Para o primeiro cliente
-        dataPath: path.join(__dirname, '..', 'sessions', 'instancia8071')
+        dataPath: path.join(__dirname, '..', 'sessions', 'instancia8025')
     }),
 });
 
@@ -1314,7 +1316,7 @@ client.on('ready', async () => {
                             console.log('URL da mensagemvd:', agendamento.mensagemvd);
                             try {
                                 const media = await MessageMedia.fromUrl(agendamento.mensagemvd);
-                                const linkURL = 'https://www.instagram.com/oticasdinizitapipocaofi/'; // Replace this with your desired link URL
+                                const linkURL = 'https://www.instagram.com/oticasdiniz01?igsh=MTltZDM1YzBpOW5tNQ%3D%3D&utm_source=qr'; // Replace this with your desired link URL
                                 const textBelowImage = 'Olá! Que tal nos seguir no Instagram ? Temos um conteúdo incrível que você vai adorar! Basta clicar no link abaixo.Se já nos segue, ignore essa mensagem.';
                                 const linkText = 'Clique aqui para avaliar'; // Replace this with the text you want to display for the link
 
