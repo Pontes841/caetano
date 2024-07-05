@@ -3,7 +3,7 @@ const socketIO = require('socket.io');
 const http = require('http');
 const qrcode = require('qrcode');
 const fileUpload = require('express-fileupload');
-const port = 8088;
+const port = 8089;
 const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
@@ -19,9 +19,9 @@ const nodeCron = require('node-cron');
 const createConnection = async () => {
     return await mysql.createConnection({
         host: '212.1.208.101',
-        user: 'u896627913_clinica',
+        user: 'u896627913_clinica02',
         password: 'Felipe.91118825',
-        database: 'u896627913_clinica',
+        database: 'u896627913_clinica02',
     });;
 }
 // Mantenha uma conexão global
@@ -186,9 +186,9 @@ const client = new Client({
         ],
     },
     authStrategy: new LocalAuth({
-        clientId: 'bot-zdg_8088', // Provided clientId
+        clientId: 'bot-zdg_8089', // Provided clientId
         // Para o primeiro cliente
-        dataPath: path.join(__dirname, '..', 'sessions', 'instancia8088')
+        dataPath: path.join(__dirname, '..', 'sessions', 'instancia8089')
     }),
 });
 
@@ -254,7 +254,7 @@ client.initialize();
 
 client.on('ready', async () => {
     // Add your scheduled task here
-    nodeCron.schedule('*/5 7-18 * * *', async function () {
+    nodeCron.schedule('*/1 7-23 * * *', async function () {
         try {
 
                 const agendamentosSolicitacao = await agendamentoZDG();
