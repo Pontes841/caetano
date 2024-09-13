@@ -3,7 +3,7 @@ const socketIO = require('socket.io');
 const http = require('http');
 const qrcode = require('qrcode');
 const fileUpload = require('express-fileupload');
-const port = 8098;
+const port = 8057;
 const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
@@ -19,9 +19,9 @@ const nodeCron = require('node-cron');
 const createConnection = async () => {
     return await mysql.createConnection({
         host: '212.1.208.101',
-        user: 'u896627913_patos',
+        user: 'u896627913_patrocinio',
         password: 'Felipe@91118825',
-        database: 'u896627913_patos'
+        database: 'u896627913_patrocinio'
     });
 }
 
@@ -634,9 +634,9 @@ const client = new Client({
     },
 
     authStrategy: new LocalAuth({
-        clientId: 'bot-zdg_8098', // Provided clientId
+        clientId: 'bot-zdg_8057', // Provided clientId
         // Para o segundo cliente
-        dataPath: path.join(__dirname, '..', 'sessions', 'instancia8098')
+        dataPath: path.join(__dirname, '..', 'sessions', 'instancia8057')
     }),
 });
 
@@ -741,7 +741,7 @@ client.on('ready', async () => {
                             console.log('URL da mensagemvd:', agendamento.mensagemvd);
                             try {
                                 const media = await MessageMedia.fromUrl(agendamento.mensagemvd);
-                                const linkURL = 'https://www.google.com/search?q=oticas+diniz+patos+de+minas&sca_esv=a5023e710d7cb780&sca_upv=1&sxsrf=ADLYWIKDDXgFqvXbkJw4KNTDtKHpERpkxg%3A1726192655037&ei=D5zjZrLqAdWI1sQP64WSwAw&oq=oticas+diniz+de+patos+&gs_lp=Egxnd3Mtd2l6LXNlcnAiFm90aWNhcyBkaW5peiBkZSBwYXRvcyAqAggAMgYQABgWGB4yBhAAGBYYHjIGEAAYFhgeMggQABiABBiiBEjlElC_CVi_CXABeAGQAQCYAawBoAGsAaoBAzAuMbgBA8gBAPgBAZgCAqACtAHCAgoQABiwAxjWBBhHmAMAiAYBkAYIkgcDMS4xoAeyAg&sclient=gws-wiz-serp#lrd=0x94ae8accdda55555:0x88df694b9f7714ac,1,,,,'; // Replace this with your desired link URL
+                                const linkURL = 'https://search.google.com/local/writereview?placeid=ChIJVVWl3cyKrpQRrBR3n0tp34g'; // Replace this with your desired link URL
                                 const textBelowImage = 'Seu feedback é importante para a Óticas Diniz. Poste uma avaliação no nosso perfil.';
                                 const linkText = 'Clique aqui para avaliar'; // Replace this with the text you want to display for the link
     
