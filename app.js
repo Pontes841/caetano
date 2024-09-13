@@ -634,9 +634,9 @@ const client = new Client({
     },
 
     authStrategy: new LocalAuth({
-        clientId: 'bot-zdg_8001', // Provided clientId
+        clientId: 'bot-zdg_8098', // Provided clientId
         // Para o segundo cliente
-        dataPath: path.join(__dirname, '..', 'sessions', 'instancia8001')
+        dataPath: path.join(__dirname, '..', 'sessions', 'instancia8098')
     }),
 });
 
